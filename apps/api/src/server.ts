@@ -22,19 +22,23 @@ const app = createApp({
   },
 });
 
-const server = app.listen(environment.PORT, () => {
-  console.info(`HomeXBD API listening on port ${environment.PORT}`);
-});
-
-function shutdown(signal: string): void {
-  console.info(`${signal} received; closing the HTTP server.`);
-  server.close((error) => {
-    if (error) {
-      console.error(error);
-      process.exitCode = 1;
-    }
+if (!process.env.VERCEL) {
+  const server = app.listen(environment.PORT, () => {
+    console.info(`HomeXBD API listening on port ${environment.PORT}`);
   });
+
+  const shutdown = (signal: string): void => {
+    console.info(`${signal} received; closing the HTTP server.`);
+    server.close((error) => {
+      if (error) {
+        console.error(error);
+        process.exitCode = 1;
+      }
+    });
+  };
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
 }
 
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
+export default app;
