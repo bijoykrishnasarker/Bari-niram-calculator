@@ -1,0 +1,7 @@
+node_modules
+dist
+.expo
+coverage
+*.xlsx
+*.pdf
+pnpm-lock.yaml

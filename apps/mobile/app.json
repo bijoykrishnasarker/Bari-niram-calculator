@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "HomeXBD Calculator",
+    "slug": "homexbd-house-calculator",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "homexbd",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.homexbd.calculator"
+    },
+    "ios": {
+      "bundleIdentifier": "com.homexbd.calculator",
+      "supportsTablet": true
+    },
+    "plugins": ["expo-secure-store"]
+  }
+}
