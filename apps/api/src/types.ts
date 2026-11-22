@@ -85,3 +85,13 @@ export type ApiDependencies = {
   store: DataStore;
   config: ApiRuntimeConfig;
 };
+
+declare global {
+  namespace Express {
+    interface Request {
+      authUser?: AuthUser;
+      id: string;
+    }
+  }
+}
+
