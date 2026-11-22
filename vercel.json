@@ -1,9 +1,16 @@
 {
   "version": 2,
-  "rewrites": [
+  "buildCommand": "pnpm --filter @homexbd/shared build && pnpm --filter @homexbd/api build",
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/api/index.js"
+      "src": "apps/api/dist/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "apps/api/dist/server.js"
     }
   ]
 }

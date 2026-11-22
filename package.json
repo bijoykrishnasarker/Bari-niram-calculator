@@ -9,7 +9,7 @@
     "node": ">=22.18.0"
   },
   "scripts": {
-    "build": "pnpm --filter @homexbd/shared build && pnpm --filter @homexbd/api build && node -e \"import fs from 'node:fs'; fs.copyFileSync('./apps/api/dist/server.js', './server.js'); fs.copyFileSync('./apps/api/dist/server.js', './app.js'); fs.copyFileSync('./apps/api/dist/server.js', './index.js'); fs.copyFileSync('./apps/api/dist/server.js', './api/index.js');\"",
+    "build": "pnpm --filter @homexbd/shared build && pnpm --filter @homexbd/api build",
     "dev:api": "pnpm --filter @homexbd/api dev",
     "dev:mobile": "pnpm --filter @homexbd/mobile start",
     "format": "prettier --write .",
