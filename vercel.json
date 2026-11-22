@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "framework": null,
   "buildCommand": "pnpm --filter @homexbd/shared build && pnpm --filter @homexbd/api build",
   "builds": [
     {
