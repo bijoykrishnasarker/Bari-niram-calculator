@@ -108,10 +108,10 @@ export function HomeScreen({
   const plasterCementBags = Math.round(parsedPlasterSqFt * 0.018);
   const plasterSandCft = Math.round(parsedPlasterSqFt * 0.07);
 
-  // 4. Paint: 1 liter covers ~110-120 sq ft (2 coats)
+  // 4. Paint calculation: primer ~0.009 L/sqft, 2-coat plastic paint ~0.012 L/sqft
   const parsedPaintSqFt = parseFloat(paintArea) || 0;
-  const paintLiters = (parsedPaintSqFt / 110).toFixed(1);
-  const primerLiters = (parsedPaintSqFt / 140).toFixed(1);
+  const primerLiters = Math.round(parsedPaintSqFt * 0.009);
+  const paintLiters = Math.round(parsedPaintSqFt * 0.012);
 
   return (
     <ScrollView
@@ -472,38 +472,50 @@ export function HomeScreen({
             )}
 
             {activeMini === 'paint' && (
-              <>
-                <Text style={styles.modalHeading}>🎨 রঙের হিসাব</Text>
-                <Text style={styles.modalSubheading}>
-                  ২ কোট ফিনিশিং ও প্রাইমার অনুপাত:
-                </Text>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.modalLabel}>রঙের মোট এলাকা (বর্গফুট):</Text>
+              <View style={styles.qbCard}>
+                {/* Header with Title & ✕ */}
+                <View style={styles.qbHeader}>
+                  <Text style={styles.qbTitle}>কুইক রঙের হিসাব</Text>
+                  <Pressable
+                    hitSlop={10}
+                    onPress={() => setActiveMini(null)}
+                    style={styles.qbCloseBtn}
+                  >
+                    <Text style={styles.qbCloseText}>✕</Text>
+                  </Pressable>
+                </View>
+
+                {/* Input Label & Big Input */}
+                <View style={styles.qbInputWrap}>
+                  <Text style={styles.qbInputLabel}>
+                    ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)
+                  </Text>
                   <TextInput
                     keyboardType="numeric"
                     onChangeText={setPaintArea}
-                    style={styles.modalInputFull}
+                    style={styles.qbBigInput}
                     value={paintArea}
                   />
                 </View>
-                <View style={styles.resultBox}>
-                  <Text style={styles.resultItem}>
-                    ফিনিশিং পেইন্ট: <Text style={[styles.bold, { color: colors.purple }]}>{paintLiters} লিটার</Text>
+
+                {/* Result Box */}
+                <View style={styles.qbResultBox}>
+                  <Text style={styles.qbResultText}>
+                    সিলার/প্রাইমার: <Text style={styles.qbBold}>{toBnDigits(primerLiters)} লিটার</Text>
                   </Text>
-                  <Text style={styles.resultItem}>
-                    প্রাইমার / সিলার: <Text style={styles.bold}>{primerLiters} লিটার</Text>
+                  <Text style={styles.qbResultText}>
+                    প্লাস্টিক পেইন্ট (২ কোট): <Text style={styles.qbBold}>{toBnDigits(paintLiters)} লিটার</Text>
                   </Text>
                 </View>
-              </>
-            )}
 
-            {activeMini !== 'brick' && activeMini !== 'roof' && activeMini !== 'plaster' && (
-              <Pressable
-                onPress={() => setActiveMini(null)}
-                style={[styles.modalBtn, styles.modalSaveBtn, { marginTop: 16 }]}
-              >
-                <Text style={styles.modalSaveText}>বন্ধ করুন</Text>
-              </Pressable>
+                {/* Blue Action Button */}
+                <Pressable
+                  onPress={() => setActiveMini(null)}
+                  style={styles.qbSubmitBtn}
+                >
+                  <Text style={styles.qbSubmitBtnText}>ঠিক আছে</Text>
+                </Pressable>
+              </View>
             )}
           </View>
         </View>
