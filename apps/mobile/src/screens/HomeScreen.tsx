@@ -57,7 +57,7 @@ export function HomeScreen({
   const [roofArea, setRoofArea] = useState('1000');
   const [roofThickness, setRoofThickness] = useState('5'); // inches
 
-  const [plasterArea, setPlasterArea] = useState('500');
+  const [plasterArea, setPlasterArea] = useState('1000');
 
   const [paintArea, setPaintArea] = useState('1000');
 
@@ -103,10 +103,10 @@ export function HomeScreen({
   const roofSandCft = Math.round(parsedRoofSqFt * 0.22);
   const roofStoneCft = Math.round(parsedRoofSqFt * 0.44);
 
-  // 3. Plaster: 1:4 ratio, 1/2" thickness
+  // 3. Plaster calculation
   const parsedPlasterSqFt = parseFloat(plasterArea) || 0;
-  const plasterCementBags = (parsedPlasterSqFt * 0.02).toFixed(1);
-  const plasterSandCft = Math.round(parsedPlasterSqFt * 0.1);
+  const plasterCementBags = Math.round(parsedPlasterSqFt * 0.018);
+  const plasterSandCft = Math.round(parsedPlasterSqFt * 0.07);
 
   // 4. Paint: 1 liter covers ~110-120 sq ft (2 coats)
   const parsedPaintSqFt = parseFloat(paintArea) || 0;
@@ -425,29 +425,50 @@ export function HomeScreen({
             )}
 
             {activeMini === 'plaster' && (
-              <>
-                <Text style={styles.modalHeading}>🔨 দেয়াল প্লাস্টার হিসাব</Text>
-                <Text style={styles.modalSubheading}>
-                  ১:৪ অনুপাতে হাফ ইঞ্চি (০.৫") প্লাস্টার মসলা:
-                </Text>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.modalLabel}>প্লাস্টার এলাকা (বর্গফুট):</Text>
+              <View style={styles.qbCard}>
+                {/* Header with Title & ✕ */}
+                <View style={styles.qbHeader}>
+                  <Text style={styles.qbTitle}>কুইক প্লাস্টারের হিসাব</Text>
+                  <Pressable
+                    hitSlop={10}
+                    onPress={() => setActiveMini(null)}
+                    style={styles.qbCloseBtn}
+                  >
+                    <Text style={styles.qbCloseText}>✕</Text>
+                  </Pressable>
+                </View>
+
+                {/* Input Label & Big Input */}
+                <View style={styles.qbInputWrap}>
+                  <Text style={styles.qbInputLabel}>
+                    ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)
+                  </Text>
                   <TextInput
                     keyboardType="numeric"
                     onChangeText={setPlasterArea}
-                    style={styles.modalInputFull}
+                    style={styles.qbBigInput}
                     value={plasterArea}
                   />
                 </View>
-                <View style={styles.resultBox}>
-                  <Text style={styles.resultItem}>
-                    সিমেন্ট লাগবে: <Text style={[styles.bold, { color: colors.green }]}>{plasterCementBags} ব্যাগ</Text>
+
+                {/* Result Box */}
+                <View style={styles.qbResultBox}>
+                  <Text style={styles.qbResultText}>
+                    সিমেন্ট লাগবে: <Text style={styles.qbBold}>{toBnDigits(plasterCementBags)} বস্তা</Text>
                   </Text>
-                  <Text style={styles.resultItem}>
-                    সিলেট/লোকাল বালু: <Text style={styles.bold}>{plasterSandCft} সিএফটি</Text>
+                  <Text style={styles.qbResultText}>
+                    চিকন বালু লাগবে: <Text style={styles.qbBold}>{toBnDigits(plasterSandCft)} সিএফটি</Text>
                   </Text>
                 </View>
-              </>
+
+                {/* Blue Action Button */}
+                <Pressable
+                  onPress={() => setActiveMini(null)}
+                  style={styles.qbSubmitBtn}
+                >
+                  <Text style={styles.qbSubmitBtnText}>ঠিক আছে</Text>
+                </Pressable>
+              </View>
             )}
 
             {activeMini === 'paint' && (
@@ -476,7 +497,7 @@ export function HomeScreen({
               </>
             )}
 
-            {activeMini !== 'brick' && activeMini !== 'roof' && (
+            {activeMini !== 'brick' && activeMini !== 'roof' && activeMini !== 'plaster' && (
               <Pressable
                 onPress={() => setActiveMini(null)}
                 style={[styles.modalBtn, styles.modalSaveBtn, { marginTop: 16 }]}
