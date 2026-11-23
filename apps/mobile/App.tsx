@@ -123,8 +123,13 @@ function MainApp() {
 
       {/* Brand Bar */}
       <View style={styles.brandBar}>
-        <Pressable onPress={() => setTab('home')}>
+        <Pressable onPress={() => setTab('home')} style={styles.brandWrap}>
           <Logo size="small" />
+          <View style={styles.brandTextWrap}>
+            <Text style={styles.brandTitle}>
+              HomeX<Text style={styles.brandTitleHighlight}>BD</Text>
+            </Text>
+          </View>
         </Pressable>
 
         <View style={styles.brandActions}>
@@ -253,6 +258,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     backgroundColor: colors.white,
+  },
+  brandWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  brandTextWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  brandTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0F172A',
+  },
+  brandTitleHighlight: {
+    color: '#D97706',
   },
   brand: { color: colors.greenDark, fontSize: 19, fontWeight: '800' },
   brandActions: {
