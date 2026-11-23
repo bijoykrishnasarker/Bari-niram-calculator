@@ -580,11 +580,11 @@
         <div class="grid grid-cols-2 gap-2 text-xs">
           <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
             <span class="text-slate-500 text-[10px]">প্ল্যান স্ট্যাটাস</span>
-            <div class="text-emerald-700 font-black mt-0.5">ফ্রি প্ল্যান (Free)</div>
+            <div id="accPlanLabel" class="text-emerald-700 font-black mt-0.5">ফ্রি প্ল্যান (Free)</div>
           </div>
           <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
             <span class="text-slate-500 text-[10px]">ডিভাইস স্ট্যাটাস</span>
-            <div class="text-slate-800 font-black mt-0.5">বাইন্ডেড (Active)</div>
+            <div id="accRoleLabel" class="text-slate-800 font-black mt-0.5">বাইন্ডেড (Active)</div>
           </div>
         </div>
 
@@ -644,13 +644,13 @@
         <!-- Email -->
         <div class="flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
           <span class="text-slate-400 mr-2 text-sm">✉</span>
-          <input id="authEmailInput" type="email" placeholder="ইমেইল ঠিকানা" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+          <input id="authEmailInput" type="email" value="bijoysarker0171@gmail.com" placeholder="ইমেইল ঠিকানা" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
         </div>
 
         <!-- Password -->
         <div class="flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
           <span class="text-slate-400 mr-2 text-sm">🔒</span>
-          <input id="authPassInput" type="password" placeholder="পাসওয়ার্ড" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+          <input id="authPassInput" type="password" value="123456" placeholder="পাসওয়ার্ড" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
           <button type="button" onclick="toggleAuthPassVisibility()" class="text-slate-400 hover:text-slate-600 text-xs">👁️</button>
         </div>
 
@@ -984,8 +984,41 @@
       document.getElementById('authModal').classList.add('hidden');
       document.getElementById('accUserEmail').innerText = currentUserEmail;
       document.getElementById('navUserLabel').innerText = currentUserEmail.split('@')[0];
+      updateAdminUI();
     } else {
       document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function updateAdminUI() {
+      const badge = document.getElementById('planBadge');
+      const accPlan = document.getElementById('accPlanLabel');
+      const accRole = document.getElementById('accRoleLabel');
+
+      if (currentUserEmail === 'bijoysarker0171@gmail.com') {
+        if (badge) {
+          badge.className = 'cursor-default text-[11px] font-black px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-xs';
+          badge.innerText = '★ Admin';
+        }
+        if (accPlan) {
+          accPlan.innerText = 'সুপার অ্যাডমিন (Admin)';
+          accPlan.className = 'text-amber-700 font-black mt-0.5';
+        }
+        if (accRole) {
+          accRole.innerText = 'ফুল সিস্টেম অ্যাক্সেস';
+        }
+      } else {
+        if (badge) {
+          badge.className = 'cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20';
+          badge.innerText = 'Free';
+        }
+        if (accPlan) {
+          accPlan.innerText = 'ফ্রি প্ল্যান (Free)';
+          accPlan.className = 'text-emerald-700 font-black mt-0.5';
+        }
+        if (accRole) {
+          accRole.innerText = 'বাইন্ডেড (Active)';
+        }
+      }
     }
 
     function handleNavAccountClick() {

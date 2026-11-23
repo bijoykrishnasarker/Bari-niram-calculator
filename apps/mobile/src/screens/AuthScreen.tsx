@@ -29,8 +29,8 @@ export function AuthScreen({
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [lang, setLang] = useState<'bn' | 'en'>('bn');
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('bijoysarker0171@gmail.com');
+  const [password, setPassword] = useState('123456');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
