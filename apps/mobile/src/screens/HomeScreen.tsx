@@ -97,14 +97,11 @@ export function HomeScreen({
   const brickCost = Math.round(brickCount * 12);
   const brickSandCft = Math.round(parsedWallSqFt * 0.15);
 
-  // 2. Roof Casting: 1:2:4 ratio
+  // 2. Roof Casting: 5" thick slab
   const parsedRoofSqFt = parseFloat(roofArea) || 0;
-  const parsedRoofThickInches = parseFloat(roofThickness) || 5;
-  const roofVolumeCft = parsedRoofSqFt * (parsedRoofThickInches / 12);
-  const wetVolume = roofVolumeCft * 1.54; // Dry volume factor
-  const roofCementBags = Math.round((wetVolume * (1 / 7)) / 1.25);
-  const roofSandCft = Math.round(wetVolume * (2 / 7));
-  const roofStoneCft = Math.round(wetVolume * (4 / 7));
+  const roofCementBags = Math.round(parsedRoofSqFt * 0.085);
+  const roofSandCft = Math.round(parsedRoofSqFt * 0.22);
+  const roofStoneCft = Math.round(parsedRoofSqFt * 0.44);
 
   // 3. Plaster: 1:4 ratio, 1/2" thickness
   const parsedPlasterSqFt = parseFloat(plasterArea) || 0;
@@ -378,41 +375,53 @@ export function HomeScreen({
             )}
 
             {activeMini === 'roof' && (
-              <>
-                <Text style={styles.modalHeading}>🏗️ ছাদ ঢালাই ক্যালকুলেটর</Text>
-                <Text style={styles.modalSubheading}>
-                  ১:২:৪ অনুপাতে সিমেন্ট, বালু ও খোয়া হিসাব:
-                </Text>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.modalLabel}>ছাদের আয়তন (বর্গফুট):</Text>
+              <View style={styles.qbCard}>
+                {/* Header with Title & ✕ */}
+                <View style={styles.qbHeader}>
+                  <Text style={styles.qbTitle}>কুইক ছাদ ঢালাইয়ের হিসাব (৫ ইঞ্চি পুরু)</Text>
+                  <Pressable
+                    hitSlop={10}
+                    onPress={() => setActiveMini(null)}
+                    style={styles.qbCloseBtn}
+                  >
+                    <Text style={styles.qbCloseText}>✕</Text>
+                  </Pressable>
+                </View>
+
+                {/* Input Label & Big Input */}
+                <View style={styles.qbInputWrap}>
+                  <Text style={styles.qbInputLabel}>
+                    ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)
+                  </Text>
                   <TextInput
                     keyboardType="numeric"
                     onChangeText={setRoofArea}
-                    style={styles.modalInputFull}
+                    style={styles.qbBigInput}
                     value={roofArea}
                   />
                 </View>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.modalLabel}>ছাদের পুরুত্ব (ইঞ্চি):</Text>
-                  <TextInput
-                    keyboardType="numeric"
-                    onChangeText={setRoofThickness}
-                    style={styles.modalInputFull}
-                    value={roofThickness}
-                  />
-                </View>
-                <View style={styles.resultBox}>
-                  <Text style={styles.resultItem}>
-                    সিমেন্ট লাগবে: <Text style={[styles.bold, { color: colors.blue }]}>{roofCementBags} ব্যাগ</Text>
+
+                {/* Result Box */}
+                <View style={styles.qbResultBox}>
+                  <Text style={styles.qbResultText}>
+                    সিমেন্ট লাগবে: <Text style={styles.qbBold}>{toBnDigits(roofCementBags)} বস্তা</Text>
                   </Text>
-                  <Text style={styles.resultItem}>
-                    বালু লাগবে: <Text style={styles.bold}>{roofSandCft} সিএফটি</Text>
+                  <Text style={styles.qbResultText}>
+                    বালু লাগবে: <Text style={styles.qbBold}>{toBnDigits(roofSandCft)} সিএফটি</Text>
                   </Text>
-                  <Text style={styles.resultItem}>
-                    খোয়া / পাথর: <Text style={styles.bold}>{roofStoneCft} সিএফটি</Text>
+                  <Text style={styles.qbResultText}>
+                    খোয়া/পাথর লাগবে: <Text style={styles.qbBold}>{toBnDigits(roofStoneCft)} সিএফটি</Text>
                   </Text>
                 </View>
-              </>
+
+                {/* Blue Action Button */}
+                <Pressable
+                  onPress={() => setActiveMini(null)}
+                  style={styles.qbSubmitBtn}
+                >
+                  <Text style={styles.qbSubmitBtnText}>ঠিক আছে</Text>
+                </Pressable>
+              </View>
             )}
 
             {activeMini === 'plaster' && (
@@ -467,7 +476,7 @@ export function HomeScreen({
               </>
             )}
 
-            {activeMini !== 'brick' && (
+            {activeMini !== 'brick' && activeMini !== 'roof' && (
               <Pressable
                 onPress={() => setActiveMini(null)}
                 style={[styles.modalBtn, styles.modalSaveBtn, { marginTop: 16 }]}
