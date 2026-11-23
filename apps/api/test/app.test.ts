@@ -144,6 +144,14 @@ describe('HomeXBD API', () => {
     });
   }
 
+  it('returns health check on root and /health', async () => {
+    const rootRes = await request(app()).get('/').expect(200);
+    expect(rootRes.body).toMatchObject({ status: 'ok', name: 'HomeXBD API' });
+
+    const healthRes = await request(app()).get('/health').expect(200);
+    expect(healthRes.body).toEqual({ status: 'ok' });
+  });
+
   it('returns cacheable public configuration without secrets', async () => {
     const response = await request(app()).get('/v1/config').expect(200);
 

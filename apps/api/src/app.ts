@@ -237,6 +237,15 @@ export function createApp(dependencies: ApiDependencies) {
     }
   };
 
+  app.get('/', (_request, response) => {
+    response.set('Cache-Control', 'no-store');
+    response.json({
+      name: 'HomeXBD API',
+      status: 'ok',
+      version: '0.1.0',
+    });
+  });
+
   app.get('/health', (_request, response) => {
     response.set('Cache-Control', 'no-store');
     response.json({ status: 'ok' });
