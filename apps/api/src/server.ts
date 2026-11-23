@@ -1,44 +1,30 @@
 import 'dotenv/config';
 
-import { createApp } from './app';
-import { loadEnvironment, parseCorsOrigins } from './env';
-import { SupabaseAuthService, SupabaseDataStore } from './supabase';
-
-const environment = loadEnvironment();
-const app = createApp({
-  auth: new SupabaseAuthService(
-    environment.SUPABASE_URL,
-    environment.SUPABASE_PUBLISHABLE_KEY,
-  ),
-  store: new SupabaseDataStore(
-    environment.SUPABASE_URL,
-    environment.SUPABASE_SECRET_KEY,
-  ),
-  config: {
-    allowedOrigins: parseCorsOrigins(environment.CORS_ORIGINS),
-    bKashAccountNumber: environment.BKASH_ACCOUNT_NUMBER,
-    deviceHashPepper: environment.DEVICE_HASH_PEPPER,
-    environment: environment.NODE_ENV,
-  },
-});
+import defaultHandler, { getOrInitDefaultApp } from './app';
 
 if (!process.env.VERCEL) {
-  const server = app.listen(environment.PORT, () => {
-    console.info(`HomeXBD API listening on port ${environment.PORT}`);
-  });
-
-  const shutdown = (signal: string): void => {
-    console.info(`${signal} received; closing the HTTP server.`);
-    server.close((error) => {
-      if (error) {
-        console.error(error);
-        process.exitCode = 1;
-      }
+  try {
+    const app = getOrInitDefaultApp();
+    const port = Number(process.env.PORT) || 4000;
+    const server = app.listen(port, () => {
+      console.info(`HomeXBD API listening on port ${port}`);
     });
-  };
 
-  process.on('SIGTERM', () => shutdown('SIGTERM'));
-  process.on('SIGINT', () => shutdown('SIGINT'));
+    const shutdown = (signal: string): void => {
+      console.info(`${signal} received; closing the HTTP server.`);
+      server.close((error) => {
+        if (error) {
+          console.error(error);
+          process.exitCode = 1;
+        }
+      });
+    };
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
+  } catch (error) {
+    console.error('Failed to initialize server:', error);
+  }
 }
 
-export default app;
+export default defaultHandler;

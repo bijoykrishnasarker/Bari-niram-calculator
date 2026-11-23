@@ -23,8 +23,10 @@ import pinoHttp from 'pino-http';
 import { z } from 'zod';
 
 import { TtlCache } from './cache';
+import { loadEnvironment, parseCorsOrigins } from './env';
 import { ApiError, errorHandler } from './errors';
 import { deviceHashesMatch, hashDeviceId } from './security';
+import { SupabaseAuthService, SupabaseDataStore } from './supabase';
 import type { ApiDependencies, AuthUser } from './types';
 
 const DeviceLabelSchema = z.object({
@@ -521,3 +523,51 @@ export function asyncMiddleware(
     void handler(request, response, next).catch(next);
   };
 }
+
+let defaultAppInstance: express.Express | null = null;
+let initError: Error | null = null;
+
+export function getOrInitDefaultApp(): express.Express {
+  if (defaultAppInstance) return defaultAppInstance;
+  if (initError) throw initError;
+
+  try {
+    const environment = loadEnvironment();
+    defaultAppInstance = createApp({
+      auth: new SupabaseAuthService(
+        environment.SUPABASE_URL,
+        environment.SUPABASE_PUBLISHABLE_KEY,
+      ),
+      store: new SupabaseDataStore(
+        environment.SUPABASE_URL,
+        environment.SUPABASE_SECRET_KEY,
+      ),
+      config: {
+        allowedOrigins: parseCorsOrigins(environment.CORS_ORIGINS),
+        bKashAccountNumber: environment.BKASH_ACCOUNT_NUMBER,
+        deviceHashPepper: environment.DEVICE_HASH_PEPPER,
+        environment: environment.NODE_ENV,
+      },
+    });
+    return defaultAppInstance;
+  } catch (error) {
+    initError = error instanceof Error ? error : new Error(String(error));
+    throw initError;
+  }
+}
+
+const defaultHandler: RequestHandler = (req, res, next) => {
+  try {
+    const app = getOrInitDefaultApp();
+    return app(req, res, next);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({
+      error: 'SERVER_CONFIGURATION_ERROR',
+      message,
+      hint: 'Please ensure SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY, and DEVICE_HASH_PEPPER are set in Vercel Environment Variables and redeployed.',
+    });
+  }
+};
+
+export default defaultHandler;
