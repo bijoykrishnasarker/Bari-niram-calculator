@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 
+import { toBnDigits } from '../lib/format';
 import { colors } from '../theme';
 import type { AccountSummary } from '../types';
 
@@ -48,6 +49,7 @@ export function HomeScreen({
   >(null);
 
   // Mini-calculator inputs
+  const [wallArea, setWallArea] = useState('1000');
   const [wallLength, setWallLength] = useState('10');
   const [wallHeight, setWallHeight] = useState('10');
   const [wallThickness, setWallThickness] = useState<'5' | '10'>('5');
@@ -88,14 +90,12 @@ export function HomeScreen({
   }
 
   // Mini-calc computations
-  // 1. Brick: 5" wall takes ~5 bricks/sq ft, 10" takes ~10 bricks/sq ft
-  const parsedWallSqFt =
-    (parseFloat(wallLength) || 0) * (parseFloat(wallHeight) || 0);
-  const brickCount = Math.round(
-    parsedWallSqFt * (wallThickness === '5' ? 5 : 10),
-  );
-  const brickCementBags = (parsedWallSqFt * (wallThickness === '5' ? 0.03 : 0.06)).toFixed(1);
-  const brickSandCft = Math.round(parsedWallSqFt * (wallThickness === '5' ? 0.15 : 0.3));
+  // 1. Brick: 5" wall takes 5 bricks/sq ft, 0.03 cement bags/sq ft, ৳12/brick
+  const parsedWallSqFt = parseFloat(wallArea) || 0;
+  const brickCount = Math.round(parsedWallSqFt * 5);
+  const brickCementBags = Math.round(parsedWallSqFt * 0.03);
+  const brickCost = Math.round(brickCount * 12);
+  const brickSandCft = Math.round(parsedWallSqFt * 0.15);
 
   // 2. Roof Casting: 1:2:4 ratio
   const parsedRoofSqFt = parseFloat(roofArea) || 0;
@@ -328,79 +328,53 @@ export function HomeScreen({
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             {activeMini === 'brick' && (
-              <>
-                <Text style={styles.modalHeading}>🧱 দেয়ালের ইটের হিসাব</Text>
-                <Text style={styles.modalSubheading}>
-                  দেয়ালের মাপ দিয়ে প্রয়োজনীয় ইট ও মসলার অনুপাত জানুন:
-                </Text>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.modalLabel}>দেয়ালের দৈর্ঘ্য (ফুট):</Text>
-                  <TextInput
-                    keyboardType="numeric"
-                    onChangeText={setWallLength}
-                    style={styles.modalInputFull}
-                    value={wallLength}
-                  />
-                </View>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.modalLabel}>দেয়ালের উচ্চতা (ফুট):</Text>
-                  <TextInput
-                    keyboardType="numeric"
-                    onChangeText={setWallHeight}
-                    style={styles.modalInputFull}
-                    value={wallHeight}
-                  />
-                </View>
-                <View style={styles.toggleRow}>
+              <View style={styles.qbCard}>
+                {/* Header with Title & ✕ */}
+                <View style={styles.qbHeader}>
+                  <Text style={styles.qbTitle}>কুইক ইটের হিসাব (৫ ইঞ্চি দেয়াল)</Text>
                   <Pressable
-                    onPress={() => setWallThickness('5')}
-                    style={[
-                      styles.toggleBtn,
-                      wallThickness === '5' && styles.toggleBtnActive,
-                    ]}
+                    hitSlop={10}
+                    onPress={() => setActiveMini(null)}
+                    style={styles.qbCloseBtn}
                   >
-                    <Text
-                      style={[
-                        styles.toggleText,
-                        wallThickness === '5' && styles.toggleTextActive,
-                      ]}
-                    >
-                      ৫ ইঞ্চি ওয়াল
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => setWallThickness('10')}
-                    style={[
-                      styles.toggleBtn,
-                      wallThickness === '10' && styles.toggleBtnActive,
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.toggleText,
-                        wallThickness === '10' && styles.toggleTextActive,
-                      ]}
-                    >
-                      ১০ ইঞ্চি ওয়াল
-                    </Text>
+                    <Text style={styles.qbCloseText}>✕</Text>
                   </Pressable>
                 </View>
 
-                <View style={styles.resultBox}>
-                  <Text style={styles.resultItem}>
-                    মোট এলাকা: <Text style={styles.bold}>{parsedWallSqFt} বর্গফুট</Text>
+                {/* Input Label & Big Input */}
+                <View style={styles.qbInputWrap}>
+                  <Text style={styles.qbInputLabel}>
+                    ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)
                   </Text>
-                  <Text style={styles.resultItem}>
-                    প্রয়োজনীয় ইট: <Text style={[styles.bold, { color: colors.orangeBright }]}>{brickCount} পিস</Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    onChangeText={setWallArea}
+                    style={styles.qbBigInput}
+                    value={wallArea}
+                  />
+                </View>
+
+                {/* Result Box */}
+                <View style={styles.qbResultBox}>
+                  <Text style={styles.qbResultText}>
+                    মোট ইট লাগবে: <Text style={styles.qbBold}>{toBnDigits(brickCount)} পিস</Text>
                   </Text>
-                  <Text style={styles.resultItem}>
-                    আনুমানিক সিমেন্ট: <Text style={styles.bold}>{brickCementBags} ব্যাগ</Text>
+                  <Text style={styles.qbResultText}>
+                    সিমেন্ট লাগবে: <Text style={styles.qbBold}>{toBnDigits(brickCementBags)} বস্তা</Text>
                   </Text>
-                  <Text style={styles.resultItem}>
-                    বালু: <Text style={styles.bold}>{brickSandCft} সিএফটি</Text>
+                  <Text style={styles.qbResultText}>
+                    আনুমানিক ইটের দাম: <Text style={styles.qbBold}>৳{toBnDigits(brickCost.toLocaleString('en-IN'))}</Text>
                   </Text>
                 </View>
-              </>
+
+                {/* Blue Action Button */}
+                <Pressable
+                  onPress={() => setActiveMini(null)}
+                  style={styles.qbSubmitBtn}
+                >
+                  <Text style={styles.qbSubmitBtnText}>ঠিক আছে</Text>
+                </Pressable>
+              </View>
             )}
 
             {activeMini === 'roof' && (
@@ -493,12 +467,14 @@ export function HomeScreen({
               </>
             )}
 
-            <Pressable
-              onPress={() => setActiveMini(null)}
-              style={[styles.modalBtn, styles.modalSaveBtn, { marginTop: 16 }]}
-            >
-              <Text style={styles.modalSaveText}>বন্ধ করুন</Text>
-            </Pressable>
+            {activeMini !== 'brick' && (
+              <Pressable
+                onPress={() => setActiveMini(null)}
+                style={[styles.modalBtn, styles.modalSaveBtn, { marginTop: 16 }]}
+              >
+                <Text style={styles.modalSaveText}>বন্ধ করুন</Text>
+              </Pressable>
+            )}
           </View>
         </View>
       </Modal>
@@ -852,5 +828,81 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 13,
     fontWeight: '700',
+  },
+  qbCard: {
+    width: '100%',
+  },
+  qbHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  qbTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0F172A',
+  },
+  qbCloseBtn: {
+    padding: 4,
+  },
+  qbCloseText: {
+    fontSize: 18,
+    color: '#94A3B8',
+    fontWeight: '700',
+  },
+  qbInputWrap: {
+    marginBottom: 16,
+  },
+  qbInputLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#334155',
+    marginBottom: 8,
+  },
+  qbBigInput: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#0F172A',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 20,
+    fontWeight: '900',
+    color: '#0F172A',
+  },
+  qbResultBox: {
+    backgroundColor: '#F0F6FD',
+    borderWidth: 1,
+    borderColor: '#DBEAFE',
+    borderRadius: 16,
+    padding: 16,
+    gap: 8,
+    marginBottom: 18,
+  },
+  qbResultText: {
+    fontSize: 13.5,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  qbBold: {
+    fontWeight: '900',
+  },
+  qbSubmitBtn: {
+    backgroundColor: '#1E3A8A',
+    borderRadius: 16,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#1E3A8A',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  qbSubmitBtnText: {
+    fontSize: 14.5,
+    fontWeight: '800',
+    color: '#FFFFFF',
   },
 });
