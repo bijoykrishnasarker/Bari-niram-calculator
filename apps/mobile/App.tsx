@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { AuthProvider, useAuth } from './src/auth/AuthContext';
+import { Logo } from './src/components/Logo';
 import { apiRequest } from './src/lib/api';
 import { AccountScreen } from './src/screens/AccountScreen';
 import { CalculatorScreen } from './src/screens/CalculatorScreen';
@@ -111,7 +112,7 @@ function MainApp() {
       {/* Brand Bar */}
       <View style={styles.brandBar}>
         <Pressable onPress={() => setTab('home')}>
-          <Text style={styles.brand}>HomeXBD</Text>
+          <Logo size="small" />
         </Pressable>
 
         <View style={styles.brandActions}>

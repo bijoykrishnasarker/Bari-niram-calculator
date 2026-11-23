@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import { useAuth } from '../auth/AuthContext';
+import { Logo } from '../components/Logo';
 import { errorMessage } from '../lib/format';
 
 type AuthMode = 'signin' | 'signup' | 'forgot';
@@ -165,18 +166,7 @@ export function AuthScreen({
 
         {/* Brand Icon & Name */}
         <View style={styles.brandContainer}>
-          <View style={styles.logoBox}>
-            {/* Architectural House / Building Outline Icon */}
-            <View style={styles.iconBuildingOutline}>
-              <View style={styles.roofShape} />
-              <View style={styles.houseBody}>
-                <View style={styles.houseDoor} />
-                <View style={styles.housePillar} />
-              </View>
-            </View>
-          </View>
-
-          <Text style={styles.brandTitle}>HomeXBD</Text>
+          <Logo size="large" showSubtitle={false} />
           <Text style={styles.brandSubtitle}>
             {mode === 'signup'
               ? 'নতুন অ্যাকাউন্ট খুলে আপনার বাড়ি নির্মাণের হিসাব সেভ রাখুন'

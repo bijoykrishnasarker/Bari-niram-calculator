@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeXBD বাড়ি নির্মাণ খরচ ক্যালকুলেটর</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .grid-pattern {
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-200 flex items-center justify-center min-h-screen p-4 select-none">
+
+  <!-- Mobile Frame -->
+  <div class="w-full max-w-sm bg-[#F8FAFC] rounded-[40px] shadow-2xl border-4 border-slate-800 overflow-hidden flex flex-col h-[780px] relative">
+    
+    <!-- Top Brand Header Bar -->
+    <div class="bg-white px-5 pt-3.5 pb-2.5 border-b border-[#D8E0DB] flex justify-between items-center z-10">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('home')">
+        <div class="w-8 h-8 rounded-lg bg-[#0F2E20] border border-[#10B981] flex items-center justify-center shadow-sm">
+          <svg class="w-5 h-5 text-[#10B981]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="flex items-center">
+          <span class="text-lg font-black text-[#0F2E20] tracking-tight">Home<span class="text-[#059669]">X</span></span>
+          <span class="bg-[#059669] text-white text-[10px] font-black px-1.5 py-0.5 rounded ml-1 tracking-wider">BD</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="planBadge" onclick="toggleDemoPremium()" class="cursor-pointer text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20 hover:scale-105 transition">
+          Free
+        </span>
+        <span onclick="openAuthModal()" class="cursor-pointer text-xs font-semibold text-[#607066] hover:text-[#1E3A8A]">
+          অ্যাকাউন্ট
+        </span>
+      </div>
+    </div>
+
+    <!-- Scrollable Screen Content -->
+    <div id="screenContainer" class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col">
+      
+      <!-- ================= 1. HOME SCREEN ================= -->
+      <div id="homeTab" class="p-4 space-y-4">
+        <div class="relative bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-3xl p-5 text-white shadow-lg overflow-hidden border border-blue-500/30">
+          <div class="absolute inset-0 grid-pattern pointer-events-none opacity-60"></div>
+          <div class="relative z-10 space-y-3">
+            <span class="inline-block bg-white/20 backdrop-blur-sm text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-md border border-white/25 text-blue-200 uppercase">
+              OFFLINE & INSTANT ENGINE
+            </span>
+            <h1 class="text-xl font-extrabold leading-tight tracking-tight">
+              ১ মিনিটে বাড়ির খরচ হিসাব করুন
+            </h1>
+            <p class="text-xs text-blue-100/90 leading-relaxed">
+              জমির মাপ ও তলা সংখ্যা দিয়ে তাৎক্ষণিক ম্যাটেরিয়াল ও বাজেট রিপোর্ট তৈরি করুন।
+            </p>
+            <button onclick="switchTab('calculator')" class="w-full bg-[#D97706] hover:bg-[#B45309] active:scale-[0.98] text-white font-extrabold py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm mt-1">
+              <span>হিসাব শুরু করুন</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 font-bold text-sm text-[#17221C]">
+              <span class="text-amber-600">📈</span>
+              <span>আজকের বাজারদর (Live Rates)</span>
+            </div>
+            <button onclick="alert('বাজারদর আপনার এলাকা অনুযায়ী যেকোনো সময় পরিবর্তনযোগ্য।')" class="text-xs font-bold text-[#1D4ED8] hover:underline">
+              দাম পরিবর্তন করুন
+            </button>
+          </div>
+          <div class="flex gap-2.5 overflow-x-auto no-scrollbar py-0.5">
+            <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
+              <div class="text-[11px] text-[#607066] font-medium">সিমেন্ট</div>
+              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳৫৫০</div>
+              <div class="text-[10px] text-[#607066]">/ব্যাগ</div>
+            </div>
+            <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
+              <div class="text-[11px] text-[#607066] font-medium">রড (500W)</div>
+              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳৯৫,০০০</div>
+              <div class="text-[10px] text-[#607066]">/টন</div>
+            </div>
+            <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
+              <div class="text-[11px] text-[#607066] font-medium">১ নং ইট</div>
+              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳১২</div>
+              <div class="text-[10px] text-[#607066]">/পিস</div>
+            </div>
+            <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
+              <div class="text-[11px] text-[#607066] font-medium">বালু (ভিটি)</div>
+              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳৪৫</div>
+              <div class="text-[10px] text-[#607066]">/সিএফটি</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="font-bold text-sm text-[#17221C]">কুইক মিনি-ক্যালকুলেটর</div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <div onclick="openMini('brick')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-amber-400 active:scale-[0.98] transition">
+              <div class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-lg mb-2">🧱</div>
+              <div class="text-sm font-extrabold text-[#17221C]">ইটের হিসাব</div>
+              <div class="text-[11px] text-[#607066] mt-0.5">ওয়াল ও গাঁথুনির ইট</div>
+            </div>
+            <div onclick="openMini('roof')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-amber-300 shadow-sm hover:border-amber-500 active:scale-[0.98] transition">
+              <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg mb-2">🏗️</div>
+              <div class="text-sm font-extrabold text-[#17221C]">ছাদ ঢালাই</div>
+              <div class="text-[11px] text-[#607066] mt-0.5">সিমেন্ট, বালু ও খোয়া</div>
+            </div>
+            <div onclick="openMini('plaster')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-green-400 active:scale-[0.98] transition">
+              <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg mb-2">🔨</div>
+              <div class="text-sm font-extrabold text-[#17221C]">প্লাস্টার হিসাব</div>
+              <div class="text-[11px] text-[#607066] mt-0.5">ওয়াল প্লাস্টারের মসলা</div>
+            </div>
+            <div onclick="openMini('paint')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-purple-400 active:scale-[0.98] transition">
+              <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-lg mb-2">🎨</div>
+              <div class="text-sm font-extrabold text-[#17221C]">রঙের হিসাব</div>
+              <div class="text-[11px] text-[#607066] mt-0.5">ইন্টেরিয়র ও এক্সটেরিয়র</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-sm text-[#17221C]">সাম্প্রতিক সেভ করা হিসাব</div>
+            <button onclick="switchTab('saved')" class="text-xs font-bold text-[#1D4ED8] hover:underline">সব দেখুন (১)</button>
+          </div>
+          <div onclick="switchTab('calculator')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-blue-400 transition">
+            <div class="flex justify-between items-center text-xs mb-1">
+              <span class="font-bold text-[#17221C]">আমার বাড়ি (২ তলা স্ট্যান্ডার্ড)</span>
+              <span class="text-[10px] text-[#607066]">আজকের সংরক্ষিত</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs text-[#607066]">২,০০০ বর্গফুট বিল্ট-আপ এলাকা</span>
+              <span class="text-sm font-extrabold text-[#0B7A4B]">৳ ৭০,০০,০০০</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 2. CALCULATOR TAB ================= -->
+      <div id="calculatorTab" class="hidden flex-1 flex flex-col">
+        <div class="bg-[#0F172A] p-4 text-white space-y-2.5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="text-base font-extrabold">বাড়ির খরচ ক্যালকুলেটর</h2>
+              <p id="calcSubtitle" class="text-[11px] text-slate-400 mt-0.5">ধাপ ১ / ৩ — সঠিক তথ্য দিন</p>
+            </div>
+            <span id="calcPercent" class="text-xs font-extrabold text-amber-400">৩৩%</span>
+          </div>
+
+          <div class="flex gap-1.5 h-1">
+            <div id="prog-1" class="flex-1 bg-[#EA580C] rounded-full"></div>
+            <div id="prog-2" class="flex-1 bg-slate-700 rounded-full"></div>
+            <div id="prog-3" class="flex-1 bg-slate-700 rounded-full"></div>
+          </div>
+
+          <div class="flex bg-slate-800/90 rounded-xl p-1 gap-1">
+            <button onclick="setCalcStep(1)" id="tab-step-1" class="flex-1 py-1 px-1 text-[11px] font-bold rounded-lg bg-white text-slate-900 shadow-sm transition">
+              ১. জমি ও কাঠামো
+            </button>
+            <button onclick="setCalcStep(2)" id="tab-step-2" class="flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition">
+              ২. নির্মাণের মান
+            </button>
+            <button onclick="setCalcStep(3)" id="tab-step-3" class="flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition">
+              ৩. বাজারদর
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 p-4 pb-28 space-y-3.5 overflow-y-auto no-scrollbar">
+          <!-- STEP 1 CONTENT -->
+          <div id="step1Content" class="space-y-3.5">
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-extrabold text-slate-900">জমির ক্ষেত্রফল (প্রতি ফ্লোর)</span>
+                <span id="calcConvertedBadge" class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">
+                  = ১২০০ বর্গফুট
+                </span>
+              </div>
+              <div class="flex bg-slate-100 rounded-xl p-1 gap-1">
+                <button onclick="setCalcUnit('sqft')" id="unit-sqft" class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-[#1E3A8A] text-white transition">বর্গফুট (Sq.ft)</button>
+                <button onclick="setCalcUnit('katha')" id="unit-katha" class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition">কাঠা (Katha)</button>
+                <button onclick="setCalcUnit('decimal')" id="unit-decimal" class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition">শতাংশ (Dec)</button>
+              </div>
+              <input id="calcAreaInput" type="number" value="1200" oninput="updateCalculation()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-xl font-black text-slate-900 focus:outline-none focus:border-blue-600" />
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <div class="text-xs font-extrabold text-slate-900">ফাউন্ডেশন (কয় তলা ভিত্তি)</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">ভবিষ্যতে সর্বোচ্চ যত তলা করবেন</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="changeFoundation(-1)" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 text-lg font-bold flex items-center justify-center hover:bg-slate-200">−</button>
+                <span id="foundVal" class="text-base font-black text-slate-900 w-5 text-center">৫</span>
+                <button onclick="changeFoundation(1)" class="w-9 h-9 rounded-xl bg-[#1E3A8A] text-white text-lg font-bold flex items-center justify-center hover:bg-blue-900">+</button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <div class="text-xs font-extrabold text-slate-900">এখন কয় তলা নির্মাণ করবেন?</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">বর্তমান বাজেটের জন্য তলা সংখ্যা</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="changeFloors(-1)" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 text-lg font-bold flex items-center justify-center hover:bg-slate-200">−</button>
+                <span id="floorsVal" class="text-base font-black text-slate-900 w-5 text-center">২</span>
+                <button onclick="changeFloors(1)" class="w-9 h-9 rounded-xl bg-[#1E3A8A] text-white text-lg font-bold flex items-center justify-center hover:bg-blue-900">+</button>
+              </div>
+            </div>
+
+            <button onclick="setCalcStep(2)" class="w-full bg-[#1E3A8A] hover:bg-blue-900 active:scale-[0.98] text-white font-extrabold py-3 px-4 rounded-xl shadow-md text-xs transition flex items-center justify-center gap-1.5">
+              <span>পরবর্তী ধাপ: নির্মাণের মান</span>
+              <span>→</span>
+            </button>
+          </div>
+
+          <!-- STEP 2 CONTENT -->
+          <div id="step2Content" class="hidden space-y-3.5">
+            <div class="text-xs font-bold text-slate-700">
+              আপনার বাজেট ও পছন্দ অনুযায়ী ফিনিশিংয়ের মান নির্বাচন করুন:
+            </div>
+
+            <div onclick="setQuality('economy')" id="card-economy" class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-sm font-extrabold text-slate-900">ইকোনমি (Economy)</span>
+                <div class="flex items-center gap-2.5">
+                  <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৳৩০০০ / বর্গফুট</span>
+                  <div id="radio-economy" class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center"></div>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">
+                সাধারণ মানের টাইলস, লোকাল ফিটিংস ও বেসিক ফিনিশিং
+              </p>
+            </div>
+
+            <div onclick="setQuality('standard')" id="card-standard" class="cursor-pointer bg-white rounded-2xl p-4 border-2 border-[#EA580C] shadow-md transition">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-sm font-extrabold text-slate-900">স্ট্যান্ডার্ড (Standard)</span>
+                <div class="flex items-center gap-2.5">
+                  <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৳৩৫০০ / বর্গফুট</span>
+                  <div id="radio-standard" class="w-5 h-5 rounded-full bg-[#EA580C] border-2 border-[#EA580C] flex items-center justify-center text-white text-[11px] font-black">✓</div>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">
+                ভালো মানের সিরামিক টাইলস, স্ট্যান্ডার্ড ফিটিংস ও প্লাস্টিক পেইন্ট
+              </p>
+            </div>
+
+            <div onclick="setQuality('premium')" id="card-premium" class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-sm font-extrabold text-slate-900">লাক্সারি (Luxury)</span>
+                <div class="flex items-center gap-2.5">
+                  <span class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-lg">৳৪৫০০ / বর্গফুট</span>
+                  <div id="radio-premium" class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center"></div>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">
+                প্রিমিয়াম মিরর পলিশ টাইলস, ব্র্যান্ডেড স্যানিটারি ও লাক্সারি ইন্টেরিয়র
+              </p>
+            </div>
+
+            <div class="flex gap-2.5 pt-1">
+              <button onclick="setCalcStep(1)" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-xs transition">
+                — পূর্ববর্তী
+              </button>
+              <button onclick="setCalcStep(3)" class="flex-[1.5] bg-[#1E3A8A] hover:bg-blue-900 text-white font-extrabold py-3 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-1.5">
+                <span>পরবর্তী: বাজারদর</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3 CONTENT -->
+          <div id="step3Content" class="hidden space-y-3.5">
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+              <div class="flex justify-between items-center pb-1 border-b border-slate-100">
+                <span class="text-xs font-extrabold text-slate-900">বর্তমান বাজারদর যাচাই করুন</span>
+                <button onclick="resetStep3Rates()" class="text-xs font-bold text-[#EA580C] hover:underline">
+                  ডিফল্ট রিসেট
+                </button>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-slate-800">১ নম্বর ইট (প্রতি পিস)</span>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-brick" type="number" value="12" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-slate-800">সিমেন্ট (প্রতি বস্তা)</span>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-cement" type="number" value="550" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-slate-800">রড 500W (প্রতি টন)</span>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-rod" type="number" value="95000" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-slate-800">বালু ও পাথর (প্রতি সিএফটি)</span>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-sand" type="number" value="50" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-slate-800">মিস্ত্রি খরচ (প্রতি বর্গফুট)</span>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-labor" type="number" value="350" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-2.5 pt-1">
+              <button onclick="setCalcStep(2)" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3.5 px-3 rounded-xl text-xs transition">
+                — পূর্ববর্তী
+              </button>
+              <button onclick="openDetailModal()" class="flex-[1.8] bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-2">
+                <span>মোট খরচ হিসাব করুন</span>
+                <span class="w-4 h-4 rounded-full border border-white flex items-center justify-center text-[10px]">✓</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 bg-[#0F172A] border-t border-slate-800 p-3.5 px-4 flex justify-between items-center z-20 shadow-2xl">
+          <div>
+            <div class="text-[11px] text-slate-400">আনুমানিক মোট বাজেট (সহিত)</div>
+            <div id="bottomBarTotal" class="text-base font-black text-amber-400 tracking-tight">৳ ৮৪,০০,০০০</div>
+          </div>
+          <button onclick="openDetailModal()" class="bg-[#1E293B] hover:bg-slate-700 border border-slate-600 text-white font-bold text-xs py-2 px-3.5 rounded-xl transition">
+            বিস্তারিত দেখুন →
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= 3. SAVED PROJECTS TAB ================= -->
+      <div id="savedTab" class="hidden flex-1 flex flex-col">
+        <div class="bg-[#0F172A] p-4 text-white space-y-2.5">
+          <div>
+            <h2 class="text-base font-extrabold">সেভ করা প্রজেক্টসমূহ</h2>
+            <p class="text-[11px] text-slate-400 mt-0.5">আপনার সংরক্ষিত বাড়ি নির্মাণের হিসাব ও রিপোর্ট</p>
+          </div>
+          <div class="flex items-center bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 gap-2">
+            <span class="text-xs text-slate-400">🔍</span>
+            <input id="savedSearchInput" oninput="filterSavedProjects()" placeholder="প্রজেক্টের নাম লিখুন..." class="bg-transparent text-xs text-white placeholder-slate-400 flex-1 focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="flex-1 p-4 space-y-3.5 overflow-y-auto no-scrollbar" id="savedProjectsList">
+          <div class="saved-item bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-sm font-extrabold text-slate-900 item-name">গ্রামের ডুপ্লেক্স বাড়ি - ২ তলা</h3>
+                <p class="text-[11px] text-slate-400 mt-0.5">০৩ নভেম্বর, ২০২৪</p>
+              </div>
+              <button onclick="deleteSavedItem(this)" class="text-slate-400 hover:text-red-500 text-sm p-1">🗑️</button>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">১৮০০ বর্গফুট</span>
+              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">২ তলা নির্মাণ</span>
+              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">Standard</span>
+            </div>
+            <div class="h-px bg-slate-100"></div>
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="text-[10px] text-slate-500">মোট খরচ</div>
+                <div class="text-base font-black text-slate-900 mt-0.5">৳ ৪৭,৯২,৮০০</div>
+              </div>
+              <button onclick="showProjectDetail('গ্রামের ডুপ্লেক্স বাড়ি - ২ তলা', '৳ ৪৭,৯২,৮০০')" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs py-2 px-3.5 rounded-xl transition">
+                বিস্তারিত দেখুন —
+              </button>
+            </div>
+          </div>
+
+          <div class="saved-item bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-sm font-extrabold text-slate-900 item-name">ঢাকা প্লট - ৫ তলা ফাউন্ডেশন</h3>
+                <p class="text-[11px] text-slate-400 mt-0.5">০২ নভেম্বর, ২০২৪</p>
+              </div>
+              <button onclick="deleteSavedItem(this)" class="text-slate-400 hover:text-red-500 text-sm p-1">🗑️</button>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">১২৫০ বর্গফুট</span>
+              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৩ তলা নির্মাণ</span>
+              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">Luxury</span>
+            </div>
+            <div class="h-px bg-slate-100"></div>
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="text-[10px] text-slate-500">মোট খরচ</div>
+                <div class="text-base font-black text-slate-900 mt-0.5">৳ ১,৩৫,৩১,৭৮০</div>
+              </div>
+              <button onclick="showProjectDetail('ঢাকা প্লট - ৫ তলা ফাউন্ডেশন', '৳ ১,৩৫,৩১,৭৮০')" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs py-2 px-3.5 rounded-xl transition">
+                বিস্তারিত দেখুন —
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 4. GUIDE TAB (Exact Replica of 6th Screenshot) ================= -->
+      <div id="guideTab" class="hidden flex-1 flex flex-col">
+        <!-- Dark Header -->
+        <div class="bg-[#0F172A] p-4 text-white space-y-1">
+          <h2 class="text-base font-extrabold">নির্মাণ গাইড ও ব্যবহারবিধি</h2>
+          <p class="text-[11px] text-slate-400 leading-tight">ইঞ্জিনিয়ারিং টিপস, খরচ কমানোর কৌশল ও ম্যাটেরিয়াল যাচাই গাইড</p>
+        </div>
+
+        <!-- Filter Chips Row -->
+        <div class="bg-white border-b border-slate-200 p-2.5">
+          <div class="flex gap-2 overflow-x-auto no-scrollbar">
+            <button onclick="filterGuideCategory('all')" id="gchip-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#1E3A8A] text-white">সবগুলো</button>
+            <button onclick="filterGuideCategory('rules')" id="gchip-rules" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">ব্যবহারবিধি</button>
+            <button onclick="filterGuideCategory('tips')" id="gchip-tips" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">খরচ কমানোর টিপস</button>
+            <button onclick="filterGuideCategory('materials')" id="gchip-materials" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">ম্যাটেরিয়াল যাচাই</button>
+          </div>
+        </div>
+
+        <!-- Guide Articles List (Exact Match 6th Screenshot) -->
+        <div class="flex-1 p-4 space-y-3.5 overflow-y-auto no-scrollbar" id="guideArticlesList">
+          
+          <!-- Card 1: ব্যবহারবিধি -->
+          <div class="guide-item gcat-rules bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ব্যবহারবিধি</span>
+              <span class="text-[11px] text-slate-400">২ মিনিট পাঠ</span>
+            </div>
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">১-মিনিট ক্যালকুলেটর ব্যবহারের সঠিক নিয়মাবলী</h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">কীভাবে জমির মাপ (কাঠা/শতাংশ/বর্গফুট) এবং ফাউন্ডেশন সেট করে নির্ভুল এস্টিমেট বের করবেন।</p>
+            <button onclick="openGuideReader('১-মিনিট ক্যালকুলেটর ব্যবহারের সঠিক নিয়মাবলী', 'ব্যবহারবিধি', '২ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+              <span>সম্পূর্ণ গাইড পড়ুন</span>
+              <span>→</span>
+            </button>
+          </div>
+
+          <!-- Card 2: খরচ কমানোর টিপস (Active Amber Border) -->
+          <div class="guide-item gcat-tips bg-white rounded-2xl p-4 border-2 border-[#F59E0B] shadow-md space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">খরচ কমানোর টিপস</span>
+              <span class="text-[11px] text-slate-400">৪ মিনিট পাঠ</span>
+            </div>
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">বাড়ি নির্মাণে খরচ কমানোর ১০টি কার্যকরী উপায় (Bonus Guide)</h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">কাঠামোর মজবুতি ঠিক রেখেও ১৫-২০% পর্যন্ত নির্মাণ খরচ সাশ্রয় করার ইন্টেলিজেন্ট কৌশল।</p>
+            <button onclick="openGuideReader('বাড়ি নির্মাণে খরচ কমানোর ১০টি কার্যকরী উপায়', 'খরচ কমানোর টিপস', '৪ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+              <span>সম্পূর্ণ গাইড পড়ুন</span>
+              <span>→</span>
+            </button>
+          </div>
+
+          <!-- Card 3: ম্যাটেরিয়াল যাচাই -->
+          <div class="guide-item gcat-materials bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ম্যাটেরিয়াল যাচাই</span>
+              <span class="text-[11px] text-slate-400">৩ মিনিট পাঠ</span>
+            </div>
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">ভালো মানের ইট, রড ও সিমেন্ট চেনার সহজ উপায়</h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">নির্মাণ সাইটে মালামাল নামানোর আগে যে পরীক্ষাগুলো অবশ্যই নিজে করে নেবেন।</p>
+            <button onclick="openGuideReader('ভালো মানের ইট, রড ও সিমেন্ট চেনার সহজ উপায়', 'ম্যাটেরিয়াল যাচাই', '৩ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+              <span>সম্পূর্ণ গাইড পড়ুন</span>
+              <span>→</span>
+            </button>
+          </div>
+
+          <!-- Card 4: ম্যাটেরিয়াল যাচাই 2 -->
+          <div class="guide-item gcat-materials bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ম্যাটেরিয়াল যাচাই</span>
+              <span class="text-[11px] text-slate-400">৩ মিনিট পাঠ</span>
+            </div>
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">ফাউন্ডেশন ও ছাদ ঢালাইয়ের গুরুত্বপূর্ণ সতর্কতা</h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">ছাদ ঢালাই ও কিউরিংয়ের সময় সামান্য ভুলের কারণে ভবিষ্যতে ছাদ চুঁইয়ে পানি পড়তে পারে।</p>
+            <button onclick="openGuideReader('ফাউন্ডেশন ও ছাদ ঢালাইয়ের গুরুত্বপূর্ণ সতর্কতা', 'ম্যাটেরিয়াল যাচাই', '৩ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+              <span>সম্পূর্ণ গাইড পড়ুন</span>
+              <span>→</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar (Exact Replica) -->
+    <div class="bg-white border-t border-[#D8E0DB] px-3 py-2 flex justify-around items-center z-10">
+      <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+        <span class="text-[11px] font-extrabold mt-0.5">হোম</span>
+        <div class="w-4 h-0.5 bg-[#1E3A8A] rounded-full mt-0.5"></div>
+      </button>
+
+      <button onclick="switchTab('calculator')" id="nav-calculator" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        <span class="text-[11px] font-semibold mt-0.5">ক্যালকুলেটর</span>
+      </button>
+
+      <button onclick="switchTab('saved')" id="nav-saved" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+        <span class="text-[11px] font-semibold mt-0.5">সেভড</span>
+      </button>
+
+      <button onclick="switchTab('guide')" id="nav-guide" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="text-[11px] font-semibold mt-0.5">গাইড</span>
+      </button>
+    </div>
+
+    <!-- Detailed Modal -->
+    <div id="detailModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end">
+      <div class="bg-white rounded-t-3xl p-5 w-full max-h-[85%] overflow-y-auto space-y-3 shadow-2xl">
+        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+          <span id="detailModalProjectTitle" class="text-sm font-extrabold text-slate-900">খরচের বিস্তারিত হিসাব</span>
+          <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+        </div>
+        <div class="bg-slate-900 text-white p-4 rounded-2xl text-center">
+          <div class="text-[10px] text-slate-400 uppercase tracking-widest">মোট আনুমানিক খরচ</div>
+          <div id="modalTotal" class="text-2xl font-black text-amber-400 mt-0.5">৳ ৮৪,০০,০০০</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
+          <div class="flex justify-between"><span class="text-slate-600">স্ট্রাকচার (৫০%):</span><span id="mStruct" class="font-bold">৳ ৪২,০০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">ফিনিশিং (৩০%):</span><span id="mFinish" class="font-bold">৳ ২৫,২০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">ইলেক্ট্রিক্যাল (১০%):</span><span id="mElec" class="font-bold">৳ ৮,৪০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">প্লাম্বিং (১০%):</span><span id="mPlumb" class="font-bold">৳ ৮,৪০,০০০</span></div>
+          <div class="flex justify-between text-green-700 font-bold border-t border-slate-200 pt-1"><span>সম্ভাব্য সাশ্রয় (১০%):</span><span id="mSave">৳ ৮,৪০,০০০</span></div>
+        </div>
+        <button onclick="closeDetailModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
+          বন্ধ করুন
+        </button>
+      </div>
+    </div>
+
+    <!-- Guide Reader Modal -->
+    <div id="guideReaderModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end">
+      <div class="bg-white rounded-t-3xl p-5 w-full max-h-[85%] overflow-y-auto space-y-3 shadow-2xl">
+        <div class="flex justify-between items-start pb-2 border-b border-slate-100">
+          <div>
+            <span id="readerCatBadge" class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">গাইড</span>
+            <h3 id="readerTitle" class="text-sm font-extrabold text-slate-900 mt-1">গাইড শিরোনাম</h3>
+          </div>
+          <button onclick="closeGuideReader()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+        </div>
+        <div id="readerContent" class="text-xs text-slate-700 space-y-2 leading-relaxed">
+        </div>
+        <button onclick="closeGuideReader()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
+          বন্ধ করুন
+        </button>
+      </div>
+    </div>
+
+    <!-- Login / Auth Modal (Exact replica of user's uploaded image) -->
+    <div id="authModal" class="hidden absolute inset-0 bg-[#F8FAF9] z-50 flex flex-col p-6 overflow-y-auto">
+      <!-- Top Nav: Close & Lang -->
+      <div class="flex justify-between items-center mb-2">
+        <button onclick="closeAuthModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center hover:bg-slate-300">✕</button>
+        <div class="flex items-center bg-[#E2E8F0] p-0.5 rounded-full">
+          <span class="text-[11px] font-bold text-white bg-[#0D5C3A] px-2.5 py-0.5 rounded-full">বাংলা</span>
+          <span class="text-[11px] font-semibold text-slate-500 px-2.5 py-0.5 cursor-pointer">EN</span>
+        </div>
+      </div>
+
+      <!-- Brand Box & Decor -->
+      <div class="relative flex flex-col items-center mt-3 mb-6">
+        <div class="w-20 h-20 bg-gradient-to-tr from-[#0F2E20] via-[#064E3B] to-[#10B981] rounded-3xl flex items-center justify-center shadow-xl shadow-emerald-900/30 mb-3 border-2 border-emerald-400/40 transform hover:scale-105 transition">
+          <svg class="w-11 h-11 text-emerald-300 drop-shadow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9.5L12 3l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z"/>
+            <path d="M9 22V12h6v10" stroke="#FFFFFF" stroke-width="2.5"/>
+            <path d="M12 7v2" stroke="#10B981" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="flex items-center">
+          <span class="text-2xl font-black text-[#0F2E20] tracking-tight">Home<span class="text-[#059669]">X</span></span>
+          <span class="bg-[#059669] text-white text-xs font-black px-2 py-0.5 rounded-md ml-1.5 tracking-wider shadow-sm">BD</span>
+        </div>
+        <p class="text-[11px] font-semibold text-emerald-800/80 mt-0.5 tracking-wide">স্মার্ট বাড়ি নির্মাণ ও হিসাব গাইড</p>
+        <p id="authSubtitle" class="text-xs text-slate-500 text-center mt-1.5">বাড়ি নির্মাণের হিসাব সংরক্ষণ করতে লগইন করুন</p>
+      </div>
+
+      <!-- Segmented Tab: লগইন | নতুন অ্যাকাউন্ট -->
+      <div class="flex bg-[#E2E8F0] p-1 rounded-full mb-5">
+        <button id="authTabLogin" onclick="setAuthMode('login')" class="flex-1 py-2 rounded-full text-xs font-bold bg-[#0D5C3A] text-white shadow-sm transition">
+          লগইন
+        </button>
+        <button id="authTabRegister" onclick="setAuthMode('register')" class="flex-1 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+          নতুন অ্যাকাউন্ট
+        </button>
+      </div>
+
+      <!-- Inputs -->
+      <div class="space-y-3">
+        <!-- Email -->
+        <div class="flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
+          <span class="text-slate-400 mr-2 text-sm">✉</span>
+          <input id="authEmailInput" type="email" placeholder="ইমেইল ঠিকানা" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+        </div>
+
+        <!-- Password -->
+        <div class="flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
+          <span class="text-slate-400 mr-2 text-sm">🔒</span>
+          <input id="authPassInput" type="password" placeholder="পাসওয়ার্ড" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+          <button type="button" onclick="toggleAuthPassVisibility()" class="text-slate-400 hover:text-slate-600 text-xs">👁️</button>
+        </div>
+
+        <!-- Confirm Password (hidden by default) -->
+        <div id="authConfirmPassWrap" class="hidden flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
+          <span class="text-slate-400 mr-2 text-sm">🔒</span>
+          <input id="authConfirmPassInput" type="password" placeholder="পাসওয়ার্ড নিশ্চিত করুন" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+        </div>
+
+        <!-- Forgot Password link -->
+        <div id="authForgotWrap" class="flex justify-end">
+          <button onclick="alert('আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠানো হবে।')" class="text-xs font-bold text-[#0D5C3A] hover:underline">
+            পাসওয়ার্ড ভুলে গেছেন?
+          </button>
+        </div>
+
+        <!-- Main Action Button -->
+        <button id="authSubmitBtn" onclick="handleAuthSubmit()" class="w-full bg-[#0D5C3A] hover:bg-[#0a462c] active:scale-[0.99] text-white font-extrabold text-sm py-3 rounded-full shadow-lg shadow-[#0D5C3A]/25 transition mt-2">
+          লগইন করুন
+        </button>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 my-2">
+          <div class="flex-1 h-px bg-slate-200"></div>
+          <span class="text-[11px] font-semibold text-slate-400">অথবা</span>
+          <div class="flex-1 h-px bg-slate-200"></div>
+        </div>
+
+        <!-- Google Login -->
+        <button onclick="alert('Google সাইন ইন: Supabase OAuth কনফিগারেশন সক্রিয় করার পর এটি কাজ করবে।')" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2.5 rounded-full flex items-center justify-center gap-2 shadow-xs transition">
+          <span class="font-black text-blue-500 text-sm">G</span>
+          <span>Google দিয়ে লগইন করুন</span>
+        </button>
+      </div>
+
+      <!-- Footer Tagline -->
+      <div class="mt-auto pt-6 text-center">
+        <p class="text-[11px] font-medium text-slate-400">এক ইমেইল · এক ডিভাইস · নিরাপদ লগইন</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let calcUnit = 'sqft';
+    let calcQuality = 'standard';
+    let calcLoc = 'other';
+    let foundationFloors = 5;
+    let constructionFloors = 2;
+
+    const baseRates = { economy: 3000, standard: 3500, premium: 4500 };
+    const locMultipliers = { dhaka: 1.10, chattogram: 1.05, other: 1.00 };
+
+    function switchTab(tab) {
+      ['home', 'calculator', 'saved', 'guide'].forEach(t => {
+        document.getElementById(t + 'Tab').classList.add('hidden');
+        const btn = document.getElementById('nav-' + t);
+        btn.className = 'flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]';
+        const ind = btn.querySelector('div');
+        if (ind) ind.remove();
+        btn.querySelector('span').className = 'text-[11px] font-semibold mt-0.5';
+      });
+
+      document.getElementById(tab + 'Tab').classList.remove('hidden');
+      const activeBtn = document.getElementById('nav-' + tab);
+      activeBtn.className = 'flex flex-col items-center py-1 px-3 rounded-lg text-[#1E3A8A]';
+      activeBtn.querySelector('span').className = 'text-[11px] font-extrabold mt-0.5';
+      const ind = document.createElement('div');
+      ind.className = 'w-4 h-0.5 bg-[#1E3A8A] rounded-full mt-0.5';
+      activeBtn.appendChild(ind);
+    }
+
+    function setCalcStep(step) {
+      ['1', '2', '3'].forEach(s => {
+        document.getElementById('step' + s + 'Content').classList.add('hidden');
+        document.getElementById('tab-step-' + s).className = 'flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition';
+        document.getElementById('prog-' + s).className = 'flex-1 bg-slate-700 rounded-full';
+      });
+
+      document.getElementById('step' + step + 'Content').classList.remove('hidden');
+      document.getElementById('tab-step-' + step).className = 'flex-1 py-1 px-1 text-[11px] font-bold rounded-lg bg-white text-slate-900 shadow-sm transition';
+
+      for (let i = 1; i <= step; i++) {
+        document.getElementById('prog-' + i).className = 'flex-1 bg-[#EA580C] rounded-full';
+      }
+
+      const subtitles = {
+        1: 'ধাপ ১ / ৩ — সঠিক তথ্য দিন',
+        2: 'ধাপ ২ / ৩ — সঠিক তথ্য দিন',
+        3: 'ধাপ ৩ / ৩ — সঠিক তথ্য দিন'
+      };
+      const percents = { 1: '৩৩%', 2: '৬৬%', 3: '১০০%' };
+      document.getElementById('calcSubtitle').innerText = subtitles[step];
+      document.getElementById('calcPercent').innerText = percents[step];
+    }
+
+    function resetStep3Rates() {
+      document.getElementById('r-brick').value = 12;
+      document.getElementById('r-cement').value = 550;
+      document.getElementById('r-rod').value = 95000;
+      document.getElementById('r-sand').value = 50;
+      document.getElementById('r-labor').value = 350;
+    }
+
+    function setCalcUnit(unit) {
+      calcUnit = unit;
+      ['sqft', 'katha', 'decimal'].forEach(u => {
+        const btn = document.getElementById('unit-' + u);
+        if (u === unit) {
+          btn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg bg-[#1E3A8A] text-white transition';
+        } else {
+          btn.className = 'flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition';
+        }
+      });
+      updateCalculation();
+    }
+
+    function changeFoundation(delta) {
+      foundationFloors = Math.max(1, Math.min(20, foundationFloors + delta));
+      document.getElementById('foundVal').innerText = foundationFloors.toLocaleString('bn-BD');
+      if (constructionFloors > foundationFloors) {
+        constructionFloors = foundationFloors;
+        document.getElementById('floorsVal').innerText = constructionFloors.toLocaleString('bn-BD');
+      }
+      updateCalculation();
+    }
+
+    function changeFloors(delta) {
+      constructionFloors = Math.max(1, Math.min(foundationFloors, constructionFloors + delta));
+      document.getElementById('floorsVal').innerText = constructionFloors.toLocaleString('bn-BD');
+      updateCalculation();
+    }
+
+    function setQuality(q) {
+      calcQuality = q;
+      ['economy', 'standard', 'premium'].forEach(k => {
+        const card = document.getElementById('card-' + k);
+        const radio = document.getElementById('radio-' + k);
+        if (k === q) {
+          card.className = 'cursor-pointer bg-white rounded-2xl p-4 border-2 border-[#EA580C] shadow-md transition';
+          radio.className = 'w-5 h-5 rounded-full bg-[#EA580C] border-2 border-[#EA580C] flex items-center justify-center text-white text-[11px] font-black';
+          radio.innerHTML = '✓';
+        } else {
+          card.className = 'cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition';
+          radio.className = 'w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center';
+          radio.innerHTML = '';
+        }
+      });
+      updateCalculation();
+    }
+
+    function updateCalculation() {
+      const inputVal = parseFloat(document.getElementById('calcAreaInput').value) || 0;
+      let sqFt = inputVal;
+      if (calcUnit === 'katha') sqFt = Math.round(inputVal * 720);
+      if (calcUnit === 'decimal') sqFt = Math.round(inputVal * 435.6);
+
+      document.getElementById('calcConvertedBadge').innerText = '= ' + sqFt.toLocaleString('bn-BD') + ' বর্গফুট';
+
+      const baseRate = baseRates[calcQuality];
+      const mult = locMultipliers[calcLoc];
+      const effectiveRate = Math.round(baseRate * mult);
+      const totalBuiltUp = Math.round(sqFt * constructionFloors);
+      const totalCost = Math.round(totalBuiltUp * effectiveRate);
+
+      const minCost = Math.round(totalBuiltUp * 3000);
+      const maxCost = Math.round(totalBuiltUp * 4500);
+
+      const formattedTotal = '৳ ' + totalCost.toLocaleString('bn-BD');
+      document.getElementById('bottomBarTotal').innerText = formattedTotal;
+      document.getElementById('modalTotal').innerText = formattedTotal;
+
+      document.getElementById('mStruct').innerText = '৳ ' + Math.round(totalCost * 0.5).toLocaleString('bn-BD');
+      document.getElementById('mFinish').innerText = '৳ ' + Math.round(totalCost * 0.3).toLocaleString('bn-BD');
+      document.getElementById('mElec').innerText = '৳ ' + Math.round(totalCost * 0.1).toLocaleString('bn-BD');
+      document.getElementById('mPlumb').innerText = '৳ ' + Math.round(totalCost * 0.1).toLocaleString('bn-BD');
+      document.getElementById('mSave').innerText = '৳ ' + Math.round(totalCost * 0.1).toLocaleString('bn-BD');
+    }
+
+    function filterSavedProjects() {
+      const query = document.getElementById('savedSearchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.saved-item');
+      items.forEach(el => {
+        const name = el.querySelector('.item-name').innerText.toLowerCase();
+        if (name.includes(query)) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    }
+
+    function deleteSavedItem(btn) {
+      const card = btn.closest('.saved-item');
+      if (card) {
+        card.remove();
+      }
+    }
+
+    function showProjectDetail(title, cost) {
+      document.getElementById('detailModalProjectTitle').innerText = title;
+      document.getElementById('modalTotal').innerText = cost;
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function openDetailModal() {
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    function filterGuideCategory(cat) {
+      ['all', 'rules', 'tips', 'materials'].forEach(c => {
+        const chip = document.getElementById('gchip-' + c);
+        if (c === cat) {
+          chip.className = 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#1E3A8A] text-white';
+        } else {
+          chip.className = 'px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600';
+        }
+      });
+
+      const items = document.querySelectorAll('.guide-item');
+      items.forEach(el => {
+        if (cat === 'all' || el.classList.contains('gcat-' + cat)) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    }
+
+    function openGuideReader(title, cat, time) {
+      document.getElementById('readerCatBadge').innerText = cat + ' • ' + time;
+      document.getElementById('readerTitle').innerText = title;
+      
+      let html = '';
+      if (title.includes('১০টি কার্যকরী উপায়')) {
+        html = `
+          <p class="font-bold text-slate-800">Bonus Guide থেকে মূল ১০টি নিয়মাবলী:</p>
+          <p>১. পরিকল্পনা ও ডিজাইন চূড়ান্ত করুন—মাঝপথে পরিবর্তন খরচ বাড়ায়।</p>
+          <p>২. সহজ জ্যামিতি বেছে নিন—আয়তাকার প্ল্যানে কলাম বিমের খরচ কমে।</p>
+          <p>৩. শুকনো মৌসুমে কাজ করুন—বর্ষার জটিলতা পরিহার করুন।</p>
+          <p>৪. বাজেট ট্র্যাক করুন ও অপ্রয়োজনীয় অলংকরণ বাদ দিন।</p>
+          <p>৫. স্ট্রাকচারে কোনো আপস না করে লোকাল ভালো উপাদান ব্যবহার করুন।</p>
+          <p>৬. অভিজ্ঞ টিম নিয়োগ করুন যাতে ভুল কাজের অপচয় না হয়।</p>
+          <p>৭. পাইকারি মালামাল কিনে পরিবহন ও দরে বড় সাশ্রয় নিন।</p>
+          <p>৮. ভবিষ্যৎ তলার জন্য শুরুতেই ইঞ্জিনিয়ার দিয়ে ভিত্তি নিশ্চিত করুন।</p>
+          <p>৯. ফিনিশিং ধাপে ধাপে করুন।</p>
+          <p>১০. প্লাস্টারের আগেই পাইপ ও ক্যাবল ডাক্ট বসিয়ে নিন।</p>
+        `;
+      } else if (title.includes('ক্যালকুলেটর')) {
+        html = `
+          <p class="font-bold text-slate-800">ব্যবহারবিধি গাইড:</p>
+          <p>• প্রতি ফ্লোরের সঠিক আয়তন ইনপুট দিন (বর্গফুট / কাঠা / শতাংশ)।</p>
+          <p>• ফাউন্ডেশন তলা সংখ্যা ও বর্তমান নির্মাণ তলা সংখ্যা আলাদা রাখুন।</p>
+          <p>• আপনার এলাকার রেট নিশ্চিত করুন (ঢাকা ১০% ও চট্টগ্রাম ৫% বেশি)।</p>
+        `;
+      } else {
+        html = `
+          <p class="font-bold text-slate-800">ম্যাটেরিয়াল যাচাই টিপস:</p>
+          <p>• রড: গায়ে 500W গ্রেড ও ব্র্যান্ড লেখা থাকতে হবে। ১৮০ ডিগ্রি বাঁকালে ফাটবে না।</p>
+          <p>• ইট: দুটি ইট বাড়ি দিলে ঘণ্টার মতো টিন-টিন শব্দ হবে।</p>
+          <p>• সিমেন্ট: হাত দিলে ঠান্ডা অনুভূতি হবে, কোনো জমাট দানা থাকবে না।</p>
+        `;
+      }
+      document.getElementById('readerContent').innerHTML = html;
+      document.getElementById('guideReaderModal').classList.remove('hidden');
+    }
+
+    function closeGuideReader() {
+      document.getElementById('guideReaderModal').classList.add('hidden');
+    }
+
+    function openAuthModal() {
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.add('hidden');
+    }
+
+    let authCurrentMode = 'login';
+    function setAuthMode(mode) {
+      authCurrentMode = mode;
+      const tabLogin = document.getElementById('authTabLogin');
+      const tabRegister = document.getElementById('authTabRegister');
+      const confirmWrap = document.getElementById('authConfirmPassWrap');
+      const forgotWrap = document.getElementById('authForgotWrap');
+      const submitBtn = document.getElementById('authSubmitBtn');
+      const subtitle = document.getElementById('authSubtitle');
+
+      if (mode === 'login') {
+        tabLogin.className = 'flex-1 py-2 rounded-full text-xs font-bold bg-[#0D5C3A] text-white shadow-sm transition';
+        tabRegister.className = 'flex-1 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        confirmWrap.classList.add('hidden');
+        forgotWrap.classList.remove('hidden');
+        submitBtn.innerText = 'লগইন করুন';
+        subtitle.innerText = 'বাড়ি নির্মাণের হিসাব সংরক্ষণ করতে লগইন করুন';
+      } else {
+        tabRegister.className = 'flex-1 py-2 rounded-full text-xs font-bold bg-[#0D5C3A] text-white shadow-sm transition';
+        tabLogin.className = 'flex-1 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        confirmWrap.classList.remove('hidden');
+        forgotWrap.classList.add('hidden');
+        submitBtn.innerText = 'অ্যাকাউন্ট তৈরি করুন';
+        subtitle.innerText = 'নতুন অ্যাকাউন্ট খুলে আপনার বাড়ি নির্মাণের হিসাব সেভ রাখুন';
+      }
+    }
+
+    let authPassVisible = false;
+    function toggleAuthPassVisibility() {
+      authPassVisible = !authPassVisible;
+      document.getElementById('authPassInput').type = authPassVisible ? 'text' : 'password';
+    }
+
+    function handleAuthSubmit() {
+      const email = document.getElementById('authEmailInput').value;
+      if (!email) {
+        alert('অনুগ্রহ করে ইমেইল ঠিকানা দিন।');
+        return;
+      }
+      if (authCurrentMode === 'login') {
+        alert(`সফলভাবে লগইন হয়েছে: ${email}`);
+        closeAuthModal();
+      } else {
+        alert(`ভেরিফিকেশন লিংক পাঠানো হয়েছে: ${email} এ।`);
+        closeAuthModal();
+      }
+    }
+
+    updateCalculation();
+  </script>
+</body>
+</html>
