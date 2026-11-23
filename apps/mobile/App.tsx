@@ -14,6 +14,7 @@ import { AuthProvider, useAuth } from './src/auth/AuthContext';
 import { Logo } from './src/components/Logo';
 import { apiRequest } from './src/lib/api';
 import { AccountScreen } from './src/screens/AccountScreen';
+import { AuthScreen } from './src/screens/AuthScreen';
 import { CalculatorScreen } from './src/screens/CalculatorScreen';
 import { GuideScreen } from './src/screens/GuideScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
@@ -102,6 +103,16 @@ function MainApp() {
       <View style={styles.loading}>
         <ActivityIndicator color={colors.green} size="large" />
       </View>
+    );
+  }
+
+  // 1st screen: Always show Login page if user is not signed in
+  if (!auth.session) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="dark-content" />
+        <AuthScreen />
+      </SafeAreaView>
     );
   }
 

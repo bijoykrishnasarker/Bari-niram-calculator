@@ -553,11 +553,13 @@
       </div>
     </div>
 
-    <!-- Login / Auth Modal (Exact replica of user's uploaded image) -->
-    <div id="authModal" class="hidden absolute inset-0 bg-[#F8FAF9] z-50 flex flex-col p-6 overflow-y-auto">
-      <!-- Top Nav: Close & Lang -->
+    <!-- Login / Auth Screen (Shown 1st by default) -->
+    <div id="authModal" class="absolute inset-0 bg-[#F8FAF9] z-50 flex flex-col p-6 overflow-y-auto">
+      <!-- Top Nav: Skip & Lang -->
       <div class="flex justify-between items-center mb-2">
-        <button onclick="closeAuthModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center hover:bg-slate-300">✕</button>
+        <button onclick="skipToHome()" class="text-xs font-bold text-slate-600 hover:text-emerald-800 bg-slate-200/80 hover:bg-emerald-50 px-3 py-1.5 rounded-full flex items-center gap-1 transition">
+          গেস্ট হিসেবে দেখুন ➔
+        </button>
         <div class="flex items-center bg-[#E2E8F0] p-0.5 rounded-full">
           <span class="text-[11px] font-bold text-white bg-[#0D5C3A] px-2.5 py-0.5 rounded-full">বাংলা</span>
           <span class="text-[11px] font-semibold text-slate-500 px-2.5 py-0.5 cursor-pointer">EN</span>
@@ -919,19 +921,24 @@
       document.getElementById('authPassInput').type = authPassVisible ? 'text' : 'password';
     }
 
+    function skipToHome() {
+      document.getElementById('authModal').classList.add('hidden');
+      switchTab('home');
+    }
+
     function handleAuthSubmit() {
       const email = document.getElementById('authEmailInput').value;
       if (!email) {
-        alert('অনুগ্রহ করে ইমেইল ঠিকানা দিন।');
+        alert('অনুগ্রহ করে ইমেইল ঠিকানা দিন (অথবা উপরে "গেস্ট হিসেবে দেখুন" বাটনে ক্লিক করুন)।');
         return;
       }
       if (authCurrentMode === 'login') {
-        alert(`সফলভাবে লগইন হয়েছে: ${email}`);
-        closeAuthModal();
+        alert(`সফলভাবে লগইন হয়েছে! স্বাগতম ${email}`);
       } else {
-        alert(`ভেরিফিকেশন লিংক পাঠানো হয়েছে: ${email} এ।`);
-        closeAuthModal();
+        alert(`নতুন অ্যাকাউন্ট তৈরি হয়েছে এবং ভেরিফিকেশন পাঠানো হয়েছে: ${email}`);
       }
+      document.getElementById('authModal').classList.add('hidden');
+      switchTab('home');
     }
 
     updateCalculation();
