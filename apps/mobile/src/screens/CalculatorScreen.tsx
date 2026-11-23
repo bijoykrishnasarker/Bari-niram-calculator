@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   calculateHouseCost,
   CalculatorInputSchema,
@@ -88,25 +89,64 @@ export function CalculatorScreen({
   }, [equivalentSqFt, constructionFloors, constructionType, location]);
 
   async function saveProject() {
-    if (!premium || !signedIn) {
-      openPremium();
-      return;
-    }
-    const input = CalculatorInputSchema.parse({
-      floorAreaSqFt: equivalentSqFt,
-      floors: constructionFloors,
-      constructionType,
-      location,
-    });
+    if (!result) return;
     setBusy(true);
     setMessage(null);
+
+    const newProject = {
+      id: `proj-${Date.now()}`,
+      name: projectName.trim() || 'আমার বাড়ি প্রজেক্ট',
+      date: new Date().toLocaleDateString('bn-BD', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }),
+      floorAreaSqFt: equivalentSqFt,
+      floors: constructionFloors,
+      quality:
+        constructionType === 'economy'
+          ? 'Economy'
+          : constructionType === 'premium'
+            ? 'Luxury'
+            : 'Standard',
+      location,
+      totalCost: result.totalCost,
+      breakdown: {
+        structure: result.breakdown.structure,
+        finishing: result.breakdown.finishing,
+        electrical: result.breakdown.electrical,
+        plumbing: result.breakdown.plumbing,
+        potentialSavings: result.potentialSavings,
+      },
+    };
+
     try {
-      await apiRequest('/v1/projects', {
-        authenticated: true,
-        body: JSON.stringify({ name: projectName, input }),
-        method: 'POST',
-      });
-      setMessage('প্রজেক্টটি সফলভাবে ক্লাউডে সেভ হয়েছে।');
+      // 1. Always save locally first so user sees it in Saved Projects
+      const stored = await AsyncStorage.getItem('@homexbd_saved_projects_v2');
+      const existing = stored ? JSON.parse(stored) : [];
+      await AsyncStorage.setItem(
+        '@homexbd_saved_projects_v2',
+        JSON.stringify([newProject, ...existing]),
+      );
+
+      // 2. If signed in, sync to cloud API
+      if (signedIn) {
+        const input = CalculatorInputSchema.parse({
+          floorAreaSqFt: equivalentSqFt,
+          floors: constructionFloors,
+          constructionType,
+          location,
+        });
+        await apiRequest('/v1/projects', {
+          authenticated: true,
+          body: JSON.stringify({ name: projectName, input }),
+          method: 'POST',
+        }).catch(() => {
+          // Cloud sync optional
+        });
+      }
+
+      setMessage('✅ প্রজেক্টটি সফলভাবে সেভ হয়েছে! "সেভড" ট্যাবে দেখতে পাবেন।');
     } catch (caught) {
       setMessage(errorMessage(caught));
     } finally {

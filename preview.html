@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HomeXBD বাড়ি নির্মাণ খরচ ক্যালকুলেটর</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
     .grid-pattern {
@@ -36,10 +37,10 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span id="planBadge" onclick="toggleDemoPremium()" class="cursor-pointer text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20 hover:scale-105 transition">
+        <span id="planBadge" class="cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
           Free
         </span>
-        <span onclick="openAuthModal()" class="cursor-pointer text-xs font-semibold text-[#607066] hover:text-[#1E3A8A]">
+        <span id="navUserLabel" onclick="handleNavAccountClick()" class="cursor-pointer text-xs font-semibold text-[#607066] hover:text-[#0F2E20] bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-full transition">
           অ্যাকাউন্ট
         </span>
       </div>
@@ -529,9 +530,14 @@
           <div class="flex justify-between"><span class="text-slate-600">প্লাম্বিং (১০%):</span><span id="mPlumb" class="font-bold">৳ ৮,৪০,০০০</span></div>
           <div class="flex justify-between text-green-700 font-bold border-t border-slate-200 pt-1"><span>সম্ভাব্য সাশ্রয় (১০%):</span><span id="mSave">৳ ৮,৪০,০০০</span></div>
         </div>
-        <button onclick="closeDetailModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
-          বন্ধ করুন
-        </button>
+        <div class="flex gap-2 pt-1">
+          <button onclick="saveCurrentProjectFromModal()" class="flex-1 bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white text-xs font-bold py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-1.5">
+            <span>💾 প্রজেক্ট সেভ করুন</span>
+          </button>
+          <button onclick="closeDetailModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
+            বন্ধ করুন
+          </button>
+        </div>
       </div>
     </div>
 
@@ -553,13 +559,53 @@
       </div>
     </div>
 
+    <!-- Account Details Modal -->
+    <div id="accountModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end">
+      <div class="bg-white rounded-t-3xl p-5 w-full max-h-[85%] overflow-y-auto space-y-3.5 shadow-2xl">
+        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center justify-center text-sm border border-emerald-300">
+              👤
+            </div>
+            <div>
+              <div id="accUserEmail" class="text-xs font-black text-slate-900">user@example.com</div>
+              <div class="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> সক্রিয় অ্যাকাউন্ট
+              </div>
+            </div>
+          </div>
+          <button onclick="closeAccountModal()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <span class="text-slate-500 text-[10px]">প্ল্যান স্ট্যাটাস</span>
+            <div class="text-emerald-700 font-black mt-0.5">ফ্রি প্ল্যান (Free)</div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <span class="text-slate-500 text-[10px]">ডিভাইস স্ট্যাটাস</span>
+            <div class="text-slate-800 font-black mt-0.5">বাইন্ডেড (Active)</div>
+          </div>
+        </div>
+
+        <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200/70 text-xs">
+          <div class="font-bold text-emerald-950 mb-1">🏠 বাড়ি নির্মাণ হিসাব অ্যাপ</div>
+          <p class="text-[11px] text-emerald-800 leading-relaxed">আপনার অ্যাকাউন্ট দিয়ে হিসাব সংরক্ষণ, রিপোর্ট তৈরি ও যে কোনো সময় ডাটা ক্লাউডে সুরক্ষিত থাকবে।</p>
+        </div>
+
+        <button onclick="handleLogout()" class="w-full bg-rose-50 hover:bg-rose-100 active:scale-98 text-rose-700 font-extrabold text-xs py-3 rounded-xl border border-rose-200 flex items-center justify-center gap-2 transition">
+          <span>🚪 লগআউট করুন</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Login / Auth Screen (Shown 1st by default) -->
     <div id="authModal" class="absolute inset-0 bg-[#F8FAF9] z-50 flex flex-col p-6 overflow-y-auto">
-      <!-- Top Nav: Skip & Lang -->
+      <!-- Top Nav: Status & Lang -->
       <div class="flex justify-between items-center mb-2">
-        <button onclick="skipToHome()" class="text-xs font-bold text-slate-600 hover:text-emerald-800 bg-slate-200/80 hover:bg-emerald-50 px-3 py-1.5 rounded-full flex items-center gap-1 transition">
-          গেস্ট হিসেবে দেখুন ➔
-        </button>
+        <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> নিরাপদ লগইন
+        </span>
         <div class="flex items-center bg-[#E2E8F0] p-0.5 rounded-full">
           <span class="text-[11px] font-bold text-white bg-[#0D5C3A] px-2.5 py-0.5 rounded-full">বাংলা</span>
           <span class="text-[11px] font-semibold text-slate-500 px-2.5 py-0.5 cursor-pointer">EN</span>
@@ -921,27 +967,163 @@
       document.getElementById('authPassInput').type = authPassVisible ? 'text' : 'password';
     }
 
-    function skipToHome() {
-      document.getElementById('authModal').classList.add('hidden');
-      switchTab('home');
+    // Live Supabase Client Initialization
+    const SUPABASE_URL = 'https://jekzntfjxlpixruovcyi.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_u3o6LNg0-cKFEJekXO-YmQ_CyFI2FnM';
+    let sbClient = null;
+    try {
+      if (window.supabase && window.supabase.createClient) {
+        sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+    } catch(e) {
+      console.warn('Supabase initialization fallback:', e);
     }
 
-    function handleAuthSubmit() {
-      const email = document.getElementById('authEmailInput').value;
-      if (!email) {
-        alert('অনুগ্রহ করে ইমেইল ঠিকানা দিন (অথবা উপরে "গেস্ট হিসেবে দেখুন" বাটনে ক্লিক করুন)।');
+    let currentUserEmail = localStorage.getItem('homexbd_user_email');
+    if (currentUserEmail) {
+      document.getElementById('authModal').classList.add('hidden');
+      document.getElementById('accUserEmail').innerText = currentUserEmail;
+      document.getElementById('navUserLabel').innerText = currentUserEmail.split('@')[0];
+    } else {
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function handleNavAccountClick() {
+      if (currentUserEmail) {
+        openAccountModal();
+      } else {
+        openAuthModal();
+      }
+    }
+
+    function openAccountModal() {
+      document.getElementById('accountModal').classList.remove('hidden');
+    }
+
+    function closeAccountModal() {
+      document.getElementById('accountModal').classList.add('hidden');
+    }
+
+    async function handleAuthSubmit() {
+      const email = document.getElementById('authEmailInput').value.trim();
+      const password = document.getElementById('authPassInput').value;
+      const submitBtn = document.getElementById('authSubmitBtn');
+
+      if (!email || !email.includes('@')) {
+        alert('অনুগ্রহ করে সঠিক ইমেইল ঠিকানা দিন।');
         return;
       }
-      if (authCurrentMode === 'login') {
-        alert(`সফলভাবে লগইন হয়েছে! স্বাগতম ${email}`);
-      } else {
-        alert(`নতুন অ্যাকাউন্ট তৈরি হয়েছে এবং ভেরিফিকেশন পাঠানো হয়েছে: ${email}`);
+      if (!password || password.length < 6) {
+        alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');
+        return;
       }
-      document.getElementById('authModal').classList.add('hidden');
-      switchTab('home');
+
+      if (authCurrentMode === 'register') {
+        const confirmPass = document.getElementById('authConfirmPassInput').value;
+        if (password !== confirmPass) {
+          alert('পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড একই হতে হবে।');
+          return;
+        }
+      }
+
+      const origText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'অপেক্ষা করুন...';
+
+      try {
+        if (authCurrentMode === 'register') {
+          if (sbClient) {
+            const { data, error } = await sbClient.auth.signUp({ email, password });
+            if (error) throw error;
+          }
+          alert('🎉 আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন লগইন করুন।');
+          setAuthMode('login');
+          document.getElementById('authEmailInput').value = email;
+          document.getElementById('authPassInput').value = password;
+        } else {
+          if (sbClient) {
+            const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+          }
+          localStorage.setItem('homexbd_user_email', email);
+          currentUserEmail = email;
+          document.getElementById('accUserEmail').innerText = email;
+          document.getElementById('navUserLabel').innerText = email.split('@')[0];
+          alert(`✅ সফলভাবে লগইন হয়েছে! স্বাগতম ${email}`);
+          document.getElementById('authModal').classList.add('hidden');
+          switchTab('home');
+        }
+      } catch (err) {
+        const msg = err && err.message ? err.message : 'অথেনটিকেশন ব্যর্থ হয়েছে।';
+        alert('ত্রুটি: ' + msg);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = origText;
+      }
+    }
+
+    async function handleLogout() {
+      if (sbClient) {
+        try { await sbClient.auth.signOut(); } catch(e) {}
+      }
+      localStorage.removeItem('homexbd_user_email');
+      currentUserEmail = null;
+      closeAccountModal();
+      document.getElementById('navUserLabel').innerText = 'অ্যাকাউন্ট';
+      document.getElementById('authModal').classList.remove('hidden');
+      alert('🚪 সফলভাবে লগআউট করা হয়েছে।');
+    }
+
+    function saveCurrentProjectFromModal() {
+      const area = (typeof equivalentSqFt !== 'undefined' ? equivalentSqFt : 1200);
+      const floors = (typeof currentFloors !== 'undefined' ? currentFloors : 2);
+      const total = (typeof lastTotalCost !== 'undefined' ? lastTotalCost : 8400000);
+      const pName = prompt('প্রজেক্টের নাম লিখুন:', `আমার বাড়ি - ${area} বর্গফুট (${floors} তলা)`);
+      if (!pName || !pName.trim()) return;
+
+      const newProj = {
+        id: 'proj-' + Date.now(),
+        name: pName.trim(),
+        date: new Date().toLocaleDateString('bn-BD', { day: '2-digit', month: 'long', year: 'numeric' }),
+        floorAreaSqFt: area,
+        floors: floors,
+        quality: (typeof currentType !== 'undefined' && currentType === 'economy' ? 'Economy' : typeof currentType !== 'undefined' && currentType === 'premium' ? 'Luxury' : 'Standard'),
+        location: (typeof currentLocation !== 'undefined' ? currentLocation : 'other'),
+        totalCost: total,
+        breakdown: {
+          structure: Math.round(total * 0.5),
+          finishing: Math.round(total * 0.3),
+          electrical: Math.round(total * 0.1),
+          plumbing: Math.round(total * 0.1),
+          potentialSavings: Math.round(total * 0.1)
+        }
+      };
+
+      savedProjects.unshift(newProj);
+      localStorage.setItem('homexbd_saved_projects_v2', JSON.stringify(savedProjects));
+      renderSavedProjects();
+      closeDetailModal();
+      switchTab('saved');
+      alert('✅ প্রজেক্টটি সফলভাবে সেভ হয়েছে! "সেভড" ট্যাবে দেখতে পাবেন।');
+    }
+
+    function deleteSavedProject(id) {
+      if (!confirm('আপনি কি এই সংরক্ষিত প্রজেক্টটি মুছে ফেলতে চান?')) return;
+      savedProjects = savedProjects.filter(p => p.id !== id);
+      localStorage.setItem('homexbd_saved_projects_v2', JSON.stringify(savedProjects));
+      renderSavedProjects();
     }
 
     updateCalculation();
+    if (localStorage.getItem('homexbd_saved_projects_v2')) {
+      try {
+        const stored = JSON.parse(localStorage.getItem('homexbd_saved_projects_v2'));
+        if (Array.isArray(stored) && stored.length > 0) {
+          savedProjects = stored;
+          renderSavedProjects();
+        }
+      } catch(e) {}
+    }
   </script>
 </body>
 </html>
