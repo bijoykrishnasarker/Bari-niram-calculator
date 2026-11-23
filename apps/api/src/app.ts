@@ -1,4 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import {
   CALCULATOR_RULES,
@@ -122,7 +124,7 @@ export function createApp(dependencies: ApiDependencies) {
       },
     }),
   );
-  app.use(helmet());
+  app.use(helmet({ contentSecurityPolicy: false }));
   app.use(
     cors({
       methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
@@ -239,13 +241,45 @@ export function createApp(dependencies: ApiDependencies) {
     }
   };
 
-  app.get('/', (_request, response) => {
+  function resolvePreviewHtml(): string | null {
+    const candidates = [
+      path.resolve(process.cwd(), 'preview.html'),
+      path.resolve(process.cwd(), '..', '..', 'preview.html'),
+      path.resolve(process.cwd(), '..', 'preview.html'),
+    ];
+    for (const c of candidates) {
+      if (fs.existsSync(c)) return c;
+    }
+    return null;
+  }
+
+  app.get('/', (request, response) => {
     response.set('Cache-Control', 'no-store');
+    const accept = request.headers.accept || '';
+    if (accept.includes('text/html') && !accept.includes('application/json')) {
+      const htmlFile = resolvePreviewHtml();
+      if (htmlFile) {
+        const content = fs.readFileSync(htmlFile, 'utf8');
+        response.type('html').send(content);
+        return;
+      }
+    }
     response.json({
       name: 'HomeXBD API',
       status: 'ok',
       version: '0.1.0',
     });
+  });
+
+  app.get(['/app', '/preview'], (_request, response) => {
+    response.set('Cache-Control', 'no-store');
+    const htmlFile = resolvePreviewHtml();
+    if (htmlFile) {
+      const content = fs.readFileSync(htmlFile, 'utf8');
+      response.type('html').send(content);
+      return;
+    }
+    response.redirect('/');
   });
 
   app.get('/health', (_request, response) => {

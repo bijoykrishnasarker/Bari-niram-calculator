@@ -1,4 +1,21 @@
-import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import dotenv from 'dotenv';
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const candidates = [
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(process.cwd(), 'apps/api/.env'),
+  path.resolve(currentDir, '../.env'),
+  path.resolve(currentDir, '.env'),
+];
+for (const p of candidates) {
+  if (fs.existsSync(p)) {
+    dotenv.config({ path: p });
+    break;
+  }
+}
 
 import defaultHandler, { getOrInitDefaultApp } from './app';
 
