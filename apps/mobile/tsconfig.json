@@ -3,7 +3,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["ES2023", "DOM"],
-    "types": ["react", "react-native"]
+    "types": ["react", "react-native"],
+    "noEmit": true
   },
   "include": ["App.tsx", "index.ts", "src/**/*.ts", "src/**/*.tsx"]
 }
