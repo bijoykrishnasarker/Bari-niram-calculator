@@ -599,96 +599,126 @@
       </div>
     </div>
 
-    <!-- Login / Auth Screen (Shown 1st by default) -->
-    <div id="authModal" class="absolute inset-0 bg-[#F8FAF9] z-50 flex flex-col p-6 overflow-y-auto">
-      <!-- Top Nav: Status & Lang -->
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> নিরাপদ লগইন
-        </span>
-        <div class="flex items-center bg-[#E2E8F0] p-0.5 rounded-full">
-          <span class="text-[11px] font-bold text-white bg-[#0D5C3A] px-2.5 py-0.5 rounded-full">বাংলা</span>
-          <span class="text-[11px] font-semibold text-slate-500 px-2.5 py-0.5 cursor-pointer">EN</span>
-        </div>
-      </div>
-
-      <!-- Brand Box & Decor -->
-      <div class="relative flex flex-col items-center mt-3 mb-6">
-        <div class="w-20 h-20 bg-gradient-to-tr from-[#0F2E20] via-[#064E3B] to-[#10B981] rounded-3xl flex items-center justify-center shadow-xl shadow-emerald-900/30 mb-3 border-2 border-emerald-400/40 transform hover:scale-105 transition">
-          <svg class="w-11 h-11 text-emerald-300 drop-shadow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9.5L12 3l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z"/>
-            <path d="M9 22V12h6v10" stroke="#FFFFFF" stroke-width="2.5"/>
-            <path d="M12 7v2" stroke="#10B981" stroke-width="3"/>
+    <!-- Login / Auth Screen (Shown 1st by default - Same to same design) -->
+    <div id="authModal" class="absolute inset-0 bg-[#0F172A] z-50 flex flex-col overflow-y-auto">
+      <!-- Blueprint Grid Background Pattern & Dark Hero Section -->
+      <div class="relative pt-8 pb-7 px-6 flex flex-col items-center bg-[#0F172A]" style="background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 22px 22px;">
+        
+        <!-- Center House & Calculator Icon with Glowing Golden Border -->
+        <div class="relative p-1 rounded-2xl border-[1.5px] border-amber-500 shadow-[0_0_16px_rgba(245,158,11,0.45)] bg-[#111827] mb-3">
+          <svg class="w-12 h-12" viewBox="0 0 40 40" fill="none">
+            <!-- Chimney & Roof Peak -->
+            <path d="M11 12V8h3v2" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 17L20 6l14 11" stroke="#F59E0B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Calculator Body -->
+            <rect x="11" y="15" width="18" height="19" rx="3" stroke="#FFFFFF" stroke-width="2" fill="#1E293B"/>
+            <!-- Screen -->
+            <rect x="14" y="18" width="12" height="4" rx="1" fill="#F59E0B"/>
+            <!-- Buttons -->
+            <circle cx="15.5" cy="26" r="1.2" fill="#FFFFFF"/>
+            <circle cx="20" cy="26" r="1.2" fill="#FFFFFF"/>
+            <circle cx="24.5" cy="26" r="1.2" fill="#FFFFFF"/>
+            <circle cx="15.5" cy="30" r="1.2" fill="#FFFFFF"/>
+            <circle cx="20" cy="30" r="1.2" fill="#FFFFFF"/>
+            <circle cx="24.5" cy="30" r="1.2" fill="#EA580C"/>
           </svg>
         </div>
-        <div class="flex items-center">
-          <span class="text-2xl font-black text-[#0F2E20] tracking-tight">Home<span class="text-[#059669]">X</span></span>
-          <span class="bg-[#059669] text-white text-xs font-black px-2 py-0.5 rounded-md ml-1.5 tracking-wider shadow-sm">BD</span>
-        </div>
-        <p class="text-[11px] font-semibold text-emerald-800/80 mt-0.5 tracking-wide">স্মার্ট বাড়ি নির্মাণ ও হিসাব গাইড</p>
-        <p id="authSubtitle" class="text-xs text-slate-500 text-center mt-1.5">বাড়ি নির্মাণের হিসাব সংরক্ষণ করতে লগইন করুন</p>
+
+        <!-- Hero Titles -->
+        <h1 class="text-xl font-extrabold text-white text-center tracking-wide">বাড়ি নির্মাণ ক্যালকুলেটর</h1>
+        <p class="text-xs font-semibold text-[#FBBF24] text-center mt-1">আপনার স্বপ্নের বাড়ির নির্ভুল খরচ হিসাব করুন</p>
       </div>
 
-      <!-- Segmented Tab: লগইন | নতুন অ্যাকাউন্ট -->
-      <div class="flex bg-[#E2E8F0] p-1 rounded-full mb-5">
-        <button id="authTabLogin" onclick="setAuthMode('login')" class="flex-1 py-2 rounded-full text-xs font-bold bg-[#0D5C3A] text-white shadow-sm transition">
-          লগইন
-        </button>
-        <button id="authTabRegister" onclick="setAuthMode('register')" class="flex-1 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition">
-          নতুন অ্যাকাউন্ট
-        </button>
-      </div>
+      <!-- Main White Card Container -->
+      <div class="flex-1 bg-white rounded-t-[32px] px-6 pt-5 pb-6 shadow-2xl flex flex-col justify-between">
+        <div>
+          <!-- Segmented Tab: লগইন | নতুন অ্যাকাউন্ট -->
+          <div class="flex bg-[#F1F5F9] p-1 rounded-2xl mb-5">
+            <button id="authTabLogin" onclick="setAuthMode('login')" class="flex-1 py-2.5 rounded-xl text-xs font-black bg-[#0F172A] text-white shadow-sm transition">
+              লগইন
+            </button>
+            <button id="authTabRegister" onclick="setAuthMode('register')" class="flex-1 py-2.5 rounded-xl text-xs font-black text-slate-600 hover:text-slate-900 transition">
+              নতুন অ্যাকাউন্ট
+            </button>
+          </div>
 
-      <!-- Inputs -->
-      <div class="space-y-3">
-        <!-- Email -->
-        <div class="flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
-          <span class="text-slate-400 mr-2 text-sm">✉</span>
-          <input id="authEmailInput" type="email" value="bijoysarker0171@gmail.com" placeholder="ইমেইল ঠিকানা" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+          <!-- Form Fields -->
+          <div class="space-y-3.5">
+            <!-- Email / Mobile -->
+            <div>
+              <label class="block text-xs font-bold text-slate-800 mb-1.5">ইমেইল অথবা মোবাইল নম্বর</label>
+              <div class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
+                <span class="text-slate-400 mr-2.5 text-base">👤</span>
+                <input id="authEmailInput" type="text" value="bijoysarker0171@gmail.com" placeholder="example@email.com বা 017XXXXXXXX" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div>
+              <label class="block text-xs font-bold text-slate-800 mb-1.5">পাসওয়ার্ড</label>
+              <div class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
+                <span class="text-slate-400 mr-2.5 text-base">🔒</span>
+                <input id="authPassInput" type="password" value="123456" placeholder="আপনার পাসওয়ার্ড লিখুন" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+                <button type="button" onclick="toggleAuthPassVisibility()" class="text-slate-400 hover:text-slate-600 text-sm ml-1">👁️</button>
+              </div>
+            </div>
+
+            <!-- Confirm Password (hidden by default) -->
+            <div id="authConfirmPassWrap" class="hidden">
+              <label class="block text-xs font-bold text-slate-800 mb-1.5">পাসওয়ার্ড নিশ্চিত করুন</label>
+              <div class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
+                <span class="text-slate-400 mr-2.5 text-base">🔒</span>
+                <input id="authConfirmPassInput" type="password" placeholder="আবার পাসওয়ার্ড লিখুন" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+              </div>
+            </div>
+
+            <!-- Options Row: Remember Me & Forgot Password -->
+            <div id="authForgotWrap" class="flex items-center justify-between pt-0.5">
+              <label class="flex items-center cursor-pointer select-none">
+                <input type="checkbox" checked class="accent-[#EA580C] w-4 h-4 rounded cursor-pointer" />
+                <span class="text-xs font-bold text-slate-800 ml-2">মনে রাখুন</span>
+              </label>
+              <button onclick="alert('আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠানো হবে।')" class="text-xs font-bold text-[#EA580C] hover:underline">
+                পাসওয়ার্ড ভুলে গেছেন?
+              </button>
+            </div>
+
+            <!-- Main Action Button -->
+            <button id="authSubmitBtn" onclick="handleAuthSubmit()" class="w-full bg-[#EA580C] hover:bg-[#d94e07] active:scale-[0.99] text-white font-black text-sm py-3.5 rounded-2xl shadow-lg shadow-orange-500/30 transition flex items-center justify-center gap-2 mt-1">
+              <span id="authSubmitText">লগইন করুন</span>
+              <span class="text-base font-black">➔</span>
+            </button>
+
+            <!-- Divider "অথবা" -->
+            <div class="flex items-center gap-3 my-3">
+              <div class="flex-1 h-px bg-slate-200"></div>
+              <span class="text-[11px] font-semibold text-slate-400">অথবা</span>
+              <div class="flex-1 h-px bg-slate-200"></div>
+            </div>
+
+            <!-- Google Social Login -->
+            <button onclick="alert('Google সাইন ইন: Supabase OAuth কনফিগারেশন সক্রিয় করার পর এটি কাজ করবে।')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-[#0F172A] font-bold text-xs py-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-xs transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Google দিয়ে চালিয়ে যান</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Password -->
-        <div class="flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
-          <span class="text-slate-400 mr-2 text-sm">🔒</span>
-          <input id="authPassInput" type="password" value="123456" placeholder="পাসওয়ার্ড" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
-          <button type="button" onclick="toggleAuthPassVisibility()" class="text-slate-400 hover:text-slate-600 text-xs">👁️</button>
+        <!-- Footer Badges & Legal -->
+        <div class="pt-5 flex flex-col items-center">
+          <div class="inline-flex items-center gap-1.5 bg-[#EBF1F6] border border-slate-200/60 px-3.5 py-1.5 rounded-full mb-2.5">
+            <span class="text-xs">🛡️</span>
+            <span class="text-[11px] font-bold text-slate-700">ইট, বালু, সিমেন্ট ও রডের রিয়েল-টাইম হিসাব</span>
+          </div>
+          <p class="text-[10px] text-slate-500 text-center leading-relaxed">
+            চালিয়ে যাওয়ার মাধ্যমে আপনি আমাদের <span class="underline cursor-pointer">শর্তাবলী</span> ও <span class="underline cursor-pointer">গোপনীয়তা নীতিতে</span> সম্মত হচ্ছেন।
+          </p>
         </div>
-
-        <!-- Confirm Password (hidden by default) -->
-        <div id="authConfirmPassWrap" class="hidden flex items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-xs">
-          <span class="text-slate-400 mr-2 text-sm">🔒</span>
-          <input id="authConfirmPassInput" type="password" placeholder="পাসওয়ার্ড নিশ্চিত করুন" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
-        </div>
-
-        <!-- Forgot Password link -->
-        <div id="authForgotWrap" class="flex justify-end">
-          <button onclick="alert('আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠানো হবে।')" class="text-xs font-bold text-[#0D5C3A] hover:underline">
-            পাসওয়ার্ড ভুলে গেছেন?
-          </button>
-        </div>
-
-        <!-- Main Action Button -->
-        <button id="authSubmitBtn" onclick="handleAuthSubmit()" class="w-full bg-[#0D5C3A] hover:bg-[#0a462c] active:scale-[0.99] text-white font-extrabold text-sm py-3 rounded-full shadow-lg shadow-[#0D5C3A]/25 transition mt-2">
-          লগইন করুন
-        </button>
-
-        <!-- Divider -->
-        <div class="flex items-center gap-3 my-2">
-          <div class="flex-1 h-px bg-slate-200"></div>
-          <span class="text-[11px] font-semibold text-slate-400">অথবা</span>
-          <div class="flex-1 h-px bg-slate-200"></div>
-        </div>
-
-        <!-- Google Login -->
-        <button onclick="alert('Google সাইন ইন: Supabase OAuth কনফিগারেশন সক্রিয় করার পর এটি কাজ করবে।')" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2.5 rounded-full flex items-center justify-center gap-2 shadow-xs transition">
-          <span class="font-black text-blue-500 text-sm">G</span>
-          <span>Google দিয়ে লগইন করুন</span>
-        </button>
-      </div>
-
-      <!-- Footer Tagline -->
-      <div class="mt-auto pt-6 text-center">
-        <p class="text-[11px] font-medium text-slate-400">এক ইমেইল · এক ডিভাইস · নিরাপদ লগইন</p>
       </div>
     </div>
 
@@ -945,19 +975,17 @@
       const subtitle = document.getElementById('authSubtitle');
 
       if (mode === 'login') {
-        tabLogin.className = 'flex-1 py-2 rounded-full text-xs font-bold bg-[#0D5C3A] text-white shadow-sm transition';
-        tabRegister.className = 'flex-1 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        tabLogin.className = 'flex-1 py-2.5 rounded-xl text-xs font-black bg-[#0F172A] text-white shadow-sm transition';
+        tabRegister.className = 'flex-1 py-2.5 rounded-xl text-xs font-black text-slate-600 hover:text-slate-900 transition';
         confirmWrap.classList.add('hidden');
         forgotWrap.classList.remove('hidden');
-        submitBtn.innerText = 'লগইন করুন';
-        subtitle.innerText = 'বাড়ি নির্মাণের হিসাব সংরক্ষণ করতে লগইন করুন';
+        submitBtn.innerHTML = '<span>লগইন করুন</span> <span class="text-base font-black">➔</span>';
       } else {
-        tabRegister.className = 'flex-1 py-2 rounded-full text-xs font-bold bg-[#0D5C3A] text-white shadow-sm transition';
-        tabLogin.className = 'flex-1 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        tabRegister.className = 'flex-1 py-2.5 rounded-xl text-xs font-black bg-[#0F172A] text-white shadow-sm transition';
+        tabLogin.className = 'flex-1 py-2.5 rounded-xl text-xs font-black text-slate-600 hover:text-slate-900 transition';
         confirmWrap.classList.remove('hidden');
         forgotWrap.classList.add('hidden');
-        submitBtn.innerText = 'অ্যাকাউন্ট তৈরি করুন';
-        subtitle.innerText = 'নতুন অ্যাকাউন্ট খুলে আপনার বাড়ি নির্মাণের হিসাব সেভ রাখুন';
+        submitBtn.innerHTML = '<span>অ্যাকাউন্ট তৈরি করুন</span> <span class="text-base font-black">➔</span>';
       }
     }
 
