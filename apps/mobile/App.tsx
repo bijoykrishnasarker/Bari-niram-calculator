@@ -33,7 +33,7 @@ const tabs: Array<{ id: Tab; label: string; icon: string }> = [
 ];
 
 function MainApp() {
-  const { language, setLanguage } = useLanguage();
+  useLanguage();
   const auth = useAuth();
   const [tab, setTab] = useState<Tab>('home');
   const [account, setAccount] = useState<AccountSummary | null>(null);
@@ -128,42 +128,6 @@ function MainApp() {
         </Pressable>
 
         <View style={styles.brandActions}>
-          {/* Language Switcher Pill */}
-          <View style={styles.langSwitchPill}>
-            <Pressable
-              onPress={() => setLanguage('bn')}
-              style={[
-                styles.langSwitchBtn,
-                language === 'bn' && styles.langSwitchBtnActive,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.langSwitchText,
-                  language === 'bn' && styles.langSwitchTextActive,
-                ]}
-              >
-                বাংলা
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setLanguage('en')}
-              style={[
-                styles.langSwitchBtn,
-                language === 'en' && styles.langSwitchBtnActive,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.langSwitchText,
-                  language === 'en' && styles.langSwitchTextActive,
-                ]}
-              >
-                EN
-              </Text>
-            </Pressable>
-          </View>
-
           <Pressable
             onPress={() => setShowPremiumModal(true)}
             style={[
@@ -295,30 +259,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  langSwitchPill: {
-    flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
-    borderRadius: 16,
-    padding: 2,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  langSwitchBtn: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 14,
-  },
-  langSwitchBtnActive: {
-    backgroundColor: '#1E3A8A',
-  },
-  langSwitchText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: '#64748B',
-  },
-  langSwitchTextActive: {
-    color: '#FFFFFF',
   },
   planBadge: {
     paddingHorizontal: 10,
