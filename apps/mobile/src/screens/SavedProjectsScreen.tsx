@@ -5,7 +5,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -16,6 +15,7 @@ import { errorMessage, formatBdt } from '../lib/format';
 import { colors } from '../theme';
 import type { AccountSummary } from '../types';
 import { AuthScreen } from './AuthScreen';
+import { Text, tr, useLanguage } from '../i18n';
 
 export type SavedProjectItem = {
   id: string;
@@ -84,6 +84,7 @@ export function SavedProjectsScreen({
   refreshAccount(): Promise<void>;
   onOpenCalculator(): void;
 }) {
+  useLanguage();
   const auth = useAuth();
   const [projects, setProjects] = useState<SavedProjectItem[]>(INITIAL_DEMO_PROJECTS);
   const [searchQuery, setSearchQuery] = useState('');
@@ -141,7 +142,7 @@ export function SavedProjectsScreen({
           <Text style={styles.searchIcon}>🔍</Text>
           <TextInput
             onChangeText={setSearchQuery}
-            placeholder="প্রজেক্টের নাম লিখুন..."
+            placeholder={tr('প্রজেক্টের নাম লিখুন...')}
             placeholderTextColor="#94A3B8"
             style={styles.searchInput}
             value={searchQuery}

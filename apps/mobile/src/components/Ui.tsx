@@ -3,13 +3,13 @@ import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   type TextInputProps,
   View,
 } from 'react-native';
 
 import { colors } from '../theme';
+import { Text } from '../i18n';
 
 export function Card({ children }: PropsWithChildren) {
   return <View style={styles.card}>{children}</View>;

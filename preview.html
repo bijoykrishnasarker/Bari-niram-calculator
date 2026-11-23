@@ -46,6 +46,12 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <!-- Language Switcher Pill -->
+        <div class="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200">
+          <button id="langBtnBn" onclick="setAppLanguage('bn')" class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#1E3A8A] text-white shadow-xs transition">বাংলা</button>
+          <button id="langBtnEn" onclick="setAppLanguage('en')" class="text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-500 hover:text-slate-800 transition">EN</button>
+        </div>
+
         <span id="planBadge" class="cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
           Free
         </span>
@@ -916,14 +922,164 @@
     const baseRates = { economy: 3000, standard: 3500, premium: 4500 };
     const locMultipliers = { dhaka: 1.10, chattogram: 1.05, other: 1.00 };
 
+    let currentAppLang = localStorage.getItem('homexbd_app_lang') || 'bn';
+
+    const i18nDict = {
+      en: {
+        'হিসাব শুরু করুন': 'Start Calculation',
+        '১ মিনিটে বাড়ির খরচ হিসাব করুন': 'Calculate House Cost in 1 Minute',
+        'জমির মাপ ও তলা সংখ্যা দিয়ে তাৎক্ষণিক ম্যাটেরিয়াল ও বাজেট রিপোর্ট তৈরি করুন।': 'Instant material and budget report based on plot size and floor count.',
+        'আজকের বাজারদর (Live Rates)': 'Today\'s Market Rates (Live Rates)',
+        'দাম পরিবর্তন করুন': 'Change Rates',
+        'কুইক মিনি-ক্যালকুলেটর': 'Quick Mini-Calculators',
+        'ইটের হিসাব': 'Brick Calculation',
+        'ওয়াল ও গাঁথুনির ইট': 'Wall & brickwork',
+        'ছাদ ঢালাই': 'Roof Casting',
+        'সিমেন্ট, বালু ও খোয়া': 'Cement, sand & stone',
+        'প্লাস্টার হিসাব': 'Plaster Calculation',
+        'ওয়াল প্লাস্টারের মসলা': 'Wall plaster mortar',
+        'রঙের হিসাব': 'Paint Calculation',
+        'ইন্টেরিয়র ও এক্সটেরিয়র': 'Interior & exterior',
+        'সাম্প্রতিক সেভ করা হিসাব': 'Recent Saved Calculations',
+        'সব দেখুন (১)': 'View All (1)',
+        'হোম': 'Home',
+        'ক্যালকুলেটর': 'Calculator',
+        'সেভড': 'Saved',
+        'গাইড': 'Guide',
+        'অ্যাকাউন্ট': 'Account',
+        'কুইক ইটের হিসাব (৫ ইঞ্চি দেয়াল)': 'Quick Brick Calculation (5" Wall)',
+        'কুইক ছাদ ঢালাইয়ের হিসাব (৫ ইঞ্চি পুরু)': 'Quick Roof Casting Calculation (5" Slab)',
+        'কুইক প্লাস্টারের হিসাব': 'Quick Plaster Calculation',
+        'কুইক রঙের হিসাব': 'Quick Paint Calculation',
+        'ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)': 'Enter Area (Sq.ft)',
+        'ঠিক আছে': 'OK',
+        'বন্ধ করুন': 'Close',
+        'বাড়ি নির্মাণ গাইডলাইন': 'Construction Guidelines',
+        'সেভ করা হিসাবসমূহ': 'Saved Calculations',
+        'বাড়ি নির্মাণের ধাপসমূহ': 'Steps of House Construction',
+        'মাটি পরীক্ষা ও ফাউন্ডেশন': 'Soil Test & Foundation',
+        'অনুমোদন ও রাজউক নিয়মাবলী': 'Approval & Building Codes',
+        'ম্যাটেরিয়াল কোয়ালিটি যাচাই': 'Material Quality Checklist',
+        'খরচ ১০% কমানোর উপায়': 'How to Save 10% Cost',
+        'বাচ্চাদের রুম, ডাইনিং ও লিভিং এর ডিজাইন আইডিয়া': 'Room, Dining & Living Design Ideas',
+        'বাড়ি নির্মাণের ধাপ': 'House Construction Steps',
+        'মাটি পরীক্ষা': 'Soil Testing',
+        'রাজউক নিয়মাবলী': 'Building Rules',
+        'কোয়ালিটি গাইড': 'Quality Guide',
+        'খরচ সাশ্রয়': 'Cost Saving',
+        'ইন্টেরিয়র গাইড': 'Interior Guide',
+        'পাসওয়ার্ড': 'Password',
+        'পাসওয়ার্ড নিশ্চিত করুন': 'Confirm Password',
+        'লগইন করুন': 'Log In',
+        'নতুন অ্যাকাউন্ট': 'New Account',
+        'মনে রাখুন': 'Remember me',
+        'পাসওয়ার্ড ভুলে গেছেন?': 'Forgot Password?',
+        'সিমেন্ট': 'Cement',
+        'রড (500W)': 'Steel Rod (500W)',
+        '১ নং ইট': '1st Class Brick',
+        'বালু (ভিটি)': 'Sand (Viti)',
+        '/ব্যাগ': '/bag',
+        '/টন': '/ton',
+        '/পিস': '/pc',
+        '/সিএফটি': '/cft',
+        'বর্গফুট': 'Sq.ft',
+        'কাঠা': 'Katha',
+        'শতাংশ': 'Decimal',
+        'ফ্লোর সংখ্যা': 'Number of Floors',
+        'ফাউন্ডেশন': 'Foundation',
+        'তলা': 'Floors',
+        'কোয়ালিটি / গ্রেড': 'Quality / Grade',
+        'ইকোনমি': 'Economy',
+        'স্ট্যান্ডার্ড': 'Standard',
+        'প্রিমিয়াম': 'Premium',
+        'লোকেশন': 'Location',
+        'ঢাকা বিভাগ': 'Dhaka Division',
+        'চট্টগ্রাম বিভাগ': 'Chattogram Division',
+        'অন্যান্য বিভাগ': 'Other Divisions',
+        'খরচের বিবরণী': 'Cost Breakdown',
+        'খরচের বিস্তারিত হিসাব': 'Detailed Cost Breakdown',
+        'মোট আনুমানিক খরচ': 'Total Estimated Cost',
+        'প্রজেক্ট সেভ করুন': 'Save Project',
+        'সার্চ করুন': 'Search...',
+        'এখনও কোনো হিসাব সেভ করা হয়নি।': 'No calculations saved yet.',
+        'গাইড পড়ুন': 'Read Guide',
+        'ফ্রি প্ল্যান (Free)': 'Free Plan',
+        'ডিভাইস স্ট্যাটাস': 'Device Status',
+        'বাইন্ডেড (Active)': 'Bound (Active)',
+        'ফুল সিস্টেম অ্যাক্সেস': 'Full System Access',
+        'সুপার অ্যাডমিন (Admin)': 'Super Admin'
+      }
+    };
+
+    let originalTextNodes = new Map();
+
+    function setAppLanguage(lang) {
+      currentAppLang = lang;
+      localStorage.setItem('homexbd_app_lang', lang);
+
+      const btnBn = document.getElementById('langBtnBn');
+      const btnEn = document.getElementById('langBtnEn');
+      if (btnBn && btnEn) {
+        if (lang === 'en') {
+          btnEn.className = 'text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#1E3A8A] text-white shadow-xs transition';
+          btnBn.className = 'text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-500 hover:text-slate-800 transition';
+        } else {
+          btnBn.className = 'text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#1E3A8A] text-white shadow-xs transition';
+          btnEn.className = 'text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-500 hover:text-slate-800 transition';
+        }
+      }
+
+      applyLanguageToDOM();
+    }
+
+    function applyLanguageToDOM() {
+      const isEn = currentAppLang === 'en';
+
+      calculateQuickBricks();
+      calculateQuickRoof();
+      calculateQuickPlaster();
+      calculateQuickPaint();
+
+      const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+
+      let node;
+      while (node = walker.nextNode()) {
+        const text = node.nodeValue.trim();
+        if (!text) continue;
+
+        if (!originalTextNodes.has(node)) {
+          originalTextNodes.set(node, node.nodeValue);
+        }
+
+        const original = originalTextNodes.get(node);
+        const originalTrimmed = original.trim();
+
+        if (isEn) {
+          if (i18nDict.en[originalTrimmed]) {
+            node.nodeValue = original.replace(originalTrimmed, i18nDict.en[originalTrimmed]);
+          }
+        } else {
+          node.nodeValue = original;
+        }
+      }
+    }
+
     function toBnDigits(num) {
+      if (currentAppLang === 'en') {
+        return String(num);
+      }
       const bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
       return String(num).replace(/[0-9]/g, d => bn[d]);
     }
 
     function calculateQuickBricks() {
       const input = document.getElementById('brickAreaInput');
-      const sqft = parseFloat(input.value) || 0;
+      const sqft = parseFloat(input?.value || '1000') || 0;
       const bricks = Math.round(sqft * 5);
       const cement = Math.round(sqft * 0.03);
       const cost = Math.round(bricks * 12);
@@ -932,14 +1088,15 @@
       const cementEl = document.getElementById('qbCementBags');
       const costEl = document.getElementById('qbBrickCost');
 
-      if (countEl) countEl.innerText = toBnDigits(bricks) + ' পিস';
-      if (cementEl) cementEl.innerText = toBnDigits(cement) + ' বস্তা';
-      if (costEl) costEl.innerText = '৳' + toBnDigits(cost.toLocaleString('en-IN'));
+      const isEn = currentAppLang === 'en';
+      if (countEl) countEl.innerText = (isEn ? bricks.toLocaleString('en-US') + ' pcs' : toBnDigits(bricks) + ' পিস');
+      if (cementEl) cementEl.innerText = (isEn ? cement + ' bags' : toBnDigits(cement) + ' বস্তা');
+      if (costEl) costEl.innerText = '৳' + (isEn ? cost.toLocaleString('en-US') : toBnDigits(cost.toLocaleString('en-IN')));
     }
 
     function calculateQuickRoof() {
       const input = document.getElementById('roofAreaInput');
-      const sqft = parseFloat(input.value) || 0;
+      const sqft = parseFloat(input?.value || '1000') || 0;
       const cement = Math.round(sqft * 0.085);
       const sand = Math.round(sqft * 0.22);
       const stone = Math.round(sqft * 0.44);
@@ -948,35 +1105,38 @@
       const sandEl = document.getElementById('qrSandCft');
       const stoneEl = document.getElementById('qrStoneCft');
 
-      if (cementEl) cementEl.innerText = toBnDigits(cement) + ' বস্তা';
-      if (sandEl) sandEl.innerText = toBnDigits(sand) + ' সিএফটি';
-      if (stoneEl) stoneEl.innerText = toBnDigits(stone) + ' সিএফটি';
+      const isEn = currentAppLang === 'en';
+      if (cementEl) cementEl.innerText = (isEn ? cement + ' bags' : toBnDigits(cement) + ' বস্তা');
+      if (sandEl) sandEl.innerText = (isEn ? sand + ' cft' : toBnDigits(sand) + ' সিএফটি');
+      if (stoneEl) stoneEl.innerText = (isEn ? stone + ' cft' : toBnDigits(stone) + ' সিএফটি');
     }
 
     function calculateQuickPlaster() {
       const input = document.getElementById('plasterAreaInput');
-      const sqft = parseFloat(input.value) || 0;
+      const sqft = parseFloat(input?.value || '1000') || 0;
       const cement = Math.round(sqft * 0.018);
       const sand = Math.round(sqft * 0.07);
 
       const cementEl = document.getElementById('qpCementBags');
       const sandEl = document.getElementById('qpSandCft');
 
-      if (cementEl) cementEl.innerText = toBnDigits(cement) + ' বস্তা';
-      if (sandEl) sandEl.innerText = toBnDigits(sand) + ' সিএফটি';
+      const isEn = currentAppLang === 'en';
+      if (cementEl) cementEl.innerText = (isEn ? cement + ' bags' : toBnDigits(cement) + ' বস্তা');
+      if (sandEl) sandEl.innerText = (isEn ? sand + ' cft' : toBnDigits(sand) + ' সিএফটি');
     }
 
     function calculateQuickPaint() {
       const input = document.getElementById('paintAreaInput');
-      const sqft = parseFloat(input.value) || 0;
+      const sqft = parseFloat(input?.value || '1000') || 0;
       const primer = Math.round(sqft * 0.009);
       const paint = Math.round(sqft * 0.012);
 
       const primerEl = document.getElementById('qptPrimerLiters');
       const paintEl = document.getElementById('qptPaintLiters');
 
-      if (primerEl) primerEl.innerText = toBnDigits(primer) + ' লিটার';
-      if (paintEl) paintEl.innerText = toBnDigits(paint) + ' লিটার';
+      const isEn = currentAppLang === 'en';
+      if (primerEl) primerEl.innerText = (isEn ? primer + ' Liters' : toBnDigits(primer) + ' লিটার');
+      if (paintEl) paintEl.innerText = (isEn ? paint + ' Liters' : toBnDigits(paint) + ' লিটার');
     }
 
     function openMini(type) {

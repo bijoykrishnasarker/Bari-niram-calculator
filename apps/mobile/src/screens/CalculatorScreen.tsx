@@ -12,7 +12,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -20,6 +19,7 @@ import {
 import { apiRequest } from '../lib/api';
 import { errorMessage, formatBdt } from '../lib/format';
 import { colors } from '../theme';
+import { Text, useLanguage } from '../i18n';
 
 type LandUnit = 'sqft' | 'katha' | 'decimal';
 
@@ -32,6 +32,7 @@ export function CalculatorScreen({
   signedIn: boolean;
   openPremium(): void;
 }) {
+  useLanguage();
   // Step state (1, 2, 3)
   const [step, setStep] = useState<1 | 2 | 3>(1);
 

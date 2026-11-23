@@ -4,11 +4,11 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 
 import { colors } from '../theme';
+import { Text, useLanguage } from '../i18n';
 
 type GuideCategory = 'all' | 'rules' | 'tips' | 'materials';
 
@@ -101,6 +101,7 @@ export function GuideScreen({
   openPremium(): void;
   premium: boolean;
 }) {
+  useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<GuideCategory>('all');
   const [activeArticle, setActiveArticle] = useState<GuideArticle | null>(null);
 

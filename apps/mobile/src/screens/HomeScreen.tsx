@@ -5,7 +5,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -13,6 +12,7 @@ import {
 import { toBnDigits } from '../lib/format';
 import { colors } from '../theme';
 import type { AccountSummary } from '../types';
+import { Text, useLanguage } from '../i18n';
 
 type RateItem = {
   id: string;
@@ -39,6 +39,7 @@ export function HomeScreen({
   onOpenSaved(): void;
   account: AccountSummary | null;
 }) {
+  useLanguage();
   const [rates, setRates] = useState<RateItem[]>(DEFAULT_RATES);
   const [editingRates, setEditingRates] = useState(false);
   const [tempRates, setTempRates] = useState<RateItem[]>(DEFAULT_RATES);

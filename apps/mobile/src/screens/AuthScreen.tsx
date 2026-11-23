@@ -7,13 +7,13 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
 
 import { useAuth } from '../auth/AuthContext';
 import { errorMessage } from '../lib/format';
+import { Text, tr, useLanguage } from '../i18n';
 
 type AuthMode = 'signin' | 'signup' | 'forgot';
 
@@ -24,6 +24,7 @@ export function AuthScreen({
   onClose?: () => void;
   initialMode?: 'signin' | 'signup';
 }) {
+  useLanguage();
   const auth = useAuth();
   const [mode, setMode] = useState<AuthMode>(initialMode);
 
@@ -223,7 +224,7 @@ export function AuthScreen({
                 autoComplete="email"
                 keyboardType="email-address"
                 onChangeText={setEmail}
-                placeholder="example@email.com বা 017XXXXXXXX"
+                placeholder={tr('example@email.com বা 017XXXXXXXX')}
                 placeholderTextColor="#94A3B8"
                 style={styles.textInputField}
                 value={email}
@@ -242,7 +243,7 @@ export function AuthScreen({
                     autoCapitalize="none"
                     autoComplete="password"
                     onChangeText={setPassword}
-                    placeholder="আপনার পাসওয়ার্ড লিখুন"
+                    placeholder={tr('আপনার পাসওয়ার্ড লিখুন')}
                     placeholderTextColor="#94A3B8"
                     secureTextEntry={!showPassword}
                     style={styles.textInputField}
@@ -272,7 +273,7 @@ export function AuthScreen({
                   <TextInput
                     autoCapitalize="none"
                     onChangeText={setConfirmPassword}
-                    placeholder="আবার পাসওয়ার্ড লিখুন"
+                    placeholder={tr('আবার পাসওয়ার্ড লিখুন')}
                     placeholderTextColor="#94A3B8"
                     secureTextEntry={!showPassword}
                     style={styles.textInputField}

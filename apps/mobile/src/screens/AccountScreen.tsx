@@ -4,7 +4,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 
@@ -13,6 +12,7 @@ import { apiRequest } from '../lib/api';
 import { errorMessage, formatBdt } from '../lib/format';
 import type { AccountSummary } from '../types';
 import { AuthScreen } from './AuthScreen';
+import { Text, useLanguage } from '../i18n';
 
 type ProjectSummary = {
   id: string;
@@ -30,6 +30,7 @@ export function AccountScreen({
   refreshAccount(): Promise<void>;
   onClose?: () => void;
 }) {
+  useLanguage();
   const auth = useAuth();
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(false);

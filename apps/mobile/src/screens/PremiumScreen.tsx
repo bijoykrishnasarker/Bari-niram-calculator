@@ -1,6 +1,6 @@
 import { PREMIUM_PRICE_BDT } from '@homexbd/shared';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useAuth } from '../auth/AuthContext';
 import {
@@ -16,6 +16,7 @@ import { errorMessage, formatBdt } from '../lib/format';
 import { colors } from '../theme';
 import type { AccountSummary, PublicConfig } from '../types';
 import { AuthScreen } from './AuthScreen';
+import { Text, useLanguage } from '../i18n';
 
 export function PremiumScreen({
   account,
@@ -24,6 +25,7 @@ export function PremiumScreen({
   account: AccountSummary | null;
   refreshAccount(): Promise<void>;
 }) {
+  useLanguage();
   const { session } = useAuth();
   const [config, setConfig] = useState<PublicConfig | null>(null);
   const [last4, setLast4] = useState('');
