@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,41 +8,55 @@
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
     .grid-pattern {
       background-image: linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
       background-size: 16px 16px;
     }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
+
 <body class="bg-slate-200 flex items-center justify-center min-h-screen p-4 select-none">
 
   <!-- Mobile Frame -->
-  <div class="w-full max-w-sm bg-[#F8FAFC] rounded-[40px] shadow-2xl border-4 border-slate-800 overflow-hidden flex flex-col h-[780px] relative">
-    
+  <div
+    class="w-full max-w-sm bg-[#F8FAFC] rounded-[40px] shadow-2xl border-4 border-slate-800 overflow-hidden flex flex-col h-[780px] relative">
+
     <!-- Top Brand Header Bar -->
     <div class="bg-white px-5 pt-3.5 pb-2.5 border-b border-[#D8E0DB] flex justify-between items-center z-10">
       <!-- App Brand Logo (House-Calculator Golden Badge, No Text) -->
       <div class="cursor-pointer transition hover:scale-105" onclick="switchTab('home')">
-        <div class="w-9 h-9 rounded-xl border-[1.5px] border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.35)] bg-[#0F172A] flex items-center justify-center">
+        <div
+          class="w-9 h-9 rounded-xl border-[1.5px] border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.35)] bg-[#0F172A] flex items-center justify-center">
           <svg class="w-7 h-7" viewBox="0 0 40 40" fill="none">
             <!-- Chimney & Roof Peak -->
-            <path d="M11 12V8h3v2" stroke="#EA580C" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M6 17L20 6l14 11" stroke="#F59E0B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11 12V8h3v2" stroke="#EA580C" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M6 17L20 6l14 11" stroke="#F59E0B" stroke-width="2.8" stroke-linecap="round"
+              stroke-linejoin="round" />
             <!-- Calculator Body -->
-            <rect x="11" y="15" width="18" height="19" rx="3" stroke="#FFFFFF" stroke-width="2" fill="#1E293B"/>
+            <rect x="11" y="15" width="18" height="19" rx="3" stroke="#FFFFFF" stroke-width="2" fill="#1E293B" />
             <!-- Screen -->
-            <rect x="14" y="18" width="12" height="4" rx="1" fill="#F59E0B"/>
+            <rect x="14" y="18" width="12" height="4" rx="1" fill="#F59E0B" />
             <!-- Buttons -->
-            <circle cx="15.5" cy="26" r="1.2" fill="#FFFFFF"/>
-            <circle cx="20" cy="26" r="1.2" fill="#FFFFFF"/>
-            <circle cx="24.5" cy="26" r="1.2" fill="#FFFFFF"/>
-            <circle cx="15.5" cy="30" r="1.2" fill="#FFFFFF"/>
-            <circle cx="20" cy="30" r="1.2" fill="#FFFFFF"/>
-            <circle cx="24.5" cy="30" r="1.2" fill="#EA580C"/>
+            <circle cx="15.5" cy="26" r="1.2" fill="#FFFFFF" />
+            <circle cx="20" cy="26" r="1.2" fill="#FFFFFF" />
+            <circle cx="24.5" cy="26" r="1.2" fill="#FFFFFF" />
+            <circle cx="15.5" cy="30" r="1.2" fill="#FFFFFF" />
+            <circle cx="20" cy="30" r="1.2" fill="#FFFFFF" />
+            <circle cx="24.5" cy="30" r="1.2" fill="#EA580C" />
           </svg>
         </div>
       </div>
@@ -52,10 +67,12 @@
           <button id="langBtnEn" onclick="setAppLanguage('en')" class="text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-500 hover:text-slate-800 transition">EN</button>
         </div>
 
-        <span id="planBadge" class="cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
+        <span id="planBadge"
+          class="cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
           Free
         </span>
-        <span id="navUserLabel" onclick="handleNavAccountClick()" class="cursor-pointer text-xs font-semibold text-[#607066] hover:text-[#0F2E20] bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-full transition">
+        <span id="navUserLabel" onclick="handleNavAccountClick()"
+          class="cursor-pointer text-xs font-semibold text-[#607066] hover:text-[#0F2E20] bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-full transition">
           অ্যাকাউন্ট
         </span>
       </div>
@@ -63,13 +80,15 @@
 
     <!-- Scrollable Screen Content -->
     <div id="screenContainer" class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col">
-      
+
       <!-- ================= 1. HOME SCREEN ================= -->
       <div id="homeTab" class="p-4 space-y-4">
-        <div class="relative bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-3xl p-5 text-white shadow-lg overflow-hidden border border-blue-500/30">
+        <div
+          class="relative bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-3xl p-5 text-white shadow-lg overflow-hidden border border-blue-500/30">
           <div class="absolute inset-0 grid-pattern pointer-events-none opacity-60"></div>
           <div class="relative z-10 space-y-3">
-            <span class="inline-block bg-white/20 backdrop-blur-sm text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-md border border-white/25 text-blue-200 uppercase">
+            <span
+              class="inline-block bg-white/20 backdrop-blur-sm text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-md border border-white/25 text-blue-200 uppercase">
               OFFLINE & INSTANT ENGINE
             </span>
             <h1 class="text-xl font-extrabold leading-tight tracking-tight">
@@ -78,7 +97,8 @@
             <p class="text-xs text-blue-100/90 leading-relaxed">
               জমির মাপ ও তলা সংখ্যা দিয়ে তাৎক্ষণিক ম্যাটেরিয়াল ও বাজেট রিপোর্ট তৈরি করুন।
             </p>
-            <button onclick="switchTab('calculator')" class="w-full bg-[#D97706] hover:bg-[#B45309] active:scale-[0.98] text-white font-extrabold py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm mt-1">
+            <button onclick="switchTab('calculator')"
+              class="w-full bg-[#D97706] hover:bg-[#B45309] active:scale-[0.98] text-white font-extrabold py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm mt-1">
               <span>হিসাব শুরু করুন</span>
               <span>→</span>
             </button>
@@ -91,7 +111,8 @@
               <span class="text-amber-600">📈</span>
               <span>আজকের বাজারদর (Live Rates)</span>
             </div>
-            <button onclick="alert('বাজারদর আপনার এলাকা অনুযায়ী যেকোনো সময় পরিবর্তনযোগ্য।')" class="text-xs font-bold text-[#1D4ED8] hover:underline">
+            <button onclick="alert('বাজারদর আপনার এলাকা অনুযায়ী যেকোনো সময় পরিবর্তনযোগ্য।')"
+              class="text-xs font-bold text-[#1D4ED8] hover:underline">
               দাম পরিবর্তন করুন
             </button>
           </div>
@@ -123,30 +144,46 @@
           <div class="font-bold text-sm text-[#17221C]">কুইক মিনি-ক্যালকুলেটর</div>
           <div class="grid grid-cols-2 gap-2.5">
             <!-- 1. Brick Calculator Card -->
-            <div onclick="openMini('brick')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
-              <div class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🧱</div>
-              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">ইটের হিসাব</div>
+            <div onclick="openMini('brick')"
+              class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div
+                class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">
+                🧱</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">ইটের হিসাব
+              </div>
               <div class="text-[11px] text-[#607066] mt-0.5">ওয়াল ও গাঁথুনির ইট</div>
             </div>
 
             <!-- 2. Roof Casting Card -->
-            <div onclick="openMini('roof')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
-              <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🏗️</div>
-              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">ছাদ ঢালাই</div>
+            <div onclick="openMini('roof')"
+              class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div
+                class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">
+                🏗️</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">ছাদ ঢালাই
+              </div>
               <div class="text-[11px] text-[#607066] mt-0.5">সিমেন্ট, বালু ও খোয়া</div>
             </div>
 
             <!-- 3. Plaster Calculator Card -->
-            <div onclick="openMini('plaster')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
-              <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🔨</div>
-              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">প্লাস্টার হিসাব</div>
+            <div onclick="openMini('plaster')"
+              class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div
+                class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">
+                🔨</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">প্লাস্টার
+                হিসাব</div>
               <div class="text-[11px] text-[#607066] mt-0.5">ওয়াল প্লাস্টারের মসলা</div>
             </div>
 
             <!-- 4. Paint Calculator Card -->
-            <div onclick="openMini('paint')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
-              <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🎨</div>
-              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">রঙের হিসাব</div>
+            <div onclick="openMini('paint')"
+              class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div
+                class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">
+                🎨</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">রঙের হিসাব
+              </div>
               <div class="text-[11px] text-[#607066] mt-0.5">ইন্টেরিয়র ও এক্সটেরিয়র</div>
             </div>
           </div>
@@ -155,9 +192,11 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <div class="font-bold text-sm text-[#17221C]">সাম্প্রতিক সেভ করা হিসাব</div>
-            <button onclick="switchTab('saved')" class="text-xs font-bold text-[#1D4ED8] hover:underline">সব দেখুন (১)</button>
+            <button onclick="switchTab('saved')" class="text-xs font-bold text-[#1D4ED8] hover:underline">সব দেখুন
+              (১)</button>
           </div>
-          <div onclick="switchTab('calculator')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-blue-400 transition">
+          <div onclick="switchTab('calculator')"
+            class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-blue-400 transition">
             <div class="flex justify-between items-center text-xs mb-1">
               <span class="font-bold text-[#17221C]">আমার বাড়ি (২ তলা স্ট্যান্ডার্ড)</span>
               <span class="text-[10px] text-[#607066]">আজকের সংরক্ষিত</span>
@@ -188,13 +227,16 @@
           </div>
 
           <div class="flex bg-slate-800/90 rounded-xl p-1 gap-1">
-            <button onclick="setCalcStep(1)" id="tab-step-1" class="flex-1 py-1 px-1 text-[11px] font-bold rounded-lg bg-white text-slate-900 shadow-sm transition">
+            <button onclick="setCalcStep(1)" id="tab-step-1"
+              class="flex-1 py-1 px-1 text-[11px] font-bold rounded-lg bg-white text-slate-900 shadow-sm transition">
               ১. জমি ও কাঠামো
             </button>
-            <button onclick="setCalcStep(2)" id="tab-step-2" class="flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition">
+            <button onclick="setCalcStep(2)" id="tab-step-2"
+              class="flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition">
               ২. নির্মাণের মান
             </button>
-            <button onclick="setCalcStep(3)" id="tab-step-3" class="flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition">
+            <button onclick="setCalcStep(3)" id="tab-step-3"
+              class="flex-1 py-1 px-1 text-[11px] font-medium rounded-lg text-slate-400 hover:text-white transition">
               ৩. বাজারদর
             </button>
           </div>
@@ -206,16 +248,22 @@
             <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
               <div class="flex justify-between items-center">
                 <span class="text-xs font-extrabold text-slate-900">জমির ক্ষেত্রফল (প্রতি ফ্লোর)</span>
-                <span id="calcConvertedBadge" class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">
+                <span id="calcConvertedBadge"
+                  class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">
                   = ১২০০ বর্গফুট
                 </span>
               </div>
               <div class="flex bg-slate-100 rounded-xl p-1 gap-1">
-                <button onclick="setCalcUnit('sqft')" id="unit-sqft" class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-[#1E3A8A] text-white transition">বর্গফুট (Sq.ft)</button>
-                <button onclick="setCalcUnit('katha')" id="unit-katha" class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition">কাঠা (Katha)</button>
-                <button onclick="setCalcUnit('decimal')" id="unit-decimal" class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition">শতাংশ (Dec)</button>
+                <button onclick="setCalcUnit('sqft')" id="unit-sqft"
+                  class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-[#1E3A8A] text-white transition">বর্গফুট
+                  (Sq.ft)</button>
+                <button onclick="setCalcUnit('katha')" id="unit-katha"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition">কাঠা (Katha)</button>
+                <button onclick="setCalcUnit('decimal')" id="unit-decimal"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-600 transition">শতাংশ (Dec)</button>
               </div>
-              <input id="calcAreaInput" type="number" value="1200" oninput="updateCalculation()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-xl font-black text-slate-900 focus:outline-none focus:border-blue-600" />
+              <input id="calcAreaInput" type="number" value="1200" oninput="updateCalculation()"
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-xl font-black text-slate-900 focus:outline-none focus:border-blue-600" />
             </div>
 
             <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
@@ -224,9 +272,11 @@
                 <div class="text-[11px] text-slate-500 mt-0.5">ভবিষ্যতে সর্বোচ্চ যত তলা করবেন</div>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="changeFoundation(-1)" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 text-lg font-bold flex items-center justify-center hover:bg-slate-200">−</button>
+                <button onclick="changeFoundation(-1)"
+                  class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 text-lg font-bold flex items-center justify-center hover:bg-slate-200">−</button>
                 <span id="foundVal" class="text-base font-black text-slate-900 w-5 text-center">৫</span>
-                <button onclick="changeFoundation(1)" class="w-9 h-9 rounded-xl bg-[#1E3A8A] text-white text-lg font-bold flex items-center justify-center hover:bg-blue-900">+</button>
+                <button onclick="changeFoundation(1)"
+                  class="w-9 h-9 rounded-xl bg-[#1E3A8A] text-white text-lg font-bold flex items-center justify-center hover:bg-blue-900">+</button>
               </div>
             </div>
 
@@ -236,13 +286,16 @@
                 <div class="text-[11px] text-slate-500 mt-0.5">বর্তমান বাজেটের জন্য তলা সংখ্যা</div>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="changeFloors(-1)" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 text-lg font-bold flex items-center justify-center hover:bg-slate-200">−</button>
+                <button onclick="changeFloors(-1)"
+                  class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 text-lg font-bold flex items-center justify-center hover:bg-slate-200">−</button>
                 <span id="floorsVal" class="text-base font-black text-slate-900 w-5 text-center">২</span>
-                <button onclick="changeFloors(1)" class="w-9 h-9 rounded-xl bg-[#1E3A8A] text-white text-lg font-bold flex items-center justify-center hover:bg-blue-900">+</button>
+                <button onclick="changeFloors(1)"
+                  class="w-9 h-9 rounded-xl bg-[#1E3A8A] text-white text-lg font-bold flex items-center justify-center hover:bg-blue-900">+</button>
               </div>
             </div>
 
-            <button onclick="setCalcStep(2)" class="w-full bg-[#1E3A8A] hover:bg-blue-900 active:scale-[0.98] text-white font-extrabold py-3 px-4 rounded-xl shadow-md text-xs transition flex items-center justify-center gap-1.5">
+            <button onclick="setCalcStep(2)"
+              class="w-full bg-[#1E3A8A] hover:bg-blue-900 active:scale-[0.98] text-white font-extrabold py-3 px-4 rounded-xl shadow-md text-xs transition flex items-center justify-center gap-1.5">
               <span>পরবর্তী ধাপ: নির্মাণের মান</span>
               <span>→</span>
             </button>
@@ -254,12 +307,16 @@
               আপনার বাজেট ও পছন্দ অনুযায়ী ফিনিশিংয়ের মান নির্বাচন করুন:
             </div>
 
-            <div onclick="setQuality('economy')" id="card-economy" class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition">
+            <div onclick="setQuality('economy')" id="card-economy"
+              class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition">
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-sm font-extrabold text-slate-900">ইকোনমি (Economy)</span>
                 <div class="flex items-center gap-2.5">
-                  <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৳৩০০০ / বর্গফুট</span>
-                  <div id="radio-economy" class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center"></div>
+                  <span
+                    class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৳৩০০০
+                    / বর্গফুট</span>
+                  <div id="radio-economy"
+                    class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center"></div>
                 </div>
               </div>
               <p class="text-[11px] text-slate-500 leading-relaxed">
@@ -267,12 +324,17 @@
               </p>
             </div>
 
-            <div onclick="setQuality('standard')" id="card-standard" class="cursor-pointer bg-white rounded-2xl p-4 border-2 border-[#EA580C] shadow-md transition">
+            <div onclick="setQuality('standard')" id="card-standard"
+              class="cursor-pointer bg-white rounded-2xl p-4 border-2 border-[#EA580C] shadow-md transition">
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-sm font-extrabold text-slate-900">স্ট্যান্ডার্ড (Standard)</span>
                 <div class="flex items-center gap-2.5">
-                  <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৳৩৫০০ / বর্গফুট</span>
-                  <div id="radio-standard" class="w-5 h-5 rounded-full bg-[#EA580C] border-2 border-[#EA580C] flex items-center justify-center text-white text-[11px] font-black">✓</div>
+                  <span
+                    class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৳৩৫০০
+                    / বর্গফুট</span>
+                  <div id="radio-standard"
+                    class="w-5 h-5 rounded-full bg-[#EA580C] border-2 border-[#EA580C] flex items-center justify-center text-white text-[11px] font-black">
+                    ✓</div>
                 </div>
               </div>
               <p class="text-[11px] text-slate-500 leading-relaxed">
@@ -280,12 +342,16 @@
               </p>
             </div>
 
-            <div onclick="setQuality('premium')" id="card-premium" class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition">
+            <div onclick="setQuality('premium')" id="card-premium"
+              class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-slate-300 transition">
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-sm font-extrabold text-slate-900">লাক্সারি (Luxury)</span>
                 <div class="flex items-center gap-2.5">
-                  <span class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-lg">৳৪৫০০ / বর্গফুট</span>
-                  <div id="radio-premium" class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center"></div>
+                  <span
+                    class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-lg">৳৪৫০০
+                    / বর্গফুট</span>
+                  <div id="radio-premium"
+                    class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center"></div>
                 </div>
               </div>
               <p class="text-[11px] text-slate-500 leading-relaxed">
@@ -294,10 +360,12 @@
             </div>
 
             <div class="flex gap-2.5 pt-1">
-              <button onclick="setCalcStep(1)" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-xs transition">
+              <button onclick="setCalcStep(1)"
+                class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-xs transition">
                 — পূর্ববর্তী
               </button>
-              <button onclick="setCalcStep(3)" class="flex-[1.5] bg-[#1E3A8A] hover:bg-blue-900 text-white font-extrabold py-3 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-1.5">
+              <button onclick="setCalcStep(3)"
+                class="flex-[1.5] bg-[#1E3A8A] hover:bg-blue-900 text-white font-extrabold py-3 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-1.5">
                 <span>পরবর্তী: বাজারদর</span>
                 <span>→</span>
               </button>
@@ -317,45 +385,65 @@
               <div class="space-y-2.5">
                 <div class="flex justify-between items-center text-xs">
                   <span class="font-semibold text-slate-800">১ নম্বর ইট (প্রতি পিস)</span>
-                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-brick" type="number" value="12" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input
+                      id="r-brick" type="number" value="12"
+                      class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" />
+                  </div>
                 </div>
                 <div class="flex justify-between items-center text-xs">
                   <span class="font-semibold text-slate-800">সিমেন্ট (প্রতি বস্তা)</span>
-                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-cement" type="number" value="550" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input
+                      id="r-cement" type="number" value="550"
+                      class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" />
+                  </div>
                 </div>
                 <div class="flex justify-between items-center text-xs">
                   <span class="font-semibold text-slate-800">রড 500W (প্রতি টন)</span>
-                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-rod" type="number" value="95000" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-rod"
+                      type="number" value="95000"
+                      class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" />
+                  </div>
                 </div>
                 <div class="flex justify-between items-center text-xs">
                   <span class="font-semibold text-slate-800">বালু ও পাথর (প্রতি সিএফটি)</span>
-                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-sand" type="number" value="50" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-sand"
+                      type="number" value="50"
+                      class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" />
+                  </div>
                 </div>
                 <div class="flex justify-between items-center text-xs">
                   <span class="font-semibold text-slate-800">মিস্ত্রি খরচ (প্রতি বর্গফুট)</span>
-                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input id="r-labor" type="number" value="350" class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" /></div>
+                  <div class="flex items-center gap-2"><span class="text-slate-400 font-bold">৳</span><input
+                      id="r-labor" type="number" value="350"
+                      class="w-24 bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-center font-extrabold text-slate-900" />
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="flex gap-2.5 pt-1">
-              <button onclick="setCalcStep(2)" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3.5 px-3 rounded-xl text-xs transition">
+              <button onclick="setCalcStep(2)"
+                class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3.5 px-3 rounded-xl text-xs transition">
                 — পূর্ববর্তী
               </button>
-              <button onclick="openDetailModal()" class="flex-[1.8] bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-2">
+              <button onclick="openDetailModal()"
+                class="flex-[1.8] bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-2">
                 <span>মোট খরচ হিসাব করুন</span>
-                <span class="w-4 h-4 rounded-full border border-white flex items-center justify-center text-[10px]">✓</span>
+                <span
+                  class="w-4 h-4 rounded-full border border-white flex items-center justify-center text-[10px]">✓</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div class="absolute bottom-0 left-0 right-0 bg-[#0F172A] border-t border-slate-800 p-3.5 px-4 flex justify-between items-center z-20 shadow-2xl">
+        <div
+          class="absolute bottom-0 left-0 right-0 bg-[#0F172A] border-t border-slate-800 p-3.5 px-4 flex justify-between items-center z-20 shadow-2xl">
           <div>
             <div class="text-[11px] text-slate-400">আনুমানিক মোট বাজেট (সহিত)</div>
             <div id="bottomBarTotal" class="text-base font-black text-amber-400 tracking-tight">৳ ৮৪,০০,০০০</div>
           </div>
-          <button onclick="openDetailModal()" class="bg-[#1E293B] hover:bg-slate-700 border border-slate-600 text-white font-bold text-xs py-2 px-3.5 rounded-xl transition">
+          <button onclick="openDetailModal()"
+            class="bg-[#1E293B] hover:bg-slate-700 border border-slate-600 text-white font-bold text-xs py-2 px-3.5 rounded-xl transition">
             বিস্তারিত দেখুন →
           </button>
         </div>
@@ -370,7 +458,8 @@
           </div>
           <div class="flex items-center bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 gap-2">
             <span class="text-xs text-slate-400">🔍</span>
-            <input id="savedSearchInput" oninput="filterSavedProjects()" placeholder="প্রজেক্টের নাম লিখুন..." class="bg-transparent text-xs text-white placeholder-slate-400 flex-1 focus:outline-none" />
+            <input id="savedSearchInput" oninput="filterSavedProjects()" placeholder="প্রজেক্টের নাম লিখুন..."
+              class="bg-transparent text-xs text-white placeholder-slate-400 flex-1 focus:outline-none" />
           </div>
         </div>
 
@@ -384,9 +473,14 @@
               <button onclick="deleteSavedItem(this)" class="text-slate-400 hover:text-red-500 text-sm p-1">🗑️</button>
             </div>
             <div class="flex gap-2 flex-wrap">
-              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">১৮০০ বর্গফুট</span>
-              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">২ তলা নির্মাণ</span>
-              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">Standard</span>
+              <span
+                class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">১৮০০
+                বর্গফুট</span>
+              <span
+                class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">২
+                তলা নির্মাণ</span>
+              <span
+                class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">Standard</span>
             </div>
             <div class="h-px bg-slate-100"></div>
             <div class="flex justify-between items-center">
@@ -394,7 +488,8 @@
                 <div class="text-[10px] text-slate-500">মোট খরচ</div>
                 <div class="text-base font-black text-slate-900 mt-0.5">৳ ৪৭,৯২,৮০০</div>
               </div>
-              <button onclick="showProjectDetail('গ্রামের ডুপ্লেক্স বাড়ি - ২ তলা', '৳ ৪৭,৯২,৮০০')" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs py-2 px-3.5 rounded-xl transition">
+              <button onclick="showProjectDetail('গ্রামের ডুপ্লেক্স বাড়ি - ২ তলা', '৳ ৪৭,৯২,৮০০')"
+                class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs py-2 px-3.5 rounded-xl transition">
                 বিস্তারিত দেখুন —
               </button>
             </div>
@@ -409,9 +504,14 @@
               <button onclick="deleteSavedItem(this)" class="text-slate-400 hover:text-red-500 text-sm p-1">🗑️</button>
             </div>
             <div class="flex gap-2 flex-wrap">
-              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">১২৫০ বর্গফুট</span>
-              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৩ তলা নির্মাণ</span>
-              <span class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">Luxury</span>
+              <span
+                class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">১২৫০
+                বর্গফুট</span>
+              <span
+                class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">৩
+                তলা নির্মাণ</span>
+              <span
+                class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg">Luxury</span>
             </div>
             <div class="h-px bg-slate-100"></div>
             <div class="flex justify-between items-center">
@@ -419,7 +519,8 @@
                 <div class="text-[10px] text-slate-500">মোট খরচ</div>
                 <div class="text-base font-black text-slate-900 mt-0.5">৳ ১,৩৫,৩১,৭৮০</div>
               </div>
-              <button onclick="showProjectDetail('ঢাকা প্লট - ৫ তলা ফাউন্ডেশন', '৳ ১,৩৫,৩১,৭৮০')" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs py-2 px-3.5 rounded-xl transition">
+              <button onclick="showProjectDetail('ঢাকা প্লট - ৫ তলা ফাউন্ডেশন', '৳ ১,৩৫,৩১,৭৮০')"
+                class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs py-2 px-3.5 rounded-xl transition">
                 বিস্তারিত দেখুন —
               </button>
             </div>
@@ -432,31 +533,43 @@
         <!-- Dark Header -->
         <div class="bg-[#0F172A] p-4 text-white space-y-1">
           <h2 class="text-base font-extrabold">নির্মাণ গাইড ও ব্যবহারবিধি</h2>
-          <p class="text-[11px] text-slate-400 leading-tight">ইঞ্জিনিয়ারিং টিপস, খরচ কমানোর কৌশল ও ম্যাটেরিয়াল যাচাই গাইড</p>
+          <p class="text-[11px] text-slate-400 leading-tight">ইঞ্জিনিয়ারিং টিপস, খরচ কমানোর কৌশল ও ম্যাটেরিয়াল যাচাই
+            গাইড</p>
         </div>
 
         <!-- Filter Chips Row -->
         <div class="bg-white border-b border-slate-200 p-2.5">
           <div class="flex gap-2 overflow-x-auto no-scrollbar">
-            <button onclick="filterGuideCategory('all')" id="gchip-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#1E3A8A] text-white">সবগুলো</button>
-            <button onclick="filterGuideCategory('rules')" id="gchip-rules" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">ব্যবহারবিধি</button>
-            <button onclick="filterGuideCategory('tips')" id="gchip-tips" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">খরচ কমানোর টিপস</button>
-            <button onclick="filterGuideCategory('materials')" id="gchip-materials" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">ম্যাটেরিয়াল যাচাই</button>
+            <button onclick="filterGuideCategory('all')" id="gchip-all"
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#1E3A8A] text-white">সবগুলো</button>
+            <button onclick="filterGuideCategory('rules')" id="gchip-rules"
+              class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">ব্যবহারবিধি</button>
+            <button onclick="filterGuideCategory('tips')" id="gchip-tips"
+              class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">খরচ কমানোর
+              টিপস</button>
+            <button onclick="filterGuideCategory('materials')" id="gchip-materials"
+              class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">ম্যাটেরিয়াল
+              যাচাই</button>
           </div>
         </div>
 
         <!-- Guide Articles List (Exact Match 6th Screenshot) -->
         <div class="flex-1 p-4 space-y-3.5 overflow-y-auto no-scrollbar" id="guideArticlesList">
-          
+
           <!-- Card 1: ব্যবহারবিধি -->
           <div class="guide-item gcat-rules bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ব্যবহারবিধি</span>
+              <span
+                class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ব্যবহারবিধি</span>
               <span class="text-[11px] text-slate-400">২ মিনিট পাঠ</span>
             </div>
-            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">১-মিনিট ক্যালকুলেটর ব্যবহারের সঠিক নিয়মাবলী</h3>
-            <p class="text-[11px] text-slate-600 leading-relaxed">কীভাবে জমির মাপ (কাঠা/শতাংশ/বর্গফুট) এবং ফাউন্ডেশন সেট করে নির্ভুল এস্টিমেট বের করবেন।</p>
-            <button onclick="openGuideReader('১-মিনিট ক্যালকুলেটর ব্যবহারের সঠিক নিয়মাবলী', 'ব্যবহারবিধি', '২ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">১-মিনিট ক্যালকুলেটর ব্যবহারের সঠিক নিয়মাবলী
+            </h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">কীভাবে জমির মাপ (কাঠা/শতাংশ/বর্গফুট) এবং ফাউন্ডেশন সেট
+              করে নির্ভুল এস্টিমেট বের করবেন।</p>
+            <button
+              onclick="openGuideReader('১-মিনিট ক্যালকুলেটর ব্যবহারের সঠিক নিয়মাবলী', 'ব্যবহারবিধি', '২ মিনিট পাঠ')"
+              class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
               <span>সম্পূর্ণ গাইড পড়ুন</span>
               <span>→</span>
             </button>
@@ -465,12 +578,18 @@
           <!-- Card 2: খরচ কমানোর টিপস (Active Amber Border) -->
           <div class="guide-item gcat-tips bg-white rounded-2xl p-4 border-2 border-[#F59E0B] shadow-md space-y-2">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">খরচ কমানোর টিপস</span>
+              <span
+                class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">খরচ
+                কমানোর টিপস</span>
               <span class="text-[11px] text-slate-400">৪ মিনিট পাঠ</span>
             </div>
-            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">বাড়ি নির্মাণে খরচ কমানোর ১০টি কার্যকরী উপায় (Bonus Guide)</h3>
-            <p class="text-[11px] text-slate-600 leading-relaxed">কাঠামোর মজবুতি ঠিক রেখেও ১৫-২০% পর্যন্ত নির্মাণ খরচ সাশ্রয় করার ইন্টেলিজেন্ট কৌশল।</p>
-            <button onclick="openGuideReader('বাড়ি নির্মাণে খরচ কমানোর ১০টি কার্যকরী উপায়', 'খরচ কমানোর টিপস', '৪ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">বাড়ি নির্মাণে খরচ কমানোর ১০টি কার্যকরী উপায়
+              (Bonus Guide)</h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">কাঠামোর মজবুতি ঠিক রেখেও ১৫-২০% পর্যন্ত নির্মাণ খরচ
+              সাশ্রয় করার ইন্টেলিজেন্ট কৌশল।</p>
+            <button
+              onclick="openGuideReader('বাড়ি নির্মাণে খরচ কমানোর ১০টি কার্যকরী উপায়', 'খরচ কমানোর টিপস', '৪ মিনিট পাঠ')"
+              class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
               <span>সম্পূর্ণ গাইড পড়ুন</span>
               <span>→</span>
             </button>
@@ -479,12 +598,18 @@
           <!-- Card 3: ম্যাটেরিয়াল যাচাই -->
           <div class="guide-item gcat-materials bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ম্যাটেরিয়াল যাচাই</span>
+              <span
+                class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ম্যাটেরিয়াল
+                যাচাই</span>
               <span class="text-[11px] text-slate-400">৩ মিনিট পাঠ</span>
             </div>
-            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">ভালো মানের ইট, রড ও সিমেন্ট চেনার সহজ উপায়</h3>
-            <p class="text-[11px] text-slate-600 leading-relaxed">নির্মাণ সাইটে মালামাল নামানোর আগে যে পরীক্ষাগুলো অবশ্যই নিজে করে নেবেন।</p>
-            <button onclick="openGuideReader('ভালো মানের ইট, রড ও সিমেন্ট চেনার সহজ উপায়', 'ম্যাটেরিয়াল যাচাই', '৩ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">ভালো মানের ইট, রড ও সিমেন্ট চেনার সহজ উপায়
+            </h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">নির্মাণ সাইটে মালামাল নামানোর আগে যে পরীক্ষাগুলো
+              অবশ্যই নিজে করে নেবেন।</p>
+            <button
+              onclick="openGuideReader('ভালো মানের ইট, রড ও সিমেন্ট চেনার সহজ উপায়', 'ম্যাটেরিয়াল যাচাই', '৩ মিনিট পাঠ')"
+              class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
               <span>সম্পূর্ণ গাইড পড়ুন</span>
               <span>→</span>
             </button>
@@ -493,12 +618,18 @@
           <!-- Card 4: ম্যাটেরিয়াল যাচাই 2 -->
           <div class="guide-item gcat-materials bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ম্যাটেরিয়াল যাচাই</span>
+              <span
+                class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">ম্যাটেরিয়াল
+                যাচাই</span>
               <span class="text-[11px] text-slate-400">৩ মিনিট পাঠ</span>
             </div>
-            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">ফাউন্ডেশন ও ছাদ ঢালাইয়ের গুরুত্বপূর্ণ সতর্কতা</h3>
-            <p class="text-[11px] text-slate-600 leading-relaxed">ছাদ ঢালাই ও কিউরিংয়ের সময় সামান্য ভুলের কারণে ভবিষ্যতে ছাদ চুঁইয়ে পানি পড়তে পারে।</p>
-            <button onclick="openGuideReader('ফাউন্ডেশন ও ছাদ ঢালাইয়ের গুরুত্বপূর্ণ সতর্কতা', 'ম্যাটেরিয়াল যাচাই', '৩ মিনিট পাঠ')" class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
+            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">ফাউন্ডেশন ও ছাদ ঢালাইয়ের গুরুত্বপূর্ণ সতর্কতা
+            </h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">ছাদ ঢালাই ও কিউরিংয়ের সময় সামান্য ভুলের কারণে ভবিষ্যতে
+              ছাদ চুঁইয়ে পানি পড়তে পারে।</p>
+            <button
+              onclick="openGuideReader('ফাউন্ডেশন ও ছাদ ঢালাইয়ের গুরুত্বপূর্ণ সতর্কতা', 'ম্যাটেরিয়াল যাচাই', '৩ মিনিট পাঠ')"
+              class="text-xs font-bold text-[#1D4ED8] hover:underline flex items-center gap-1 pt-1">
               <span>সম্পূর্ণ গাইড পড়ুন</span>
               <span>→</span>
             </button>
@@ -512,48 +643,61 @@
 
     <!-- Bottom Navigation Bar (Exact Replica) -->
     <div class="bg-white border-t border-[#D8E0DB] px-3 py-2 flex justify-around items-center z-10">
-      <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#1E3A8A]">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+      <button onclick="switchTab('home')" id="nav-home"
+        class="flex flex-col items-center py-1 px-3 rounded-lg text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
         <span class="text-[11px] font-extrabold mt-0.5">হোম</span>
         <div class="w-4 h-0.5 bg-[#1E3A8A] rounded-full mt-0.5"></div>
       </button>
 
-      <button onclick="switchTab('calculator')" id="nav-calculator" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      <button onclick="switchTab('calculator')" id="nav-calculator"
+        class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
         <span class="text-[11px] font-semibold mt-0.5">ক্যালকুলেটর</span>
       </button>
 
-      <button onclick="switchTab('saved')" id="nav-saved" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+      <button onclick="switchTab('saved')" id="nav-saved"
+        class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+        </svg>
         <span class="text-[11px] font-semibold mt-0.5">সেভড</span>
       </button>
 
-      <button onclick="switchTab('guide')" id="nav-guide" class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      <button onclick="switchTab('guide')" id="nav-guide"
+        class="flex flex-col items-center py-1 px-3 rounded-lg text-[#607066] hover:text-[#1E3A8A]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
         <span class="text-[11px] font-semibold mt-0.5">গাইড</span>
       </button>
     </div>
 
     <!-- Quick Brick Calculator Modal (Same to same as uploaded screenshot) -->
-    <div id="miniBrickModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
+    <div id="miniBrickModal"
+      class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
       <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
         <!-- Title & Close -->
         <div class="flex justify-between items-center">
           <h3 class="text-base font-extrabold text-[#0F172A]">কুইক ইটের হিসাব (৫ ইঞ্চি দেয়াল)</h3>
-          <button onclick="closeMiniBrickModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
+          <button onclick="closeMiniBrickModal()"
+            class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
         </div>
 
         <!-- Input Section -->
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1.5">ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)</label>
           <div class="relative">
-            <input
-              id="brickAreaInput"
-              type="number"
-              value="1000"
-              oninput="calculateQuickBricks()"
-              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20"
-            />
+            <input id="brickAreaInput" type="number" value="1000" oninput="calculateQuickBricks()"
+              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20" />
           </div>
         </div>
 
@@ -571,32 +715,30 @@
         </div>
 
         <!-- Action Button -->
-        <button onclick="closeMiniBrickModal()" class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
+        <button onclick="closeMiniBrickModal()"
+          class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
           ঠিক আছে
         </button>
       </div>
     </div>
 
     <!-- Quick Roof Casting Calculator Modal (Same to same as uploaded screenshot) -->
-    <div id="miniRoofModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
+    <div id="miniRoofModal"
+      class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
       <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
         <!-- Title & Close -->
         <div class="flex justify-between items-center">
           <h3 class="text-base font-extrabold text-[#0F172A]">কুইক ছাদ ঢালাইয়ের হিসাব (৫ ইঞ্চি পুরু)</h3>
-          <button onclick="closeMiniRoofModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
+          <button onclick="closeMiniRoofModal()"
+            class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
         </div>
 
         <!-- Input Section -->
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1.5">ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)</label>
           <div class="relative">
-            <input
-              id="roofAreaInput"
-              type="number"
-              value="1000"
-              oninput="calculateQuickRoof()"
-              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20"
-            />
+            <input id="roofAreaInput" type="number" value="1000" oninput="calculateQuickRoof()"
+              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20" />
           </div>
         </div>
 
@@ -614,32 +756,30 @@
         </div>
 
         <!-- Action Button -->
-        <button onclick="closeMiniRoofModal()" class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
+        <button onclick="closeMiniRoofModal()"
+          class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
           ঠিক আছে
         </button>
       </div>
     </div>
 
     <!-- Quick Plaster Calculator Modal (Same to same as uploaded screenshot) -->
-    <div id="miniPlasterModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
+    <div id="miniPlasterModal"
+      class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
       <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
         <!-- Title & Close -->
         <div class="flex justify-between items-center">
           <h3 class="text-base font-extrabold text-[#0F172A]">কুইক প্লাস্টারের হিসাব</h3>
-          <button onclick="closeMiniPlasterModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
+          <button onclick="closeMiniPlasterModal()"
+            class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
         </div>
 
         <!-- Input Section -->
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1.5">ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)</label>
           <div class="relative">
-            <input
-              id="plasterAreaInput"
-              type="number"
-              value="1000"
-              oninput="calculateQuickPlaster()"
-              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20"
-            />
+            <input id="plasterAreaInput" type="number" value="1000" oninput="calculateQuickPlaster()"
+              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20" />
           </div>
         </div>
 
@@ -654,32 +794,30 @@
         </div>
 
         <!-- Action Button -->
-        <button onclick="closeMiniPlasterModal()" class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
+        <button onclick="closeMiniPlasterModal()"
+          class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
           ঠিক আছে
         </button>
       </div>
     </div>
 
     <!-- Quick Paint Calculator Modal (Same to same as uploaded screenshot) -->
-    <div id="miniPaintModal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
+    <div id="miniPaintModal"
+      class="hidden absolute inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-5">
       <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
         <!-- Title & Close -->
         <div class="flex justify-between items-center">
           <h3 class="text-base font-extrabold text-[#0F172A]">কুইক রঙের হিসাব</h3>
-          <button onclick="closeMiniPaintModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
+          <button onclick="closeMiniPaintModal()"
+            class="text-slate-400 hover:text-slate-700 text-xl font-bold leading-none">✕</button>
         </div>
 
         <!-- Input Section -->
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1.5">ক্ষেত্রফল দিন (বর্গফুট / Sq.ft)</label>
           <div class="relative">
-            <input
-              id="paintAreaInput"
-              type="number"
-              value="1000"
-              oninput="calculateQuickPaint()"
-              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20"
-            />
+            <input id="paintAreaInput" type="number" value="1000" oninput="calculateQuickPaint()"
+              class="w-full bg-white border-2 border-slate-900 rounded-2xl px-4 py-3 text-lg font-black text-[#0F172A] outline-none shadow-xs focus:ring-2 focus:ring-blue-600/20" />
           </div>
         </div>
 
@@ -694,7 +832,8 @@
         </div>
 
         <!-- Action Button -->
-        <button onclick="closeMiniPaintModal()" class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
+        <button onclick="closeMiniPaintModal()"
+          class="w-full bg-[#1E3A8A] hover:bg-[#1a3275] active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition">
           ঠিক আছে
         </button>
       </div>
@@ -705,24 +844,32 @@
       <div class="bg-white rounded-t-3xl p-5 w-full max-h-[85%] overflow-y-auto space-y-3 shadow-2xl">
         <div class="flex justify-between items-center pb-2 border-b border-slate-100">
           <span id="detailModalProjectTitle" class="text-sm font-extrabold text-slate-900">খরচের বিস্তারিত হিসাব</span>
-          <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+          <button onclick="closeDetailModal()"
+            class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
         </div>
         <div class="bg-slate-900 text-white p-4 rounded-2xl text-center">
           <div class="text-[10px] text-slate-400 uppercase tracking-widest">মোট আনুমানিক খরচ</div>
           <div id="modalTotal" class="text-2xl font-black text-amber-400 mt-0.5">৳ ৮৪,০০,০০০</div>
         </div>
         <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
-          <div class="flex justify-between"><span class="text-slate-600">স্ট্রাকচার (৫০%):</span><span id="mStruct" class="font-bold">৳ ৪২,০০,০০০</span></div>
-          <div class="flex justify-between"><span class="text-slate-600">ফিনিশিং (৩০%):</span><span id="mFinish" class="font-bold">৳ ২৫,২০,০০০</span></div>
-          <div class="flex justify-between"><span class="text-slate-600">ইলেক্ট্রিক্যাল (১০%):</span><span id="mElec" class="font-bold">৳ ৮,৪০,০০০</span></div>
-          <div class="flex justify-between"><span class="text-slate-600">প্লাম্বিং (১০%):</span><span id="mPlumb" class="font-bold">৳ ৮,৪০,০০০</span></div>
-          <div class="flex justify-between text-green-700 font-bold border-t border-slate-200 pt-1"><span>সম্ভাব্য সাশ্রয় (১০%):</span><span id="mSave">৳ ৮,৪০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">স্ট্রাকচার (৫০%):</span><span id="mStruct"
+              class="font-bold">৳ ৪২,০০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">ফিনিশিং (৩০%):</span><span id="mFinish"
+              class="font-bold">৳ ২৫,২০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">ইলেক্ট্রিক্যাল (১০%):</span><span id="mElec"
+              class="font-bold">৳ ৮,৪০,০০০</span></div>
+          <div class="flex justify-between"><span class="text-slate-600">প্লাম্বিং (১০%):</span><span id="mPlumb"
+              class="font-bold">৳ ৮,৪০,০০০</span></div>
+          <div class="flex justify-between text-green-700 font-bold border-t border-slate-200 pt-1"><span>সম্ভাব্য
+              সাশ্রয় (১০%):</span><span id="mSave">৳ ৮,৪০,০০০</span></div>
         </div>
         <div class="flex gap-2 pt-1">
-          <button onclick="saveCurrentProjectFromModal()" class="flex-1 bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white text-xs font-bold py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-1.5">
+          <button onclick="saveCurrentProjectFromModal()"
+            class="flex-1 bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white text-xs font-bold py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-1.5">
             <span>💾 প্রজেক্ট সেভ করুন</span>
           </button>
-          <button onclick="closeDetailModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
+          <button onclick="closeDetailModal()"
+            class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
             বন্ধ করুন
           </button>
         </div>
@@ -734,14 +881,17 @@
       <div class="bg-white rounded-t-3xl p-5 w-full max-h-[85%] overflow-y-auto space-y-3 shadow-2xl">
         <div class="flex justify-between items-start pb-2 border-b border-slate-100">
           <div>
-            <span id="readerCatBadge" class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">গাইড</span>
+            <span id="readerCatBadge"
+              class="text-[10px] font-extrabold text-[#B45309] bg-[#FEF3C7] border border-[#FDE68A] px-2 py-0.5 rounded-md">গাইড</span>
             <h3 id="readerTitle" class="text-sm font-extrabold text-slate-900 mt-1">গাইড শিরোনাম</h3>
           </div>
-          <button onclick="closeGuideReader()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+          <button onclick="closeGuideReader()"
+            class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
         </div>
         <div id="readerContent" class="text-xs text-slate-700 space-y-2 leading-relaxed">
         </div>
-        <button onclick="closeGuideReader()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
+        <button onclick="closeGuideReader()"
+          class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 rounded-xl">
           বন্ধ করুন
         </button>
       </div>
@@ -752,7 +902,8 @@
       <div class="bg-white rounded-t-3xl p-5 w-full max-h-[85%] overflow-y-auto space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center pb-2 border-b border-slate-100">
           <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center justify-center text-sm border border-emerald-300">
+            <div
+              class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center justify-center text-sm border border-emerald-300">
               👤
             </div>
             <div>
@@ -762,7 +913,8 @@
               </div>
             </div>
           </div>
-          <button onclick="closeAccountModal()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+          <button onclick="closeAccountModal()"
+            class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
         </div>
 
         <div class="grid grid-cols-2 gap-2 text-xs">
@@ -776,12 +928,44 @@
           </div>
         </div>
 
-        <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200/70 text-xs">
-          <div class="font-bold text-emerald-950 mb-1">🏠 বাড়ি নির্মাণ হিসাব অ্যাপ</div>
-          <p class="text-[11px] text-emerald-800 leading-relaxed">আপনার অ্যাকাউন্ট দিয়ে হিসাব সংরক্ষণ, রিপোর্ট তৈরি ও যে কোনো সময় ডাটা ক্লাউডে সুরক্ষিত থাকবে।</p>
+        <!-- App Language Selection Card (বাংলা নাকি English?) -->
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+              <span class="text-sm">🌐</span>
+              <span>অ্যাপের ভাষা নির্বাচন করুন</span>
+            </div>
+            <span class="text-[10px] text-slate-500 font-medium">বাংলা নাকি English?</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setAppLanguage('bn')" id="accLangBtnBn"
+              class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-blue-900 bg-blue-900 text-white font-extrabold text-xs shadow-sm transition-all">
+              <span class="flex items-center gap-1.5">
+                <span>🇧🇩</span>
+                <span>বাংলা</span>
+              </span>
+              <span id="accLangCheckBn" class="text-xs font-black">✓</span>
+            </button>
+            <button onclick="setAppLanguage('en')" id="accLangBtnEn"
+              class="flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-100 transition-all">
+              <span class="flex items-center gap-1.5">
+                <span>🇬🇧</span>
+                <span>English</span>
+              </span>
+              <span id="accLangCheckEn" class="text-xs font-black hidden">✓</span>
+            </button>
+          </div>
         </div>
 
-        <button onclick="handleLogout()" class="w-full bg-rose-50 hover:bg-rose-100 active:scale-98 text-rose-700 font-extrabold text-xs py-3 rounded-xl border border-rose-200 flex items-center justify-center gap-2 transition">
+        <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200/70 text-xs">
+          <div class="font-bold text-emerald-950 mb-1">🏠 বাড়ি নির্মাণ হিসাব অ্যাপ</div>
+          <p class="text-[11px] text-emerald-800 leading-relaxed">আপনার অ্যাকাউন্ট দিয়ে হিসাব সংরক্ষণ, রিপোর্ট তৈরি ও যে
+            কোনো সময় ডাটা ক্লাউডে সুরক্ষিত থাকবে।</p>
+        </div>
+
+        <button onclick="handleLogout()"
+          class="w-full bg-rose-50 hover:bg-rose-100 active:scale-98 text-rose-700 font-extrabold text-xs py-3 rounded-xl border border-rose-200 flex items-center justify-center gap-2 transition">
           <span>🚪 লগআউট করুন</span>
         </button>
       </div>
@@ -790,25 +974,28 @@
     <!-- Login / Auth Screen (Shown 1st by default - Same to same design) -->
     <div id="authModal" class="absolute inset-0 bg-[#0F172A] z-50 flex flex-col overflow-y-auto">
       <!-- Blueprint Grid Background Pattern & Dark Hero Section -->
-      <div class="relative pt-8 pb-7 px-6 flex flex-col items-center bg-[#0F172A]" style="background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 22px 22px;">
-        
+      <div class="relative pt-8 pb-7 px-6 flex flex-col items-center bg-[#0F172A]"
+        style="background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 22px 22px;">
+
         <!-- Center House & Calculator Icon with Glowing Golden Border -->
-        <div class="relative p-1 rounded-2xl border-[1.5px] border-amber-500 shadow-[0_0_16px_rgba(245,158,11,0.45)] bg-[#111827] mb-3">
+        <div
+          class="relative p-1 rounded-2xl border-[1.5px] border-amber-500 shadow-[0_0_16px_rgba(245,158,11,0.45)] bg-[#111827] mb-3">
           <svg class="w-12 h-12" viewBox="0 0 40 40" fill="none">
             <!-- Chimney & Roof Peak -->
-            <path d="M11 12V8h3v2" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
-            <path d="M6 17L20 6l14 11" stroke="#F59E0B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11 12V8h3v2" stroke="#EA580C" stroke-width="2" stroke-linecap="round" />
+            <path d="M6 17L20 6l14 11" stroke="#F59E0B" stroke-width="2.6" stroke-linecap="round"
+              stroke-linejoin="round" />
             <!-- Calculator Body -->
-            <rect x="11" y="15" width="18" height="19" rx="3" stroke="#FFFFFF" stroke-width="2" fill="#1E293B"/>
+            <rect x="11" y="15" width="18" height="19" rx="3" stroke="#FFFFFF" stroke-width="2" fill="#1E293B" />
             <!-- Screen -->
-            <rect x="14" y="18" width="12" height="4" rx="1" fill="#F59E0B"/>
+            <rect x="14" y="18" width="12" height="4" rx="1" fill="#F59E0B" />
             <!-- Buttons -->
-            <circle cx="15.5" cy="26" r="1.2" fill="#FFFFFF"/>
-            <circle cx="20" cy="26" r="1.2" fill="#FFFFFF"/>
-            <circle cx="24.5" cy="26" r="1.2" fill="#FFFFFF"/>
-            <circle cx="15.5" cy="30" r="1.2" fill="#FFFFFF"/>
-            <circle cx="20" cy="30" r="1.2" fill="#FFFFFF"/>
-            <circle cx="24.5" cy="30" r="1.2" fill="#EA580C"/>
+            <circle cx="15.5" cy="26" r="1.2" fill="#FFFFFF" />
+            <circle cx="20" cy="26" r="1.2" fill="#FFFFFF" />
+            <circle cx="24.5" cy="26" r="1.2" fill="#FFFFFF" />
+            <circle cx="15.5" cy="30" r="1.2" fill="#FFFFFF" />
+            <circle cx="20" cy="30" r="1.2" fill="#FFFFFF" />
+            <circle cx="24.5" cy="30" r="1.2" fill="#EA580C" />
           </svg>
         </div>
 
@@ -822,10 +1009,12 @@
         <div>
           <!-- Segmented Tab: লগইন | নতুন অ্যাকাউন্ট -->
           <div class="flex bg-[#F1F5F9] p-1 rounded-2xl mb-5">
-            <button id="authTabLogin" onclick="setAuthMode('login')" class="flex-1 py-2.5 rounded-xl text-xs font-black bg-[#0F172A] text-white shadow-sm transition">
+            <button id="authTabLogin" onclick="setAuthMode('login')"
+              class="flex-1 py-2.5 rounded-xl text-xs font-black bg-[#0F172A] text-white shadow-sm transition">
               লগইন
             </button>
-            <button id="authTabRegister" onclick="setAuthMode('register')" class="flex-1 py-2.5 rounded-xl text-xs font-black text-slate-600 hover:text-slate-900 transition">
+            <button id="authTabRegister" onclick="setAuthMode('register')"
+              class="flex-1 py-2.5 rounded-xl text-xs font-black text-slate-600 hover:text-slate-900 transition">
               নতুন অ্যাকাউন্ট
             </button>
           </div>
@@ -835,28 +1024,36 @@
             <!-- Email / Mobile -->
             <div>
               <label class="block text-xs font-bold text-slate-800 mb-1.5">ইমেইল অথবা মোবাইল নম্বর</label>
-              <div class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
+              <div
+                class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
                 <span class="text-slate-400 mr-2.5 text-base">👤</span>
-                <input id="authEmailInput" type="text" value="bijoysarker0171@gmail.com" placeholder="example@email.com বা 017XXXXXXXX" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+                <input id="authEmailInput" type="text" value="bijoysarker0171@gmail.com"
+                  placeholder="example@email.com বা 017XXXXXXXX"
+                  class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
               </div>
             </div>
 
             <!-- Password -->
             <div>
               <label class="block text-xs font-bold text-slate-800 mb-1.5">পাসওয়ার্ড</label>
-              <div class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
+              <div
+                class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
                 <span class="text-slate-400 mr-2.5 text-base">🔒</span>
-                <input id="authPassInput" type="password" value="123456" placeholder="আপনার পাসওয়ার্ড লিখুন" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
-                <button type="button" onclick="toggleAuthPassVisibility()" class="text-slate-400 hover:text-slate-600 text-sm ml-1">👁️</button>
+                <input id="authPassInput" type="password" value="123456" placeholder="আপনার পাসওয়ার্ড লিখুন"
+                  class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+                <button type="button" onclick="toggleAuthPassVisibility()"
+                  class="text-slate-400 hover:text-slate-600 text-sm ml-1">👁️</button>
               </div>
             </div>
 
             <!-- Confirm Password (hidden by default) -->
             <div id="authConfirmPassWrap" class="hidden">
               <label class="block text-xs font-bold text-slate-800 mb-1.5">পাসওয়ার্ড নিশ্চিত করুন</label>
-              <div class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
+              <div
+                class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
                 <span class="text-slate-400 mr-2.5 text-base">🔒</span>
-                <input id="authConfirmPassInput" type="password" placeholder="আবার পাসওয়ার্ড লিখুন" class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
+                <input id="authConfirmPassInput" type="password" placeholder="আবার পাসওয়ার্ড লিখুন"
+                  class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
               </div>
             </div>
 
@@ -866,13 +1063,15 @@
                 <input type="checkbox" checked class="accent-[#EA580C] w-4 h-4 rounded cursor-pointer" />
                 <span class="text-xs font-bold text-slate-800 ml-2">মনে রাখুন</span>
               </label>
-              <button onclick="alert('আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠানো হবে।')" class="text-xs font-bold text-[#EA580C] hover:underline">
+              <button onclick="alert('আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠানো হবে।')"
+                class="text-xs font-bold text-[#EA580C] hover:underline">
                 পাসওয়ার্ড ভুলে গেছেন?
               </button>
             </div>
 
             <!-- Main Action Button -->
-            <button id="authSubmitBtn" onclick="handleAuthSubmit()" class="w-full bg-[#EA580C] hover:bg-[#d94e07] active:scale-[0.99] text-white font-black text-sm py-3.5 rounded-2xl shadow-lg shadow-orange-500/30 transition flex items-center justify-center gap-2 mt-1">
+            <button id="authSubmitBtn" onclick="handleAuthSubmit()"
+              class="w-full bg-[#EA580C] hover:bg-[#d94e07] active:scale-[0.99] text-white font-black text-sm py-3.5 rounded-2xl shadow-lg shadow-orange-500/30 transition flex items-center justify-center gap-2 mt-1">
               <span id="authSubmitText">লগইন করুন</span>
               <span class="text-base font-black">➔</span>
             </button>
@@ -885,12 +1084,17 @@
             </div>
 
             <!-- Google Social Login -->
-            <button onclick="alert('Google সাইন ইন: Supabase OAuth কনফিগারেশন সক্রিয় করার পর এটি কাজ করবে।')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-[#0F172A] font-bold text-xs py-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-xs transition">
+            <button onclick="alert('Google সাইন ইন: Supabase OAuth কনফিগারেশন সক্রিয় করার পর এটি কাজ করবে।')"
+              class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-[#0F172A] font-bold text-xs py-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-xs transition">
               <svg class="w-4 h-4" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                <path fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                <path fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
               </svg>
               <span>Google দিয়ে চালিয়ে যান</span>
             </button>
@@ -899,12 +1103,14 @@
 
         <!-- Footer Badges & Legal -->
         <div class="pt-5 flex flex-col items-center">
-          <div class="inline-flex items-center gap-1.5 bg-[#EBF1F6] border border-slate-200/60 px-3.5 py-1.5 rounded-full mb-2.5">
+          <div
+            class="inline-flex items-center gap-1.5 bg-[#EBF1F6] border border-slate-200/60 px-3.5 py-1.5 rounded-full mb-2.5">
             <span class="text-xs">🛡️</span>
             <span class="text-[11px] font-bold text-slate-700">ইট, বালু, সিমেন্ট ও রডের রিয়েল-টাইম হিসাব</span>
           </div>
           <p class="text-[10px] text-slate-500 text-center leading-relaxed">
-            চালিয়ে যাওয়ার মাধ্যমে আপনি আমাদের <span class="underline cursor-pointer">শর্তাবলী</span> ও <span class="underline cursor-pointer">গোপনীয়তা নীতিতে</span> সম্মত হচ্ছেন।
+            চালিয়ে যাওয়ার মাধ্যমে আপনি আমাদের <span class="underline cursor-pointer">শর্তাবলী</span> ও <span
+              class="underline cursor-pointer">গোপনীয়তা নীতিতে</span> সম্মত হচ্ছেন।
           </p>
         </div>
       </div>
@@ -1007,7 +1213,9 @@
         'ডিভাইস স্ট্যাটাস': 'Device Status',
         'বাইন্ডেড (Active)': 'Bound (Active)',
         'ফুল সিস্টেম অ্যাক্সেস': 'Full System Access',
-        'সুপার অ্যাডমিন (Admin)': 'Super Admin'
+        'সুপার অ্যাডমিন (Admin)': 'Super Admin',
+        'অ্যাপের ভাষা নির্বাচন করুন': 'Select App Language',
+        'বাংলা নাকি English?': 'Bangla or English?'
       }
     };
 
@@ -1026,6 +1234,24 @@
         } else {
           btnBn.className = 'text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#1E3A8A] text-white shadow-xs transition';
           btnEn.className = 'text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-500 hover:text-slate-800 transition';
+        }
+      }
+
+      const accBtnBn = document.getElementById('accLangBtnBn');
+      const accBtnEn = document.getElementById('accLangBtnEn');
+      const checkBn = document.getElementById('accLangCheckBn');
+      const checkEn = document.getElementById('accLangCheckEn');
+      if (accBtnBn && accBtnEn) {
+        if (lang === 'en') {
+          accBtnEn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl border border-blue-900 bg-blue-900 text-white font-extrabold text-xs shadow-sm transition-all';
+          accBtnBn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-100 transition-all';
+          if (checkEn) checkEn.classList.remove('hidden');
+          if (checkBn) checkBn.classList.add('hidden');
+        } else {
+          accBtnBn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl border border-blue-900 bg-blue-900 text-white font-extrabold text-xs shadow-sm transition-all';
+          accBtnEn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-100 transition-all';
+          if (checkBn) checkBn.classList.remove('hidden');
+          if (checkEn) checkEn.classList.add('hidden');
         }
       }
 
@@ -1159,6 +1385,7 @@
           calculateQuickPlaster();
         }
       } else if (type === 'paint') {
+        alert('রঙের হিসাব: প্রতি ১ লিটার রঙে প্রায় ১১০-১২০ বর্গফুট দেয়াল কভার করা যায় (২ কোট)।');
         const modal = document.getElementById('miniPaintModal');
         if (modal) {
           modal.classList.remove('hidden');
@@ -1370,7 +1597,7 @@
     function openGuideReader(title, cat, time) {
       document.getElementById('readerCatBadge').innerText = cat + ' • ' + time;
       document.getElementById('readerTitle').innerText = title;
-      
+
       let html = '';
       if (title.includes('১০টি কার্যকরী উপায়')) {
         html = `
@@ -1456,7 +1683,7 @@
       if (window.supabase && window.supabase.createClient) {
         sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
-    } catch(e) {
+    } catch (e) {
       console.warn('Supabase initialization fallback:', e);
     }
 
@@ -1511,6 +1738,7 @@
     }
 
     function openAccountModal() {
+      setAppLanguage(currentAppLang);
       document.getElementById('accountModal').classList.remove('hidden');
     }
 
@@ -1578,7 +1806,7 @@
 
     async function handleLogout() {
       if (sbClient) {
-        try { await sbClient.auth.signOut(); } catch(e) {}
+        try { await sbClient.auth.signOut(); } catch (e) { }
       }
       localStorage.removeItem('homexbd_user_email');
       currentUserEmail = null;
@@ -1636,8 +1864,9 @@
           savedProjects = stored;
           renderSavedProjects();
         }
-      } catch(e) {}
+      } catch (e) { }
     }
   </script>
 </body>
+
 </html>

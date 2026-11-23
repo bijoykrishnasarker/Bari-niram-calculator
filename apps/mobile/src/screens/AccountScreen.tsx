@@ -30,7 +30,7 @@ export function AccountScreen({
   refreshAccount(): Promise<void>;
   onClose?: () => void;
 }) {
-  useLanguage();
+  const { language, setLanguage } = useLanguage();
   const auth = useAuth();
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(false);
@@ -150,6 +150,86 @@ export function AccountScreen({
           >
             <Text style={styles.refreshBtnText}>🔄 স্ট্যাটাস রিফ্রেশ করুন</Text>
           </Pressable>
+        </View>
+
+        {/* Language Selection Card */}
+        <View style={styles.card}>
+          <View style={styles.sectionHeaderRow}>
+            <Text style={styles.cardHeaderTitle}>🌐 অ্যাপের ভাষা (App Language)</Text>
+            <Text style={styles.sectionSubtitle}>বাংলা নাকি English?</Text>
+          </View>
+
+          <View style={styles.langGrid}>
+            <Pressable
+              onPress={() => setLanguage('bn')}
+              style={[
+                styles.langOptionBtn,
+                language === 'bn' && styles.langOptionBtnActive,
+              ]}
+            >
+              <View style={styles.langOptionContent}>
+                <Text style={styles.langFlag}>🇧🇩</Text>
+                <View>
+                  <Text
+                    style={[
+                      styles.langOptionTitle,
+                      language === 'bn' && styles.langOptionTitleActive,
+                    ]}
+                  >
+                    বাংলা
+                  </Text>
+                  <Text
+                    style={[
+                      styles.langOptionSub,
+                      language === 'bn' && styles.langOptionSubActive,
+                    ]}
+                  >
+                    Bengali
+                  </Text>
+                </View>
+              </View>
+              {language === 'bn' && (
+                <View style={styles.langCheckBadge}>
+                  <Text style={styles.langCheckText}>✓</Text>
+                </View>
+              )}
+            </Pressable>
+
+            <Pressable
+              onPress={() => setLanguage('en')}
+              style={[
+                styles.langOptionBtn,
+                language === 'en' && styles.langOptionBtnActive,
+              ]}
+            >
+              <View style={styles.langOptionContent}>
+                <Text style={styles.langFlag}>🇬🇧</Text>
+                <View>
+                  <Text
+                    style={[
+                      styles.langOptionTitle,
+                      language === 'en' && styles.langOptionTitleActive,
+                    ]}
+                  >
+                    English
+                  </Text>
+                  <Text
+                    style={[
+                      styles.langOptionSub,
+                      language === 'en' && styles.langOptionSubActive,
+                    ]}
+                  >
+                    ইংরেজি
+                  </Text>
+                </View>
+              </View>
+              {language === 'en' && (
+                <View style={styles.langCheckBadge}>
+                  <Text style={styles.langCheckText}>✓</Text>
+                </View>
+              )}
+            </Pressable>
+          </View>
         </View>
 
         {/* Cloud Projects (Premium Only) */}
@@ -437,5 +517,73 @@ const styles = StyleSheet.create({
     color: '#DC2626',
     fontSize: 13,
     fontWeight: '800',
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  sectionSubtitle: {
+    fontSize: 11,
+    color: '#64748B',
+    fontWeight: '600',
+  },
+  langGrid: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  langOptionBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  langOptionBtnActive: {
+    backgroundColor: '#1E3A8A',
+    borderColor: '#1E3A8A',
+  },
+  langOptionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  langFlag: {
+    fontSize: 18,
+  },
+  langOptionTitle: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#0F172A',
+  },
+  langOptionTitleActive: {
+    color: '#FFFFFF',
+  },
+  langOptionSub: {
+    fontSize: 10,
+    color: '#64748B',
+    fontWeight: '600',
+  },
+  langOptionSubActive: {
+    color: '#93C5FD',
+  },
+  langCheckBadge: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  langCheckText: {
+    color: '#1E3A8A',
+    fontSize: 11,
+    fontWeight: '900',
   },
 });
