@@ -116,24 +116,31 @@
         <div class="space-y-2">
           <div class="font-bold text-sm text-[#17221C]">কুইক মিনি-ক্যালকুলেটর</div>
           <div class="grid grid-cols-2 gap-2.5">
-            <div onclick="openMini('brick')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-amber-400 active:scale-[0.98] transition">
-              <div class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-lg mb-2">🧱</div>
-              <div class="text-sm font-extrabold text-[#17221C]">ইটের হিসাব</div>
+            <!-- 1. Brick Calculator Card -->
+            <div onclick="openMini('brick')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🧱</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">ইটের হিসাব</div>
               <div class="text-[11px] text-[#607066] mt-0.5">ওয়াল ও গাঁথুনির ইট</div>
             </div>
-            <div onclick="openMini('roof')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-amber-300 shadow-sm hover:border-amber-500 active:scale-[0.98] transition">
-              <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg mb-2">🏗️</div>
-              <div class="text-sm font-extrabold text-[#17221C]">ছাদ ঢালাই</div>
+
+            <!-- 2. Roof Casting Card -->
+            <div onclick="openMini('roof')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🏗️</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">ছাদ ঢালাই</div>
               <div class="text-[11px] text-[#607066] mt-0.5">সিমেন্ট, বালু ও খোয়া</div>
             </div>
-            <div onclick="openMini('plaster')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-green-400 active:scale-[0.98] transition">
-              <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg mb-2">🔨</div>
-              <div class="text-sm font-extrabold text-[#17221C]">প্লাস্টার হিসাব</div>
+
+            <!-- 3. Plaster Calculator Card -->
+            <div onclick="openMini('plaster')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🔨</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">প্লাস্টার হিসাব</div>
               <div class="text-[11px] text-[#607066] mt-0.5">ওয়াল প্লাস্টারের মসলা</div>
             </div>
-            <div onclick="openMini('paint')" class="cursor-pointer bg-white rounded-2xl p-3.5 border border-[#D8E0DB] shadow-sm hover:border-purple-400 active:scale-[0.98] transition">
-              <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-lg mb-2">🎨</div>
-              <div class="text-sm font-extrabold text-[#17221C]">রঙের হিসাব</div>
+
+            <!-- 4. Paint Calculator Card -->
+            <div onclick="openMini('paint')" class="cursor-pointer bg-white rounded-2xl p-3.5 border-2 border-slate-200/80 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/15 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 group">
+              <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🎨</div>
+              <div class="text-sm font-extrabold text-[#17221C] group-hover:text-amber-800 transition-colors">রঙের হিসাব</div>
               <div class="text-[11px] text-[#607066] mt-0.5">ইন্টেরিয়র ও এক্সটেরিয়র</div>
             </div>
           </div>

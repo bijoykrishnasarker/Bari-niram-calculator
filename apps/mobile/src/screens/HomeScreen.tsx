@@ -204,7 +204,6 @@ export function HomeScreen({
           onPress={() => setActiveMini('roof')}
           style={({ pressed }) => [
             styles.miniCard,
-            styles.miniCardRoof,
             pressed && styles.cardPressed,
           ]}
         >
@@ -642,21 +641,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderRadius: 18,
     padding: 14,
-    borderWidth: 1,
-    borderColor: colors.border,
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 3,
     elevation: 1,
   },
-  miniCardRoof: {
-    borderColor: '#FCD34D',
-    borderWidth: 1.5,
-  },
   cardPressed: {
-    opacity: 0.9,
+    borderColor: '#F59E0B',
+    borderWidth: 2,
     transform: [{ scale: 0.98 }],
+    shadowColor: '#F59E0B',
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
   },
   miniIconBox: {
     width: 38,
