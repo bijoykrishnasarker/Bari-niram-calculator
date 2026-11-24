@@ -151,24 +151,15 @@ export function PremiumScreen({
             </Card>
           ) : (
             <Card>
-              <Heading>bKash পেমেন্ট</Heading>
-              {config?.premium.configured ? (
-                <>
-                  <KeyValue
-                    label="bKash account"
-                    value={config.premium.accountNumber ?? ''}
-                  />
-                  <KeyValue
-                    label="সঠিক amount"
-                    value={formatBdt(config.premium.amountBdt)}
-                  />
-                </>
-              ) : (
-                <Notice tone="warning">
-                  bKash account number এখনও backend-এ configure করা হয়নি। পেমেন্ট
-                  পাঠাবেন না।
-                </Notice>
-              )}
+              <Heading>bKash পেমেন্ট (Send Money)</Heading>
+              <KeyValue
+                label="bKash account"
+                value={config?.premium.accountNumber || '01867884361'}
+              />
+              <KeyValue
+                label="সঠিক amount"
+                value={formatBdt(config?.premium.amountBdt || PREMIUM_PRICE_BDT)}
+              />
               <Field
                 keyboardType="number-pad"
                 label="আপনি যে amount পাঠিয়েছেন"

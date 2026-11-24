@@ -67,8 +67,8 @@
           <span>⚙️</span>
           <span>অ্যাডমিন</span>
         </button>
-        <span id="planBadge"
-          class="cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
+        <span id="planBadge" onclick="handlePlanBadgeClick()"
+          class="cursor-pointer text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
           Free
         </span>
         <span id="navUserLabel" onclick="handleNavAccountClick()"
@@ -984,6 +984,90 @@
           class="w-full bg-rose-50 hover:bg-rose-100 active:scale-98 text-rose-700 font-extrabold text-xs py-3 rounded-xl border border-rose-200 flex items-center justify-center gap-2 transition">
           <span>🚪 লগআউট করুন</span>
         </button>
+      </div>
+    </div>
+
+    <!-- Premium Upgrade & Manual bKash Payment Modal -->
+    <div id="premiumModal" class="hidden absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-end">
+      <div class="bg-white rounded-t-3xl p-5 w-full max-h-[92%] overflow-y-auto space-y-4 shadow-2xl">
+        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-black text-sm shadow-xs">
+              ★
+            </div>
+            <div>
+              <h2 class="text-sm font-extrabold text-slate-900">লাইফটাইম প্রিমিয়াম অ্যাক্সেস</h2>
+              <p class="text-[10px] text-amber-600 font-bold">এককালীন মাত্র ৯৯ টাকা • আজীবনের জন্য</p>
+            </div>
+          </div>
+          <button onclick="closePremiumModal()" class="text-slate-400 hover:text-slate-700 font-bold text-base">✕</button>
+        </div>
+
+        <!-- Manual bKash Payment Information Card -->
+        <div class="bg-gradient-to-br from-pink-50 via-rose-50/50 to-pink-50 p-4 rounded-2xl border border-pink-200/80 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 font-black text-xs text-pink-900">
+              <span class="text-base">📱</span>
+              <span>ম্যানুয়াল বিকাশ (bKash) পেমেন্ট</span>
+            </div>
+            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-pink-600 text-white">Send Money</span>
+          </div>
+
+          <!-- bKash Number Highlight Box -->
+          <div class="bg-white p-3 rounded-xl border border-pink-200 flex items-center justify-between shadow-xs">
+            <div>
+              <span class="text-[10px] text-pink-700 font-bold uppercase tracking-wider">বিকাশ পার্সোনাল নম্বর:</span>
+              <div class="text-base font-black text-pink-950 font-mono tracking-wider mt-0.5">01867884361</div>
+            </div>
+            <button onclick="copyBkashNumber()" id="copyBkashBtn"
+              class="px-2.5 py-1.5 bg-pink-100 hover:bg-pink-200 active:scale-95 text-pink-800 rounded-lg text-[11px] font-bold border border-pink-300 transition flex items-center gap-1">
+              <span>📋</span>
+              <span id="copyBkashText">কপি করুন</span>
+            </button>
+          </div>
+
+          <div class="bg-white/80 p-2.5 rounded-xl border border-pink-100 space-y-1 text-[11px] text-slate-700">
+            <div class="flex justify-between font-bold">
+              <span>নির্ধারিত ফি:</span>
+              <span class="text-pink-700 font-extrabold">৳ ৯৯ (এককালীন)</span>
+            </div>
+            <div class="flex justify-between font-bold">
+              <span>পেমেন্টের ধরন:</span>
+              <span class="text-slate-800">Send Money (সেন্ড মানি)</span>
+            </div>
+          </div>
+
+          <div class="text-[10px] text-pink-900 space-y-1 leading-relaxed bg-pink-100/60 p-2.5 rounded-xl border border-pink-200/60">
+            <div class="font-bold text-pink-950">📌 পেমেন্ট করার ধাপসমূহ:</div>
+            <div>১. আপনার বিকাশ অ্যাপ থেকে <b>01867884361</b> নম্বরে ৯৯ টাকা সেন্ড মানি করুন।</div>
+            <div>২. সফল হওয়ার পর মেসেজ বা অ্যাপ থেকে TrxID এবং আপনার বিকাশ নম্বরটি কপি করুন।</div>
+            <div>৩. নিচের ফর্মে তথ্য দিয়ে সাবমিট করুন। অ্যাডমিন স্টেটমেন্ট মিলিয়ে অনুমোদন করবেন।</div>
+          </div>
+        </div>
+
+        <!-- Submission Form -->
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <div class="font-bold text-slate-800 text-xs pb-1 border-b border-slate-200">
+            পেমেন্ট ভেরিফিকেশন তথ্য
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700">আপনার বিকাশ মোবাইল নম্বর (যেখান থেকে পাঠিয়েছেন):</label>
+            <input id="paySenderPhone" type="tel" placeholder="01XXXXXXXXX"
+              class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:border-pink-500 outline-none" />
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700">বিকাশ ট্রানজেকশন আইডি (TrxID):</label>
+            <input id="payTrxId" type="text" placeholder="যেমন: 9K48LP2M1B"
+              class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold font-mono text-slate-900 uppercase focus:border-pink-500 outline-none" />
+          </div>
+
+          <button onclick="handlePremiumClaimSubmit()"
+            class="w-full bg-pink-600 hover:bg-pink-700 active:scale-98 text-white font-extrabold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs">
+            <span>🚀 পেমেন্ট তথ্য সাবমিট করুন</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -2280,6 +2364,70 @@
       renderAdminPayments();
       renderAdminAnalytics();
       alert('নতুন একটি টেস্ট বিকাশ পেমেন্ট যোগ করা হয়েছে! আপনি এখন এটি অনুমোদন করে পরীক্ষা করতে পারেন।');
+    }
+
+    // ==========================================
+    // MANUAL BKASH PAYMENT (01867884361)
+    // ==========================================
+    function copyBkashNumber() {
+      navigator.clipboard.writeText('01867884361').then(() => {
+        const text = document.getElementById('copyBkashText');
+        if (text) text.innerText = 'কপি হয়েছে!';
+        setTimeout(() => {
+          if (text) text.innerText = 'কপি করুন';
+        }, 2000);
+      }).catch(() => {
+        alert('বিকাশ নম্বর: 01867884361');
+      });
+    }
+
+    function openPremiumModal() {
+      document.getElementById('premiumModal').classList.remove('hidden');
+    }
+
+    function closePremiumModal() {
+      document.getElementById('premiumModal').classList.add('hidden');
+    }
+
+    function handlePlanBadgeClick() {
+      if (currentUserEmail === 'bijoysarker0171@gmail.com') {
+        openAdminModal();
+      } else {
+        openPremiumModal();
+      }
+    }
+
+    function handlePremiumClaimSubmit() {
+      const phone = document.getElementById('paySenderPhone').value.trim();
+      const trxId = document.getElementById('payTrxId').value.trim().toUpperCase();
+
+      if (!phone || !/^01\d{9}$/.test(phone)) {
+        alert('অনুগ্রহ করে সঠিক ১১ ডিজিটের বিকাশ মোবাইল নম্বর দিন (যেমন: 01712345678)।');
+        return;
+      }
+      if (!trxId || trxId.length < 6) {
+        alert('অনুগ্রহ করে সঠিক বিকাশ ট্রানজেকশন আইডি (TrxID) দিন।');
+        return;
+      }
+
+      const claims = getAdminPaymentClaims();
+      claims.unshift({
+        id: 'pay_' + Date.now(),
+        email: currentUserEmail || phone,
+        phone: phone,
+        trxId: trxId,
+        method: 'bKash (01867884361)',
+        amount: 99,
+        status: 'pending',
+        date: 'এইমাত্র'
+      });
+      localStorage.setItem('admin_payment_claims_v1', JSON.stringify(claims));
+
+      closePremiumModal();
+      alert('✅ আপনার পেমেন্ট তথ্য সফলভাবে জমা হয়েছে!\n\nবিকাশ নম্বর: 01867884361\nTrxID: ' + trxId + '\n\nঅ্যাডমিন বিকাশ স্টেটমেন্ট মিলিয়ে দ্রুততম সময়ে আপনার প্রিমিয়াম অ্যাকাউন্ট অনুমোদন করবেন।');
+
+      if (typeof renderAdminPayments === 'function') renderAdminPayments();
+      if (typeof renderAdminAnalytics === 'function') renderAdminAnalytics();
     }
 
     function handleNavAccountClick() {
