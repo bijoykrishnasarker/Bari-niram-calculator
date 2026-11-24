@@ -29,7 +29,7 @@ export function AuthScreen({
   const [mode, setMode] = useState<AuthMode>(initialMode);
 
   const [email, setEmail] = useState('bijoysarker0171@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [password, setPassword] = useState('pass12345');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -212,6 +212,36 @@ export function AuthScreen({
               </Pressable>
             </View>
           )}
+
+          {/* Quick Preset Accounts Selector */}
+          <View style={styles.presetContainer}>
+            <Text style={styles.presetTitle}>⚡ দ্রুত একাউন্ট সিলেক্ট করুন:</Text>
+            <View style={styles.presetButtonsRow}>
+              <Pressable
+                onPress={() => {
+                  setEmail('bijoysarker0171@gmail.com');
+                  setPassword('pass12345');
+                  setMode('signin');
+                }}
+                style={styles.adminPresetBtn}
+              >
+                <Text style={styles.adminPresetText}>👑 অ্যাডমিন</Text>
+                <Text style={styles.presetSubText}>bijoysarker0171</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
+                  setEmail('likhonsarker0181@gmail.com');
+                  setPassword('passlikhon122345');
+                  setMode('signin');
+                }}
+                style={styles.userPresetBtn}
+              >
+                <Text style={styles.userPresetText}>👤 ইউজার</Text>
+                <Text style={styles.presetSubText}>likhonsarker0181</Text>
+              </Pressable>
+            </View>
+          </View>
 
           {/* Inputs Section */}
           <View style={styles.formGroup}>
@@ -824,5 +854,57 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: '#475569',
     fontWeight: '600',
+  },
+  presetContainer: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 14,
+    padding: 10,
+    marginBottom: 14,
+  },
+  presetTitle: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#64748B',
+    marginBottom: 6,
+  },
+  presetButtonsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  adminPresetBtn: {
+    flex: 1,
+    backgroundColor: '#FEF3C7',
+    borderWidth: 1,
+    borderColor: '#FCD34D',
+    borderRadius: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+  },
+  adminPresetText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#78350F',
+  },
+  userPresetBtn: {
+    flex: 1,
+    backgroundColor: '#EFF6FF',
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+    borderRadius: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+  },
+  userPresetText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#1E3A8A',
+  },
+  presetSubText: {
+    fontSize: 9,
+    color: '#64748B',
+    marginTop: 2,
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
   },
 });

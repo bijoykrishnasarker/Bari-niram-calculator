@@ -51,7 +51,7 @@ export function PremiumScreen({
     try {
       await apiRequest('/v1/devices/bind', {
         authenticated: true,
-        body: JSON.stringify({ label: 'HomeXBD mobile app' }),
+        body: JSON.stringify({ label: 'বাড়ি নির্মাণ ক্যালকুলেটর মোবাইল অ্যাপ' }),
         method: 'POST',
       });
       await apiRequest('/v1/payments', {
