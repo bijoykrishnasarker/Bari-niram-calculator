@@ -271,7 +271,7 @@ export function createApp(dependencies: ApiDependencies) {
     });
   });
 
-  app.get(['/app', '/preview'], (_request, response) => {
+  app.get(['/app', '/preview', '/admin'], (_request, response) => {
     response.set('Cache-Control', 'no-store');
     const htmlFile = resolvePreviewHtml();
     if (htmlFile) {
