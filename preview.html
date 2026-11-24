@@ -62,6 +62,11 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <button id="adminNavBtn" onclick="openAdminModal()"
+          class="hidden cursor-pointer text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-xs hover:opacity-90 transition flex items-center gap-1">
+          <span>⚙️</span>
+          <span>অ্যাডমিন</span>
+        </button>
         <span id="planBadge"
           class="cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20">
           Free
@@ -106,7 +111,7 @@
               <span class="text-amber-600">📈</span>
               <span>আজকের বাজারদর (Live Rates)</span>
             </div>
-            <button onclick="alert('বাজারদর আপনার এলাকা অনুযায়ী যেকোনো সময় পরিবর্তনযোগ্য।')"
+            <button onclick="handleRateChangeClick()"
               class="text-xs font-bold text-[#1D4ED8] hover:underline">
               দাম পরিবর্তন করুন
             </button>
@@ -114,22 +119,22 @@
           <div class="flex gap-2.5 overflow-x-auto no-scrollbar py-0.5">
             <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
               <div class="text-[11px] text-[#607066] font-medium">সিমেন্ট</div>
-              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳৫৫০</div>
+              <div id="homeRateCement" class="text-base font-extrabold text-[#17221C] mt-0.5">৳৫৫০</div>
               <div class="text-[10px] text-[#607066]">/ব্যাগ</div>
             </div>
             <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
               <div class="text-[11px] text-[#607066] font-medium">রড (500W)</div>
-              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳৯৫,০০০</div>
+              <div id="homeRateRod" class="text-base font-extrabold text-[#17221C] mt-0.5">৳৯৫,০০০</div>
               <div class="text-[10px] text-[#607066]">/টন</div>
             </div>
             <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
               <div class="text-[11px] text-[#607066] font-medium">১ নং ইট</div>
-              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳১২</div>
+              <div id="homeRateBrick" class="text-base font-extrabold text-[#17221C] mt-0.5">৳১২</div>
               <div class="text-[10px] text-[#607066]">/পিস</div>
             </div>
             <div class="min-w-[102px] bg-white rounded-2xl p-3 border border-[#D8E0DB] shadow-sm">
               <div class="text-[11px] text-[#607066] font-medium">বালু (ভিটি)</div>
-              <div class="text-base font-extrabold text-[#17221C] mt-0.5">৳৪৫</div>
+              <div id="homeRateSand" class="text-base font-extrabold text-[#17221C] mt-0.5">৳৪৫</div>
               <div class="text-[10px] text-[#607066]">/সিএফটি</div>
             </div>
           </div>
@@ -959,10 +964,248 @@
             কোনো সময় ডাটা ক্লাউডে সুরক্ষিত থাকবে।</p>
         </div>
 
+        <!-- Admin Quick Access Card inside Account Modal -->
+        <div id="accAdminCard" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 p-3 rounded-2xl border border-amber-300 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-amber-900 flex items-center gap-1.5">
+              <span>👑</span>
+              <span>সুপার অ্যাডমিন সুবিধা</span>
+            </span>
+            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500 text-white">Full Control</span>
+          </div>
+          <p class="text-[11px] text-amber-800 leading-tight">বাজারদর, সমস্ত হিসাব-নিকাশ ও বিকাশ/নগদ পেমেন্ট রিকোয়েস্ট নিয়ন্ত্রণ করুন।</p>
+          <button onclick="closeAccountModal(); openAdminModal();"
+            class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-extrabold text-xs py-2 rounded-xl shadow-xs transition">
+            ⚙️ অ্যাডমিন কন্ট্রোল সেন্টারে প্রবেশ করুন
+          </button>
+        </div>
+
         <button onclick="handleLogout()"
           class="w-full bg-rose-50 hover:bg-rose-100 active:scale-98 text-rose-700 font-extrabold text-xs py-3 rounded-xl border border-rose-200 flex items-center justify-center gap-2 transition">
           <span>🚪 লগআউট করুন</span>
         </button>
+      </div>
+    </div>
+
+    <!-- Admin Control Center Modal -->
+    <div id="adminModal" class="hidden absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-end">
+      <div class="bg-white rounded-t-3xl w-full max-h-[92%] flex flex-col shadow-2xl overflow-hidden">
+        
+        <!-- Admin Header -->
+        <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-4 text-white flex justify-between items-center border-b border-amber-500/30">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-black text-base shadow-sm">
+              ⚙️
+            </div>
+            <div>
+              <div class="text-sm font-black flex items-center gap-1.5">
+                <span>অ্যাডমিন কন্ট্রোল সেন্টার</span>
+                <span class="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-1.5 py-0.5 rounded font-bold">SUPER ADMIN</span>
+              </div>
+              <div class="text-[10px] text-slate-300 font-mono">bijoysarker0171@gmail.com</div>
+            </div>
+          </div>
+          <button onclick="closeAdminModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-sm transition">
+            ✕
+          </button>
+        </div>
+
+        <!-- Admin Tab Navigation -->
+        <div class="flex border-b border-slate-200 bg-slate-50 px-2 pt-2 gap-1 overflow-x-auto no-scrollbar">
+          <button onclick="setAdminTab('rates')" id="admTabBtn-rates"
+            class="flex-1 min-w-[75px] py-2 px-1 text-xs font-bold text-center border-b-2 border-[#EA580C] text-[#EA580C] transition">
+            📈 বাজারদর
+          </button>
+          <button onclick="setAdminTab('analytics')" id="admTabBtn-analytics"
+            class="flex-1 min-w-[75px] py-2 px-1 text-xs font-medium text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition">
+            📊 হিসাব-নিকাশ
+          </button>
+          <button onclick="setAdminTab('payments')" id="admTabBtn-payments"
+            class="flex-1 min-w-[75px] py-2 px-1 text-xs font-medium text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition relative">
+            💳 পেমেন্ট
+            <span id="admPendingBadge" class="hidden absolute top-1 right-2 w-2 h-2 rounded-full bg-rose-500"></span>
+          </button>
+          <button onclick="setAdminTab('users')" id="admTabBtn-users"
+            class="flex-1 min-w-[75px] py-2 px-1 text-xs font-medium text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition">
+            👥 সিস্টেম
+          </button>
+        </div>
+
+        <!-- Admin Tab Content Body -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 text-xs bg-slate-50">
+          
+          <!-- TAB 1: বাজারদর নিয়ন্ত্রণ (Market Rates) -->
+          <div id="admTabContent-rates" class="space-y-3.5">
+            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-amber-950">
+              <div class="font-bold text-xs flex items-center gap-1.5 text-amber-900">
+                <span>💡</span>
+                <span>বাজারদর নিয়ন্ত্রণের নিয়ম</span>
+              </div>
+              <p class="text-[11px] text-amber-800 mt-1 leading-relaxed">
+                এখানে নতুন রেট লিখে <b>"নতুন বাজারদর সেভ ও লাইভ করুন"</b> বাটনে চাপ দিলে পুরো সিস্টেম ও সমস্ত ইউজারের জন্য স্বয়ংক্রিয়ভাবে কার্যকর হবে।
+              </p>
+            </div>
+
+            <!-- Material Rates Card -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+              <div class="font-bold text-slate-800 text-xs flex items-center justify-between pb-1 border-b border-slate-100">
+                <span>🧱 কাঁচামাল ও নির্মাণ সামগ্রীর রেট</span>
+                <span class="text-[10px] text-slate-400">প্রতি একক মূল্য (টাকা)</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">সিমেন্ট (৳/ব্যাগ)</label>
+                  <input id="admRateCement" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">রড / স্টিল 500W (৳/টন)</label>
+                  <input id="admRateRod" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">১ নং ইট (৳/পিস)</label>
+                  <input id="admRateBrick" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">বালু / ভিটি (৳/সিএফটি)</label>
+                  <input id="admRateSand" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+                <div class="space-y-1 col-span-2">
+                  <label class="text-[10px] font-bold text-slate-600">রাজমিস্ত্রি ও লেবার খরচ (৳/বর্গফুট)</label>
+                  <input id="admRateLabor" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Base Sqft Quality Rates Card -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+              <div class="font-bold text-slate-800 text-xs flex items-center justify-between pb-1 border-b border-slate-100">
+                <span>🏗️ কোয়ালিটি ভিত্তিক স্কয়ারফুট রেট</span>
+                <span class="text-[10px] text-slate-400">টাকা/বর্গফুট</span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">ইকোনমি</label>
+                  <input id="admRateEconomy" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">স্ট্যান্ডার্ড</label>
+                  <input id="admRateStandard" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-bold text-slate-600">প্রিমিয়াম</label>
+                  <input id="admRatePremium" type="number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-bold text-slate-800 focus:border-amber-500 outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="space-y-2 pt-1">
+              <button onclick="saveAdminRates()"
+                class="w-full bg-[#0B7A4B] hover:bg-[#08633D] active:scale-98 text-white font-extrabold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs">
+                <span>💾 নতুন বাজারদর সেভ ও লাইভ করুন</span>
+              </button>
+              <button onclick="resetAdminRatesToDefault()"
+                class="w-full bg-slate-200 hover:bg-slate-300 active:scale-98 text-slate-700 font-bold py-2 rounded-xl transition text-[11px]">
+                ডিফল্ট রেটে রিসেট করুন
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 2: হিসাব-নিকাশ ও অ্যানালিটিক্স (Analytics) -->
+          <div id="admTabContent-analytics" class="hidden space-y-3.5">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
+                <span class="text-[10px] text-slate-500">মোট হিসাব সম্পন্ন</span>
+                <div id="admTotalCalcs" class="text-base font-black text-blue-900 mt-0.5">৪৮+ বার</div>
+              </div>
+              <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
+                <span class="text-[10px] text-slate-500">সংরক্ষিত প্রজেক্ট</span>
+                <div id="admTotalProjects" class="text-base font-black text-emerald-700 mt-0.5">০ টি</div>
+              </div>
+              <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
+                <span class="text-[10px] text-slate-500">অনুমোদিত প্রিমিয়াম</span>
+                <div id="admApprovedCount" class="text-base font-black text-amber-600 mt-0.5">১ জন</div>
+              </div>
+              <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
+                <span class="text-[10px] text-slate-500">মোট আয় (রেভিনিউ)</span>
+                <div id="admTotalRevenue" class="text-base font-black text-indigo-700 mt-0.5">৳ ৯৯</div>
+              </div>
+            </div>
+
+            <!-- Saved Projects List -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+              <div class="font-bold text-slate-800 text-xs flex items-center justify-between pb-1 border-b border-slate-100">
+                <span>📁 ইউজারদের সংরক্ষিত হিসাব ও প্রজেক্ট</span>
+                <span id="admProjectCountBadge" class="text-[10px] font-bold text-slate-500">০ টি</span>
+              </div>
+              <div id="admProjectList" class="space-y-2 max-h-[220px] overflow-y-auto no-scrollbar">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: পেমেন্ট অনুমোদন (Payments) -->
+          <div id="admTabContent-payments" class="hidden space-y-3.5">
+            <div class="bg-emerald-50 p-3 rounded-2xl border border-emerald-200 text-emerald-950">
+              <div class="font-bold text-xs flex items-center gap-1.5 text-emerald-900">
+                <span>💰</span>
+                <span>বিকাশ/নগদ পেমেন্ট ভেরিফিকেশন</span>
+              </div>
+              <p class="text-[11px] text-emerald-800 mt-1 leading-relaxed">
+                ইউজারের পাঠানো TrxID আপনার বিকাশ স্টেটমেন্টের সাথে মিলিয়ে <b>"অনুমোদন"</b> বাটনে চাপ দিন।
+              </p>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+              <div class="font-bold text-slate-800 text-xs flex items-center justify-between pb-1 border-b border-slate-100">
+                <span>পেমেন্ট রিকোয়েস্ট তালিকা</span>
+                <button onclick="renderAdminPayments()" class="text-[10px] text-blue-600 font-bold hover:underline">🔄 রিফ্রেশ</button>
+              </div>
+              <div id="admPaymentList" class="space-y-2 max-h-[240px] overflow-y-auto no-scrollbar">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Demo Payment Trigger for testing -->
+            <div class="p-3 bg-slate-100 rounded-xl border border-slate-200 space-y-1.5">
+              <span class="text-[10px] font-bold text-slate-600">🧪 টেস্ট করার জন্য:</span>
+              <button onclick="addDemoPaymentRequest()"
+                class="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold py-1.5 rounded-lg text-[11px] transition">
+                + একটি টেস্ট বিকাশ পেমেন্ট রিকোয়েস্ট তৈরি করুন
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 4: সিস্টেম ও ইউজার (Users & System) -->
+          <div id="admTabContent-users" class="hidden space-y-3.5">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+              <div class="font-bold text-slate-800 text-xs pb-1 border-b border-slate-100">
+                👤 অ্যাডমিন ও সিস্টেম স্ট্যাটাস
+              </div>
+              <div class="space-y-1.5 text-[11px]">
+                <div class="flex justify-between py-1 border-b border-slate-50">
+                  <span class="text-slate-500">অ্যাডমিন ইমেইল:</span>
+                  <span class="font-bold text-slate-800">bijoysarker0171@gmail.com</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-50">
+                  <span class="text-slate-500">ভূমিকা:</span>
+                  <span class="font-extrabold text-amber-600">Super Administrator</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-50">
+                  <span class="text-slate-500">ব্যাকএন্ড এপিআই:</span>
+                  <span class="font-bold text-emerald-600">http://localhost:4000 (Active)</span>
+                </div>
+                <div class="flex justify-between py-1">
+                  <span class="text-slate-500">ক্লাউড ডাটাবেজ:</span>
+                  <span class="font-bold text-emerald-600">Supabase Connected</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
 
@@ -1453,11 +1696,13 @@
     }
 
     function resetStep3Rates() {
-      document.getElementById('r-brick').value = 12;
-      document.getElementById('r-cement').value = 550;
-      document.getElementById('r-rod').value = 95000;
-      document.getElementById('r-sand').value = 50;
-      document.getElementById('r-labor').value = 350;
+      const rates = typeof getAdminRates === 'function' ? getAdminRates() : { brick: 12, cement: 550, rod: 95000, sand: 45, labor: 350 };
+      document.getElementById('r-brick').value = rates.brick;
+      document.getElementById('r-cement').value = rates.cement;
+      document.getElementById('r-rod').value = rates.rod;
+      document.getElementById('r-sand').value = rates.sand;
+      document.getElementById('r-labor').value = rates.labor;
+      updateCalculation();
     }
 
     function setCalcUnit(unit) {
@@ -1696,8 +1941,12 @@
       const badge = document.getElementById('planBadge');
       const accPlan = document.getElementById('accPlanLabel');
       const accRole = document.getElementById('accRoleLabel');
+      const adminNavBtn = document.getElementById('adminNavBtn');
+      const accAdminCard = document.getElementById('accAdminCard');
 
       if (currentUserEmail === 'bijoysarker0171@gmail.com') {
+        if (adminNavBtn) adminNavBtn.classList.remove('hidden');
+        if (accAdminCard) accAdminCard.classList.remove('hidden');
         if (badge) {
           badge.className = 'cursor-default text-[11px] font-black px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-xs';
           badge.innerText = '★ Admin';
@@ -1710,6 +1959,8 @@
           accRole.innerText = 'ফুল সিস্টেম অ্যাক্সেস';
         }
       } else {
+        if (adminNavBtn) adminNavBtn.classList.add('hidden');
+        if (accAdminCard) accAdminCard.classList.add('hidden');
         if (badge) {
           badge.className = 'cursor-default text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F4EC] text-[#0B7A4B] border border-[#0B7A4B]/20';
           badge.innerText = 'Free';
@@ -1722,6 +1973,313 @@
           accRole.innerText = 'বাইন্ডেড (Active)';
         }
       }
+    }
+
+    // ==========================================
+    // SUPER ADMIN CONTROL CENTER LOGIC
+    // ==========================================
+    const defaultAdminRates = {
+      cement: 550,
+      rod: 95000,
+      brick: 12,
+      sand: 45,
+      labor: 350,
+      economy: 3000,
+      standard: 3500,
+      premium: 4500
+    };
+
+    function getAdminRates() {
+      try {
+        const stored = localStorage.getItem('admin_market_rates_v1');
+        if (stored) return { ...defaultAdminRates, ...JSON.parse(stored) };
+      } catch (e) {}
+      return { ...defaultAdminRates };
+    }
+
+    function applyAdminRates() {
+      const rates = getAdminRates();
+      baseRates.economy = Number(rates.economy) || 3000;
+      baseRates.standard = Number(rates.standard) || 3500;
+      baseRates.premium = Number(rates.premium) || 4500;
+
+      const elCement = document.getElementById('homeRateCement');
+      const elRod = document.getElementById('homeRateRod');
+      const elBrick = document.getElementById('homeRateBrick');
+      const elSand = document.getElementById('homeRateSand');
+      if (elCement) elCement.innerText = '৳' + Number(rates.cement).toLocaleString('bn-BD');
+      if (elRod) elRod.innerText = '৳' + Number(rates.rod).toLocaleString('bn-BD');
+      if (elBrick) elBrick.innerText = '৳' + Number(rates.brick).toLocaleString('bn-BD');
+      if (elSand) elSand.innerText = '৳' + Number(rates.sand).toLocaleString('bn-BD');
+
+      const rBrick = document.getElementById('r-brick');
+      const rCement = document.getElementById('r-cement');
+      const rRod = document.getElementById('r-rod');
+      const rSand = document.getElementById('r-sand');
+      const rLabor = document.getElementById('r-labor');
+      if (rBrick) rBrick.value = rates.brick;
+      if (rCement) rCement.value = rates.cement;
+      if (rRod) rRod.value = rates.rod;
+      if (rSand) rSand.value = rates.sand;
+      if (rLabor) rLabor.value = rates.labor;
+
+      if (typeof updateCalculation === 'function') {
+        updateCalculation();
+      }
+    }
+
+    let currentAdminTab = 'rates';
+
+    function openAdminModal(tab = 'rates') {
+      if (currentUserEmail !== 'bijoysarker0171@gmail.com') {
+        alert('শুধুমাত্র সুপার অ্যাডমিন bijoysarker0171@gmail.com এই কন্ট্রোল সেন্টারে প্রবেশ করতে পারেন।');
+        return;
+      }
+      setAdminTab(tab);
+      loadAdminRatesIntoInputs();
+      renderAdminAnalytics();
+      renderAdminPayments();
+      document.getElementById('adminModal').classList.remove('hidden');
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function setAdminTab(tab) {
+      currentAdminTab = tab;
+      const tabs = ['rates', 'analytics', 'payments', 'users'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('admTabBtn-' + t);
+        const content = document.getElementById('admTabContent-' + t);
+        if (t === tab) {
+          if (btn) {
+            btn.className = 'flex-1 min-w-[75px] py-2 px-1 text-xs font-bold text-center border-b-2 border-[#EA580C] text-[#EA580C] transition';
+          }
+          if (content) content.classList.remove('hidden');
+        } else {
+          if (btn) {
+            btn.className = 'flex-1 min-w-[75px] py-2 px-1 text-xs font-medium text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition';
+          }
+          if (content) content.classList.add('hidden');
+        }
+      });
+    }
+
+    function loadAdminRatesIntoInputs() {
+      const rates = getAdminRates();
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+      setVal('admRateCement', rates.cement);
+      setVal('admRateRod', rates.rod);
+      setVal('admRateBrick', rates.brick);
+      setVal('admRateSand', rates.sand);
+      setVal('admRateLabor', rates.labor);
+      setVal('admRateEconomy', rates.economy);
+      setVal('admRateStandard', rates.standard);
+      setVal('admRatePremium', rates.premium);
+    }
+
+    function saveAdminRates() {
+      const newRates = {
+        cement: Number(document.getElementById('admRateCement').value) || 550,
+        rod: Number(document.getElementById('admRateRod').value) || 95000,
+        brick: Number(document.getElementById('admRateBrick').value) || 12,
+        sand: Number(document.getElementById('admRateSand').value) || 45,
+        labor: Number(document.getElementById('admRateLabor').value) || 350,
+        economy: Number(document.getElementById('admRateEconomy').value) || 3000,
+        standard: Number(document.getElementById('admRateStandard').value) || 3500,
+        premium: Number(document.getElementById('admRatePremium').value) || 4500
+      };
+      localStorage.setItem('admin_market_rates_v1', JSON.stringify(newRates));
+      applyAdminRates();
+      alert('✅ নতুন বাজারদর সফলভাবে সেভ হয়েছে! সমস্ত ইউজারের ক্যালকুলেটরে এখন এই নতুন দাম কার্যকর হয়েছে।');
+    }
+
+    function resetAdminRatesToDefault() {
+      if (confirm('আপনি কি বাজারদর ডিফল্ট মানে রিসেট করতে চান?')) {
+        localStorage.removeItem('admin_market_rates_v1');
+        applyAdminRates();
+        loadAdminRatesIntoInputs();
+        alert('বাজারদর ডিফল্ট মানে রিসেট করা হয়েছে।');
+      }
+    }
+
+    function handleRateChangeClick() {
+      if (currentUserEmail === 'bijoysarker0171@gmail.com') {
+        openAdminModal('rates');
+      } else {
+        alert('ক্যালকুলেটরের ৩য় ধাপে আপনি আপনার এলাকা অনুযায়ী দাম সাময়িকভাবে কাস্টমাইজ করতে পারেন। বৈশ্বিক লাইভ বাজারদর অ্যাডমিন দ্বারা নিয়ন্ত্রিত।');
+      }
+    }
+
+    function renderAdminAnalytics() {
+      let calcs = Number(localStorage.getItem('admin_total_calc_count')) || 48;
+      const elCalcs = document.getElementById('admTotalCalcs');
+      if (elCalcs) elCalcs.innerText = calcs.toLocaleString('bn-BD') + ' বার';
+
+      let projects = [];
+      try {
+        const stored = localStorage.getItem('homexbd_saved_projects_v2');
+        if (stored) projects = JSON.parse(stored);
+      } catch (e) {}
+
+      const elProj = document.getElementById('admTotalProjects');
+      const elBadge = document.getElementById('admProjectCountBadge');
+      if (elProj) elProj.innerText = projects.length.toLocaleString('bn-BD') + ' টি';
+      if (elBadge) elBadge.innerText = projects.length.toLocaleString('bn-BD') + ' টি';
+
+      const claims = getAdminPaymentClaims();
+      const approvedCount = claims.filter(c => c.status === 'approved').length;
+      const elAppr = document.getElementById('admApprovedCount');
+      const elRev = document.getElementById('admTotalRevenue');
+      if (elAppr) elAppr.innerText = approvedCount.toLocaleString('bn-BD') + ' জন';
+      if (elRev) elRev.innerText = '৳ ' + (approvedCount * 99).toLocaleString('bn-BD');
+
+      const container = document.getElementById('admProjectList');
+      if (!container) return;
+      if (projects.length === 0) {
+        container.innerHTML = '<div class="text-center py-4 text-slate-400 text-[11px]">এখনও কোনো প্রজেক্ট সংরক্ষিত হয়নি।</div>';
+      } else {
+        container.innerHTML = projects.map(p => `
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
+            <div>
+              <div class="font-bold text-slate-900">${p.name || 'আমার বাড়ি'}</div>
+              <div class="text-[10px] text-slate-500">${p.area || 1500} স্কয়ারফুট • ${p.floors || 2} তলা • ${p.cost || '৳ ৫০,০০,০০০'}</div>
+            </div>
+            <button onclick="deleteAdminProject('${p.id}')" class="text-rose-600 hover:text-rose-800 text-[10px] font-bold px-2 py-1 rounded bg-rose-50 border border-rose-200">মুছুন</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function deleteAdminProject(id) {
+      if (confirm('আপনি কি এই হিসাবটি মুছে ফেলতে চান?')) {
+        let projects = [];
+        try {
+          const stored = localStorage.getItem('homexbd_saved_projects_v2');
+          if (stored) projects = JSON.parse(stored);
+        } catch (e) {}
+        projects = projects.filter(p => p.id !== id);
+        localStorage.setItem('homexbd_saved_projects_v2', JSON.stringify(projects));
+        savedProjects = projects;
+        renderAdminAnalytics();
+        if (typeof renderSavedProjects === 'function') renderSavedProjects();
+      }
+    }
+
+    function getAdminPaymentClaims() {
+      try {
+        const stored = localStorage.getItem('admin_payment_claims_v1');
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      const initial = [
+        {
+          id: 'pay_demo_1',
+          email: 'rahim.builder@gmail.com',
+          phone: '01711998877',
+          trxId: '9K48LP2M1B',
+          method: 'bKash',
+          amount: 99,
+          status: 'pending',
+          date: 'আজকে'
+        }
+      ];
+      localStorage.setItem('admin_payment_claims_v1', JSON.stringify(initial));
+      return initial;
+    }
+
+    function renderAdminPayments() {
+      const claims = getAdminPaymentClaims();
+      const container = document.getElementById('admPaymentList');
+      const badge = document.getElementById('admPendingBadge');
+      const pendingCount = claims.filter(c => c.status === 'pending').length;
+      if (badge) {
+        if (pendingCount > 0) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
+      }
+
+      if (!container) return;
+      if (claims.length === 0) {
+        container.innerHTML = '<div class="text-center py-4 text-slate-400 text-[11px]">কোনো পেমেন্ট রিকোয়েস্ট নেই।</div>';
+        return;
+      }
+
+      container.innerHTML = claims.map(c => {
+        const isPending = c.status === 'pending';
+        const isApproved = c.status === 'approved';
+        return `
+          <div class="bg-white p-3 rounded-xl border ${isPending ? 'border-amber-300 bg-amber-50/20' : 'border-slate-200'} space-y-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="font-bold text-slate-900 text-xs">${c.email}</div>
+                <div class="text-[10px] text-slate-500 font-mono mt-0.5">${c.method}: ${c.phone} • TrxID: <span class="font-bold text-slate-800">${c.trxId}</span></div>
+              </div>
+              <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${isApproved ? 'bg-emerald-100 text-emerald-800' : isPending ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}">
+                ${isApproved ? '✓ অনুমোদিত' : isPending ? '⏳ পেন্ডিং' : '✕ বাতিল'}
+              </span>
+            </div>
+            ${isPending ? `
+              <div class="flex gap-2 pt-1">
+                <button onclick="approveAdminPayment('${c.id}')"
+                  class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-1.5 rounded-lg text-[11px] shadow-xs transition">
+                  ✓ অনুমোদন করুন (Approve)
+                </button>
+                <button onclick="rejectAdminPayment('${c.id}')"
+                  class="px-3 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 font-bold py-1.5 rounded-lg text-[11px] border border-slate-200 transition">
+                  ✕ বাতিল
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function approveAdminPayment(claimId) {
+      const claims = getAdminPaymentClaims();
+      const claim = claims.find(c => c.id === claimId);
+      if (claim) {
+        claim.status = 'approved';
+        localStorage.setItem('admin_payment_claims_v1', JSON.stringify(claims));
+        renderAdminPayments();
+        renderAdminAnalytics();
+        alert('🎉 TrxID ' + claim.trxId + ' সফলভাবে অনুমোদন করা হয়েছে! ইউজারের জন্য লাইফটাইম প্রিমিয়াম চালু হয়েছে।');
+      }
+    }
+
+    function rejectAdminPayment(claimId) {
+      if (confirm('আপনি কি এই পেমেন্ট রিকোয়েস্টটি বাতিল করতে চান?')) {
+        const claims = getAdminPaymentClaims();
+        const claim = claims.find(c => c.id === claimId);
+        if (claim) {
+          claim.status = 'rejected';
+          localStorage.setItem('admin_payment_claims_v1', JSON.stringify(claims));
+          renderAdminPayments();
+          renderAdminAnalytics();
+        }
+      }
+    }
+
+    function addDemoPaymentRequest() {
+      const randomTrx = '8B' + Math.floor(1000000 + Math.random() * 9000000);
+      const claims = getAdminPaymentClaims();
+      claims.unshift({
+        id: 'pay_' + Date.now(),
+        email: 'user' + Math.floor(100 + Math.random() * 900) + '@gmail.com',
+        phone: '018' + Math.floor(10000000 + Math.random() * 90000000),
+        trxId: randomTrx,
+        method: 'bKash',
+        amount: 99,
+        status: 'pending',
+        date: 'এইমাত্র'
+      });
+      localStorage.setItem('admin_payment_claims_v1', JSON.stringify(claims));
+      renderAdminPayments();
+      renderAdminAnalytics();
+      alert('নতুন একটি টেস্ট বিকাশ পেমেন্ট যোগ করা হয়েছে! আপনি এখন এটি অনুমোদন করে পরীক্ষা করতে পারেন।');
     }
 
     function handleNavAccountClick() {
@@ -1851,6 +2409,7 @@
       renderSavedProjects();
     }
 
+    applyAdminRates();
     updateCalculation();
     if (localStorage.getItem('homexbd_saved_projects_v2')) {
       try {

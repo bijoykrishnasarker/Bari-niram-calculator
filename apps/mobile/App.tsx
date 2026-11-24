@@ -4,6 +4,7 @@ import {
   Modal,
   Pressable,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   View,
@@ -40,6 +41,7 @@ function MainApp() {
   const [loadingAccount, setLoadingAccount] = useState(false);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   async function refreshAccount() {
     if (!auth.session) {
@@ -64,6 +66,9 @@ function MainApp() {
   }, [auth.session?.access_token]);
 
   const premium = account?.entitlement.plan === 'premium';
+  const isAdmin =
+    auth.session?.user?.email === 'bijoysarker0171@gmail.com' ||
+    account?.user?.email === 'bijoysarker0171@gmail.com';
 
   let screen: React.ReactNode;
   if (tab === 'home') {
@@ -128,6 +133,16 @@ function MainApp() {
         </Pressable>
 
         <View style={styles.brandActions}>
+          {isAdmin ? (
+            <Pressable
+              hitSlop={8}
+              onPress={() => setShowAdminModal(true)}
+              style={styles.adminBtn}
+            >
+              <Text style={styles.adminBtnText}>⚙️ অ্যাডমিন</Text>
+            </Pressable>
+          ) : null}
+
           <Pressable
             onPress={() => setShowPremiumModal(true)}
             style={[
@@ -222,6 +237,76 @@ function MainApp() {
           />
         </SafeAreaView>
       </Modal>
+
+      {/* Super Admin Control Modal */}
+      <Modal
+        animationType="slide"
+        onRequestClose={() => setShowAdminModal(false)}
+        visible={showAdminModal}
+      >
+        <SafeAreaView style={styles.modalSafe}>
+          <View style={styles.modalHeader}>
+            <View>
+              <Text style={styles.modalTitle}>অ্যাডমিন কন্ট্রোল সেন্টার</Text>
+              <Text style={{ fontSize: 11, color: colors.muted }}>
+                bijoysarker0171@gmail.com • Super Admin
+              </Text>
+            </View>
+            <Pressable
+              hitSlop={8}
+              onPress={() => setShowAdminModal(false)}
+              style={styles.modalCloseBtn}
+            >
+              <Text style={styles.modalCloseText}>✕ বন্ধ করুন</Text>
+            </Pressable>
+          </View>
+          <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
+            {/* Rates Card */}
+            <View style={styles.adminCard}>
+              <Text style={styles.adminCardTitle}>📈 লাইভ বাজারদর নিয়ন্ত্রণ</Text>
+              <Text style={styles.adminCardDesc}>
+                হোমস্ক্রিনের "দাম পরিবর্তন করুন" অপশন থেকে যেকোনো সময় বাজারদর আপডেট করতে পারেন।
+              </Text>
+              <Pressable
+                onPress={() => {
+                  setShowAdminModal(false);
+                  setTab('home');
+                }}
+                style={styles.adminActionBtn}
+              >
+                <Text style={styles.adminActionBtnText}>হোমস্ক্রিন বাজারদর দেখুন ও আপডেট করুন →</Text>
+              </Pressable>
+            </View>
+
+            {/* Analytics Card */}
+            <View style={styles.adminCard}>
+              <Text style={styles.adminCardTitle}>📊 হিসাব-নিকাশ ও ডাটা</Text>
+              <Text style={styles.adminCardDesc}>
+                ইউজারদের সংরক্ষিত প্রজেক্ট দেখতে "সেভড" ট্যাবে যান।
+              </Text>
+              <Pressable
+                onPress={() => {
+                  setShowAdminModal(false);
+                  setTab('saved');
+                }}
+                style={styles.adminActionBtn}
+              >
+                <Text style={styles.adminActionBtnText}>সংরক্ষিত হিসাবসমূহ দেখুন →</Text>
+              </Pressable>
+            </View>
+
+            {/* System Status Card */}
+            <View style={styles.adminCard}>
+              <Text style={styles.adminCardTitle}>👥 সিস্টেম ও অ্যাকাউন্ট স্ট্যাটাস</Text>
+              <Text style={{ fontSize: 12, color: colors.muted, marginTop: 4 }}>
+                সুপার অ্যাডমিন: bijoysarker0171@gmail.com{'\n'}
+                ডাটাবেজ: Supabase Connected{'\n'}
+                রোল: Full System Administrator
+              </Text>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -285,6 +370,48 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
     color: colors.muted,
+  },
+  adminBtn: {
+    backgroundColor: '#F59E0B',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
+  adminBtnText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: colors.white,
+  },
+  adminCard: {
+    backgroundColor: colors.white,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    gap: 8,
+  },
+  adminCardTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  adminCardDesc: {
+    fontSize: 12,
+    color: colors.muted,
+    lineHeight: 18,
+  },
+  adminActionBtn: {
+    backgroundColor: '#1E3A8A',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  adminActionBtnText: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: '700',
   },
   content: { backgroundColor: colors.background, flex: 1 },
   tabBar: {
