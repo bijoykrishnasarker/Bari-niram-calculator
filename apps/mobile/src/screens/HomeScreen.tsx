@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import {
+  Alert,
   Modal,
   Pressable,
   ScrollView,
@@ -34,12 +35,35 @@ export function HomeScreen({
   onStartCalculator,
   onOpenSaved,
   account,
+  openPremium,
 }: {
   onStartCalculator(): void;
   onOpenSaved(): void;
   account: AccountSummary | null;
+  openPremium?: () => void;
 }) {
   useLanguage();
+  const isPremium = account?.entitlement.plan === 'premium';
+  const isAdmin = account?.user?.email === 'bijoysarker0171@gmail.com';
+
+  function handleServiceAccess(action: () => void, serviceName: string) {
+    if (isPremium || isAdmin) {
+      action();
+      return;
+    }
+    Alert.alert(
+      '🔒 প্রিমিয়াম সার্ভিস আনলক',
+      `"${serviceName}" সার্ভিসটি ব্যবহার করতে মাত্র ৯৯ টাকা দিয়ে আজীবনের জন্য কিনতে হবে।`,
+      [
+        { text: 'পরে করব', style: 'cancel' },
+        {
+          text: '৯৯ টাকায় কিনুন',
+          onPress: () => openPremium?.(),
+        },
+      ],
+    );
+  }
+
   const [rates, setRates] = useState<RateItem[]>(DEFAULT_RATES);
   const [editingRates, setEditingRates] = useState(false);
   const [tempRates, setTempRates] = useState<RateItem[]>(DEFAULT_RATES);
@@ -133,13 +157,17 @@ export function HomeScreen({
 
         <Pressable
           accessibilityRole="button"
-          onPress={onStartCalculator}
+          onPress={() =>
+            handleServiceAccess(onStartCalculator, '১ মিনিটে বাড়ির খরচ হিসাব')
+          }
           style={({ pressed }) => [
             styles.heroButton,
             pressed && styles.heroButtonPressed,
           ]}
         >
-          <Text style={styles.heroButtonText}>হিসাব শুরু করুন →</Text>
+          <Text style={styles.heroButtonText}>
+            {isPremium || isAdmin ? 'হিসাব শুরু করুন →' : 'হিসাব শুরু করুন 🔒 (৯৯৳)'}
+          </Text>
         </Pressable>
       </View>
 
@@ -184,14 +212,23 @@ export function HomeScreen({
       <View style={styles.miniGrid}>
         {/* Brick */}
         <Pressable
-          onPress={() => setActiveMini('brick')}
+          onPress={() =>
+            handleServiceAccess(() => setActiveMini('brick'), 'ইটের হিসাব')
+          }
           style={({ pressed }) => [
             styles.miniCard,
             pressed && styles.cardPressed,
           ]}
         >
-          <View style={[styles.miniIconBox, { backgroundColor: colors.orangeSoft }]}>
-            <Text style={styles.miniIcon}>🧱</Text>
+          <View style={styles.miniCardTopRow}>
+            <View style={[styles.miniIconBox, { backgroundColor: colors.orangeSoft }]}>
+              <Text style={styles.miniIcon}>🧱</Text>
+            </View>
+            {!isPremium && !isAdmin && (
+              <View style={styles.miniLockPill}>
+                <Text style={styles.miniLockText}>🔒 ৯৯৳</Text>
+              </View>
+            )}
           </View>
           <Text style={styles.miniTitle}>ইটের হিসাব</Text>
           <Text style={styles.miniSubtitle}>ওয়াল ও গাঁথুনির ইট</Text>
@@ -199,14 +236,23 @@ export function HomeScreen({
 
         {/* Roof Casting */}
         <Pressable
-          onPress={() => setActiveMini('roof')}
+          onPress={() =>
+            handleServiceAccess(() => setActiveMini('roof'), 'ছাদ ঢালাইয়ের হিসাব')
+          }
           style={({ pressed }) => [
             styles.miniCard,
             pressed && styles.cardPressed,
           ]}
         >
-          <View style={[styles.miniIconBox, { backgroundColor: colors.blueSoft }]}>
-            <Text style={styles.miniIcon}>🏗️</Text>
+          <View style={styles.miniCardTopRow}>
+            <View style={[styles.miniIconBox, { backgroundColor: colors.blueSoft }]}>
+              <Text style={styles.miniIcon}>🏗️</Text>
+            </View>
+            {!isPremium && !isAdmin && (
+              <View style={styles.miniLockPill}>
+                <Text style={styles.miniLockText}>🔒 ৯৯৳</Text>
+              </View>
+            )}
           </View>
           <Text style={styles.miniTitle}>ছাদ ঢালাই</Text>
           <Text style={styles.miniSubtitle}>সিমেন্ট, বালু ও খোয়া</Text>
@@ -214,14 +260,23 @@ export function HomeScreen({
 
         {/* Plaster */}
         <Pressable
-          onPress={() => setActiveMini('plaster')}
+          onPress={() =>
+            handleServiceAccess(() => setActiveMini('plaster'), 'প্লাস্টারের হিসাব')
+          }
           style={({ pressed }) => [
             styles.miniCard,
             pressed && styles.cardPressed,
           ]}
         >
-          <View style={[styles.miniIconBox, { backgroundColor: colors.greenSoft }]}>
-            <Text style={styles.miniIcon}>🔨</Text>
+          <View style={styles.miniCardTopRow}>
+            <View style={[styles.miniIconBox, { backgroundColor: colors.greenSoft }]}>
+              <Text style={styles.miniIcon}>🔨</Text>
+            </View>
+            {!isPremium && !isAdmin && (
+              <View style={styles.miniLockPill}>
+                <Text style={styles.miniLockText}>🔒 ৯৯৳</Text>
+              </View>
+            )}
           </View>
           <Text style={styles.miniTitle}>প্লাস্টার হিসাব</Text>
           <Text style={styles.miniSubtitle}>ওয়াল প্লাস্টারের মসলা</Text>
@@ -229,14 +284,23 @@ export function HomeScreen({
 
         {/* Paint */}
         <Pressable
-          onPress={() => setActiveMini('paint')}
+          onPress={() =>
+            handleServiceAccess(() => setActiveMini('paint'), 'রঙের হিসাব')
+          }
           style={({ pressed }) => [
             styles.miniCard,
             pressed && styles.cardPressed,
           ]}
         >
-          <View style={[styles.miniIconBox, { backgroundColor: colors.purpleSoft }]}>
-            <Text style={styles.miniIcon}>🎨</Text>
+          <View style={styles.miniCardTopRow}>
+            <View style={[styles.miniIconBox, { backgroundColor: colors.purpleSoft }]}>
+              <Text style={styles.miniIcon}>🎨</Text>
+            </View>
+            {!isPremium && !isAdmin && (
+              <View style={styles.miniLockPill}>
+                <Text style={styles.miniLockText}>🔒 ৯৯৳</Text>
+              </View>
+            )}
           </View>
           <Text style={styles.miniTitle}>রঙের হিসাব</Text>
           <Text style={styles.miniSubtitle}>ইন্টেরিয়র ও এক্সটেরিয়র</Text>
@@ -667,6 +731,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 3,
     elevation: 1,
+  },
+  miniCardTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  miniLockPill: {
+    backgroundColor: '#FEF3C7',
+    borderWidth: 1,
+    borderColor: '#FCD34D',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  miniLockText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#92400E',
   },
   cardPressed: {
     borderColor: '#F59E0B',

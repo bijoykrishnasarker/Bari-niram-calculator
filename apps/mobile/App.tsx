@@ -77,6 +77,7 @@ function MainApp() {
         account={account}
         onOpenSaved={() => setTab('saved')}
         onStartCalculator={() => setTab('calculator')}
+        openPremium={() => setShowPremiumModal(true)}
       />
     );
   } else if (tab === 'calculator') {
