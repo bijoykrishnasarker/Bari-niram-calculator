@@ -40,7 +40,7 @@ export function AuthScreen({
 
   async function handleSubmit() {
     if (!email.trim()) {
-      setError('অনুগ্রহ করে সঠিক ইমেইল অথবা মোবাইল নম্বর দিন।');
+      setError('অনুগ্রহ করে সঠিক ইমেইল দিন।');
       return;
     }
 
@@ -215,8 +215,8 @@ export function AuthScreen({
 
           {/* Inputs Section */}
           <View style={styles.formGroup}>
-            {/* Email / Mobile Field */}
-            <Text style={styles.fieldLabel}>ইমেইল অথবা মোবাইল নম্বর</Text>
+            {/* Email Field */}
+            <Text style={styles.fieldLabel}>ইমেইল</Text>
             <View style={styles.inputBox}>
               <Text style={styles.inputLeftIcon}>👤</Text>
               <TextInput
@@ -224,7 +224,7 @@ export function AuthScreen({
                 autoComplete="email"
                 keyboardType="email-address"
                 onChangeText={setEmail}
-                placeholder={tr('example@email.com বা 017XXXXXXXX')}
+                placeholder={tr('example@email.com')}
                 placeholderTextColor="#94A3B8"
                 style={styles.textInputField}
                 value={email}
