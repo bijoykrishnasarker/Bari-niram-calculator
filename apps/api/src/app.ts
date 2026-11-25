@@ -24,12 +24,12 @@ import pino from 'pino';
 import pinoHttp from 'pino-http';
 import { z } from 'zod';
 
-import { TtlCache } from './cache';
-import { loadEnvironment, parseCorsOrigins } from './env';
-import { ApiError, errorHandler } from './errors';
-import { deviceHashesMatch, hashDeviceId } from './security';
-import { SupabaseAuthService, SupabaseDataStore } from './supabase';
-import type { ApiDependencies, AuthUser } from './types';
+import { TtlCache } from './cache.js';
+import { loadEnvironment, parseCorsOrigins } from './env.js';
+import { ApiError, errorHandler } from './errors.js';
+import { deviceHashesMatch, hashDeviceId } from './security.js';
+import { SupabaseAuthService, SupabaseDataStore } from './supabase.js';
+import type { ApiDependencies, AuthUser } from './types.js';
 
 const DeviceLabelSchema = z.object({
   label: z.string().trim().min(1).max(80).optional(),
@@ -591,6 +591,9 @@ export function getOrInitDefaultApp(): express.Express {
 }
 
 const defaultHandler: RequestHandler = (req, res, next) => {
+  if (req.url === '/api' || req.url.startsWith('/api/')) {
+    req.url = req.url.slice(4) || '/';
+  }
   try {
     const app = getOrInitDefaultApp();
     return app(req, res, next);

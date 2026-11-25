@@ -8,7 +8,7 @@ import type {
   PaymentStatus,
 } from '@homexbd/shared';
 
-import { ApiError } from './errors';
+import { ApiError } from './errors.js';
 import type {
   AdminPaymentRequest,
   AuthService,
@@ -16,7 +16,7 @@ import type {
   DataStore,
   DeviceBinding,
   SavedProject,
-} from './types';
+} from './types.js';
 
 type DatabaseError = {
   code?: string;

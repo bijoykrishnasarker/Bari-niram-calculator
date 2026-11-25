@@ -17,7 +17,7 @@ for (const p of candidates) {
   }
 }
 
-import defaultHandler, { getOrInitDefaultApp } from './app';
+import defaultHandler, { getOrInitDefaultApp } from './app.js';
 
 if (!process.env.VERCEL) {
   try {

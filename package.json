@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "pnpm --filter @homexbd/shared build && pnpm --filter @homexbd/api build",
+    "build:vercel": "pnpm --filter @homexbd/shared build && pnpm --filter @homexbd/api build && node -e \"const fs=require('fs');fs.mkdirSync('dist/web',{recursive:true});fs.copyFileSync('preview.html','dist/web/index.html');\"",
     "dev:api": "pnpm --filter @homexbd/api dev",
     "dev:mobile": "pnpm --filter @homexbd/mobile start",
     "format": "prettier --write .",
