@@ -266,7 +266,7 @@ function MainApp() {
             <View style={styles.adminCard}>
               <Text style={styles.adminCardTitle}>📈 লাইভ বাজারদর নিয়ন্ত্রণ</Text>
               <Text style={styles.adminCardDesc}>
-                হোমস্ক্রিনের "দাম পরিবর্তন করুন" অপশন থেকে যেকোনো সময় বাজারদর আপডেট করতে পারেন।
+                অ্যাডমিন বাজারদর নিয়ন্ত্রণ প্যানেল থেকে যেকোনো সময় নির্মাণ সামগ্রীর বাজারদর আপডেট করতে পারেন।
               </Text>
               <Pressable
                 onPress={() => {

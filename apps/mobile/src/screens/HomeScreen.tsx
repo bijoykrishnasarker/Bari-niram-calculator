@@ -177,15 +177,6 @@ export function HomeScreen({
           <Text style={styles.sectionIcon}>📈</Text>
           <Text style={styles.sectionTitle}>আজকের বাজারদর (Live Rates)</Text>
         </View>
-        <Pressable
-          hitSlop={8}
-          onPress={() => {
-            setTempRates([...rates]);
-            setEditingRates(true);
-          }}
-        >
-          <Text style={styles.actionLink}>দাম পরিবর্তন করুন</Text>
-        </Pressable>
       </View>
 
       <ScrollView
