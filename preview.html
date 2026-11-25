@@ -1700,30 +1700,6 @@
             </button>
           </div>
 
-          <!-- Quick Preset Credential Selector -->
-          <div class="mb-4 p-2.5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <div class="text-[10px] font-bold text-slate-500 mb-1.5 flex items-center justify-between">
-              <span>⚡ দ্রুত সিলেক্ট করুন:</span>
-              <span class="text-[9px] text-slate-400">অ্যাডমিন / ইউজার</span>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <button type="button" onclick="fillCredential('admin')" id="pillAdmin"
-                class="py-2 px-2.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-left transition flex flex-col cursor-pointer">
-                <span class="text-xs font-black text-amber-900 flex items-center gap-1">
-                  <span>👑</span> অ্যাডমিন একাউন্ট
-                </span>
-                <span class="text-[9px] text-amber-700 font-mono mt-0.5 truncate">bijoysarker0171</span>
-              </button>
-              <button type="button" onclick="fillCredential('user')" id="pillUser"
-                class="py-2 px-2.5 rounded-xl border border-blue-300 bg-blue-50 hover:bg-blue-100 text-left transition flex flex-col cursor-pointer">
-                <span class="text-xs font-black text-blue-900 flex items-center gap-1">
-                  <span>👤</span> ইউজার একাউন্ট
-                </span>
-                <span class="text-[9px] text-blue-700 font-mono mt-0.5 truncate">likhonsarker0181</span>
-              </button>
-            </div>
-          </div>
-
           <!-- Form Fields -->
           <div class="space-y-3.5">
             <!-- Email / Mobile -->
@@ -1732,7 +1708,7 @@
               <div
                 class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
                 <span class="text-slate-400 mr-2.5 text-base">👤</span>
-                <input id="authEmailInput" type="text" value="bijoysarker0171@gmail.com"
+                <input id="authEmailInput" type="text" value=""
                   placeholder="example@email.com বা 017XXXXXXXX"
                   class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
               </div>
@@ -1744,7 +1720,7 @@
               <div
                 class="flex items-center bg-[#F8FAFC] border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-xs focus-within:border-orange-500 focus-within:bg-white transition">
                 <span class="text-slate-400 mr-2.5 text-base">🔒</span>
-                <input id="authPassInput" type="password" value="pass12345" placeholder="আপনার পাসওয়ার্ড লিখুন"
+                <input id="authPassInput" type="password" value="" placeholder="আপনার পাসওয়ার্ড লিখুন"
                   class="w-full text-xs text-slate-800 placeholder-slate-400 outline-none bg-transparent" />
                 <button type="button" onclick="toggleAuthPassVisibility()"
                   class="text-slate-400 hover:text-slate-600 text-sm ml-1">👁️</button>
@@ -3112,12 +3088,12 @@
       // Predefined Credentials Verification
       if (email === 'bijoysarker0171@gmail.com') {
         if (password !== 'pass12345') {
-          alert('ভুল পাসওয়ার্ড! অ্যাডমিনের পাসওয়ার্ড: pass12345');
+          alert('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।');
           return;
         }
       } else if (email === 'likhonsarker0181@gmail.com') {
         if (password !== 'passlikhon122345') {
-          alert('ভুল পাসওয়ার্ড! ইউজারের পাসওয়ার্ড: passlikhon122345');
+          alert('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।');
           return;
         }
       }
