@@ -43,7 +43,9 @@ export function HomeScreen({
   openPremium?: () => void;
 }) {
   useLanguage();
-  const isPremium = account?.entitlement.plan === 'premium';
+  // TEMP: Payment gate commented out for testing
+  const isPremium = true;
+  // const isPremium = account?.entitlement.plan === 'premium';
   const isAdmin = account?.user?.email === 'bijoysarker0171@gmail.com';
 
   function handleServiceAccess(action: () => void, serviceName: string) {

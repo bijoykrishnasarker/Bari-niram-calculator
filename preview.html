@@ -2044,6 +2044,9 @@
     }
 
     function isCurrentUserPremium() {
+      // TEMP: Payment gate commented out for testing
+      return true;
+      /*
       if (currentUserEmail === 'bijoysarker0171@gmail.com') return true;
       if (!currentUserEmail) return false;
       if (localStorage.getItem('premium_unlocked_' + currentUserEmail) === 'true') return true;
@@ -2054,6 +2057,7 @@
         if (approved) return true;
       } catch (e) {}
       return false;
+      */
     }
 
     function openServicePromptModal(title, desc) {
